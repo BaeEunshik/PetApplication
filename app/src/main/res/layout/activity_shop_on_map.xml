@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    tools:context=".ShopOnMapActivity">
 
     <!-- Wrap -->
     <LinearLayout
@@ -28,6 +30,7 @@
                     android:layout_height="50dp" />
                 <!-- 제목 -->
                 <TextView
+                    android:id="@+id/shopName"
                     android:text="가게이름"
                     android:textColor="@color/colorWhite"
                     android:textSize="16dp"
@@ -38,10 +41,12 @@
             </RelativeLayout>
         </RelativeLayout>
         <!-- 헤더 -->
-
         <!-- 내용 -->
 
+            <!-- 맵 -->
 
+        <!-- 내용 -->
     </LinearLayout>
+    <!-- Wrap -->
 
 </LinearLayout>
