@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class GetAddressActivity extends AppCompatActivity {
@@ -85,11 +86,19 @@ public class GetAddressActivity extends AppCompatActivity {
         }
     }
 
-    /*** onDestroy ***/
+    /** onDestroy **/
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //버터나이프
         unbinder.unbind();
+
     }
+
+    @OnClick(R.id.btnGoBack)
+    public void setBtnGoBack(){     //뒤로가기
+
+        finish();
+    }
+
 }
+

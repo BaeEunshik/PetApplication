@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import butterknife.BindView;
@@ -15,6 +16,11 @@ import butterknife.Unbinder;
 public class LoginActivity extends AppCompatActivity {
 
     Unbinder unbinder;
+    @BindView(R.id.login_btn) Button login_btn;
+    @BindView(R.id.join_btn) Button join_btn;
+    @BindView(R.id.id_edit) EditText id_edit;
+    @BindView(R.id.pw_edit) EditText pw_edit;
+    @BindView(R.id.btnGoBack)ImageButton btnGoBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +52,20 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @BindView(R.id.login_btn) Button login_btn;
-    @BindView(R.id.join_btn) Button join_btn;
-    @BindView(R.id.id_edit) EditText id_edit;
-    @BindView(R.id.pw_edit) EditText pw_edit;
+
+    /** onDestroy **/
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
+
+    }
+
+    @OnClick(R.id.btnGoBack)
+    public void setBtnGoBack(){     //뒤로가기
+
+        finish();
+    }
+
 }
+

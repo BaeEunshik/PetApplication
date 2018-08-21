@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -20,6 +21,14 @@ import butterknife.Unbinder;
 public class JoinActivity extends AppCompatActivity {
 
     Unbinder unbinder;
+
+    @BindView(R.id.id_edit) EditText id_edit;
+    @BindView(R.id.nickname_edit) EditText nickname_edit;
+    @BindView(R.id.pw_edit) EditText pw_edit;
+    @BindView(R.id.pw2_edit) EditText pw2_edit;
+    @BindView(R.id.email_edit) EditText email_edit;
+    @BindView(R.id.join_finish_btn) Button join_finish_btn;
+    @BindView(R.id.btnGoBack)ImageButton btnGoBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,12 +91,21 @@ public class JoinActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @BindView(R.id.id_edit) EditText id_edit;
-    @BindView(R.id.nickname_edit) EditText nickname_edit;
-    @BindView(R.id.pw_edit) EditText pw_edit;
-    @BindView(R.id.pw2_edit) EditText pw2_edit;
-    @BindView(R.id.email_edit) EditText email_edit;
-    @BindView(R.id.join_finish_btn) Button join_finish_btn;
 
+
+    /** onDestroy **/
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
+
+    }
+
+    @OnClick(R.id.btnGoBack)
+    public void setBtnGoBack(){     //뒤로가기
+
+        finish();
+    }
 
 }
+
