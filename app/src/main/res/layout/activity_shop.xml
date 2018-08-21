@@ -5,28 +5,44 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <!-- 가게 -->
-
-    <ImageView
-        android:id="@+id/iv_profile"
-        android:layout_width="50dp"
-        android:layout_height="50dp" />
+    <!-- Wrap -->
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:orientation="vertical"
-        >
-        <TextView
-            android:id="@+id/txt_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            />
-        <TextView
-            android:id="@+id/txt_phone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!-- 헤더 -->
+        <RelativeLayout
+            android:background="#5e5e5e"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <!-- 뒤로가기 -->
+                <ImageButton
+                    android:id="@+id/btnGoBack"
+                    android:src="@drawable/ic_left"
+                    android:scaleType="fitCenter"
+                    android:background="@null"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
+                <!-- 제목 -->
+                <TextView
+                    android:text="가게이름"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+        </RelativeLayout>
+        <!-- 헤더 -->
+
+        <!-- 내용 -->
+
+
     </LinearLayout>
+
+
 </LinearLayout>
