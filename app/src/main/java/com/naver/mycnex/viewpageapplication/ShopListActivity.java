@@ -10,7 +10,9 @@ import butterknife.BindView;
 
 public class ShopListActivity extends AppCompatActivity {
 
-
+//2018.08.21
+// 15:23
+// 배은식
 
     @BindView(R.id.ibtn_add)
     Button ibtn_add;
