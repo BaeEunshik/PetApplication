@@ -38,11 +38,11 @@ public class ViewPagerActivity extends AppCompatActivity {
     Unbinder unbinder;
 
     @BindView(R.id.viewpager) ViewPager viewpager;
-    @BindView(R.id.spinner0) Spinner spinner0;
-    @BindView(R.id.spinner1) Spinner spinner1;
-    @BindView(R.id.spinner2) Spinner spinner2;
-    @BindView(R.id.btn_0) Button btn_0;
-    @BindView(R.id.btn_1) Button btn_1;
+    @BindView(R.id.spinnerLocate) Spinner spinnerLocate;
+    @BindView(R.id.spinnerSize) Spinner spinnerSize;
+    @BindView(R.id.spinnerPlace) Spinner spinnerPlace;
+    @BindView(R.id.btnGoLeft) Button btnGoLeft;
+    @BindView(R.id.btnGoRight) Button btnGoRight;
     @BindView(R.id.btn_openDrawer) Button btn_openDrawer;//메뉴버튼
     @BindView(R.id.btnSrchText)ImageButton btnSrchText;//키워드 검색버튼
     @BindView(R.id.btnSrchMap) ImageButton btnSrchMap;//맵 검색버튼
@@ -67,13 +67,13 @@ public class ViewPagerActivity extends AppCompatActivity {
         //Spinner ( 드롭다운 메뉴 ) 관련설정
         ArrayAdapter addressAdapter = ArrayAdapter.createFromResource(this, R.array.address1, android.R.layout.simple_spinner_item);
         addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner0.setAdapter(addressAdapter);
+        spinnerLocate.setAdapter(addressAdapter);
         ArrayAdapter dogsizeAdapter = ArrayAdapter.createFromResource(this, R.array.dogSize, android.R.layout.simple_spinner_item);
         dogsizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner1.setAdapter(dogsizeAdapter);
+        spinnerSize.setAdapter(dogsizeAdapter);
         ArrayAdapter placeAdapter = ArrayAdapter.createFromResource(this, R.array.place, android.R.layout.simple_spinner_item);
         placeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner2.setAdapter(placeAdapter);
+        spinnerPlace.setAdapter(placeAdapter);
 
         //ViewPager Adapter 설정
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -125,12 +125,12 @@ public class ViewPagerActivity extends AppCompatActivity {
         dlDrawer.openDrawer(lvNavList);
     }
 
-    @OnClick (R.id.btn_0)   //ViewPager 좌측이동
-    public void btn_0(){
+    @OnClick (R.id.btnGoLeft)   //ViewPager 좌측이동
+    public void btnGoLeft(){
         viewpager.setCurrentItem(0);
     }
-    @OnClick (R.id.btn_1)   //ViewPager 우측이동
-    public void btn_1(){
+    @OnClick (R.id.btnGoRight)   //ViewPager 우측이동
+    public void setBtnGoRight(){
         viewpager.setCurrentItem(1);
     }
     @OnClick(R.id.btnSrchText)  // SearchKeywordActivity ( 검색어로 찾기 ) 로 이동

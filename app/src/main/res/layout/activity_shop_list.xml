@@ -29,7 +29,7 @@
                     android:layout_height="50dp" />
                 <!-- 제목 -->
                 <TextView
-                    android:text="로그인"
+                    android:text="내가 등록한 곳"
                     android:textColor="@color/colorWhite"
                     android:textSize="16dp"
                     android:textStyle="bold"

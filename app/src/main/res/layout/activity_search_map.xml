@@ -29,7 +29,7 @@
                     android:text="검색지역"
                     android:textSize="10dp"/>
                 <Spinner
-                    android:id="@+id/spinner0"
+                    android:id="@+id/spinnerLocate"
                     android:layout_width="100dp"
                     android:layout_height="35dp"/>
             </LinearLayout>
@@ -51,34 +51,96 @@
                         android:layout_marginRight="10dp"
                         android:layout_width="35dp"
                         android:layout_height="35dp" />
-                    <!-- 맵 -->
+                    <!-- 뒤로가기 -->
                     <ImageButton
-                        android:id="@+id/btnSrchMap"
-                        android:background="@drawable/ic_map_alt"
-                        android:layout_marginRight="10dp"
+                        android:id="@+id/btnGoBack"
+                        android:src="@drawable/ic_left"
+                        android:scaleType="fitCenter"
+                        android:background="@null"
                         android:layout_width="35dp"
                         android:layout_height="35dp" />
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
         <!-- 헤더 ( 상단 )  -->
-        <!-- 헤더 ( 하단 ) -->
+        <!-- 헤더 ( 하단 )  -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp">
-
-            <!-- TOTO : 작성해야함 -->
-
+            android:layout_height="wrap_content"
+            android:background="@color/colorDarkHeader">
+            <!-- 견사이즈 -->
+            <RelativeLayout
+                android:padding="10dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+                <!-- Spinner -->
+                <LinearLayout
+                    android:background="@color/colorWhite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <Spinner
+                        android:id="@+id/spinnerPurpose"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="35dp"/>
+                </LinearLayout>
+            </RelativeLayout>
+            <!-- 장소구분 -->
+            <RelativeLayout
+                android:padding="10dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+                <!-- Spinner -->
+                <LinearLayout
+                    android:background="@color/colorWhite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <Spinner
+                        android:id="@+id/spinnerPlace"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="35dp"/>
+                </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
-        <!-- 헤더 ( 하단 ) -->
+        <!-- 헤더 ( 하단 )  -->
 
-        <!-- 구글맵 -->
-       <fragment
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-           class="com.google.android.gms.maps.SupportMapFragment"
+        <!-- 내용 -->
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
+            <!-- 구글맵 : 현재 가게에 해당하는 지도 노출 -->
+            <fragment
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                class="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true" />
+
+            <!-- 하단 -->
+            <RelativeLayout
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="10dp"
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="80dp">
+                <!-- 주소정보 박스 -->
+                <RelativeLayout
+                    android:background="@color/colorWhite"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </RelativeLayout>
+                <!-- 주소정보 박스 -->
+            </RelativeLayout>
+            <!-- 하단 -->
+        </RelativeLayout>
+        <!-- 내용 -->
     </LinearLayout>
 
 </RelativeLayout>
