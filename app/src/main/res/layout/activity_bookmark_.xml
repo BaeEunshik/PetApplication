@@ -7,58 +7,55 @@
     android:orientation="vertical"
     tools:context=".BookmarkList_Activity">
 
+    <!-- Wrap -->
     <LinearLayout
-        android:background="@color/colorDarkHeader"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
-
-        <ImageView
-            android:id="@+id/iv_left"
-            android:background="@drawable/ic_left"
-            android:layout_marginTop="10dp"
-            android:layout_width="23dp"
-            android:layout_height="23dp"
-            android:layout_marginBottom="20dp"
-            />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="171dp"
-        android:layout_height="221dp"
-        android:orientation="vertical">
-        <ImageView
-
-            android:background="@drawable/ic_object"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginBottom="20dp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="가게이름:"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="장소구분:"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="지역:"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="사이즈:"/>
-
-    </LinearLayout>
-
-
-
-    <ListView
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </ListView>
+        <!-- 헤더 -->
+        <RelativeLayout
+            android:background="#5e5e5e"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <!-- 뒤로가기 -->
+                <ImageButton
+                    android:id="@+id/btnGoBack"
+                    android:src="@drawable/ic_left"
+                    android:scaleType="fitCenter"
+                    android:background="@null"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
+                <!-- 제목 -->
+                <TextView
+                    android:text="북마크"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+        </RelativeLayout>
+        <!-- 헤더 -->
+
+
+        <!--북마크 그리드 뷰-->
+        <GridView
+            android:id="@+id/gridViewBookmarks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="2"
+            android:horizontalSpacing="30dp"
+            android:verticalSpacing="30dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp">
+        </GridView>
+        <!--북마크 그리드 뷰-->
+
+    </LinearLayout>
+    <!-- Wrap -->
 
 </LinearLayout>

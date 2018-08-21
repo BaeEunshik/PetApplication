@@ -1,10 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SettingActivity">
+    <!-- Wrap -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!-- 헤더 -->
+        <RelativeLayout
+            android:background="#5e5e5e"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <!-- 뒤로가기 -->
+                <ImageButton
+                    android:id="@+id/btnGoBack"
+                    android:src="@drawable/ic_left"
+                    android:scaleType="fitCenter"
+                    android:background="@null"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
+                <!-- 제목 -->
+                <TextView
+                    android:text="설정"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+        </RelativeLayout>
+        <!-- 헤더 -->
 
-</android.support.constraint.ConstraintLayout>
+
+
+    </LinearLayout>
+    <!-- Wrap -->
+</LinearLayout>

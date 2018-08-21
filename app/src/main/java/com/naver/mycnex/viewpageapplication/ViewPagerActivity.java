@@ -125,9 +125,6 @@ public class ViewPagerActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "open", Toast.LENGTH_SHORT).show();
         dlDrawer.openDrawer(lvNavList);
     }
-
-
-
     @OnClick (R.id.btn_0)   //ViewPager 좌측이동
     public void btn_0(){
         viewpager.setCurrentItem(0);

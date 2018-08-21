@@ -7,4 +7,59 @@
     android:layout_height="match_parent"
     tools:context=".SearchKeywordActivity">
 
+    <!-- 헤더 -->
+    <RelativeLayout
+        android:background="#5e5e5e"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!-- 뒤로가기 -->
+            <ImageButton
+                android:id="@+id/btnGoBack"
+                android:src="@drawable/ic_left"
+                android:scaleType="fitCenter"
+                android:background="@null"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+            <!-- 제목 -->
+            <LinearLayout
+                android:layout_weight="1"
+                android:paddingLeft="15dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+                <EditText
+                    android:textColor="@color/colorWhite"
+                    android:textColorHint="#ccc"
+                    android:background="@null"
+                    android:hint="검색할 가게"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+                <!-- 돋보기 -->
+                <ImageButton
+                    android:id="@+id/btnSrchText"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_search"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+    <!-- 헤더 -->
+
 </LinearLayout>
