@@ -30,6 +30,8 @@ public class BookmarkList_Activity extends AppCompatActivity {
 
     }
 
+
+    /********** OnClick **********/
     @OnClick(R.id.btnGoBack)
     public void setBtnGoBack(){     //뒤로가기
 
