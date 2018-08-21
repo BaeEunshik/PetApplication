@@ -9,16 +9,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class BookmarkList_Activity extends AppCompatActivity {
-
+public class ShopActivity extends AppCompatActivity {
     Unbinder unbinder;
-    @BindView(R.id.btnGoBack)ImageButton btnGoBack;
-
+    @BindView(R.id.btnGoBack) ImageButton btnGoBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bookmark_);
+        setContentView(R.layout.activity_shop);
+
 
         unbinder = ButterKnife.bind(this);
     }

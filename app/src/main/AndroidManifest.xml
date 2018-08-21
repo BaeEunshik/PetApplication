@@ -31,7 +31,7 @@
 
         </activity>
         <activity android:name=".ShopListActivity" />
-        <activity android:name=".ShopInfo_Activity" />
+        <activity android:name=".ShopActivity" />
         <activity android:name=".ViewPagerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
