@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.naver.mycnex.viewpageapplication.BackPress.BackPressCloseHandler;
 import com.naver.mycnex.viewpageapplication.Bus.BusProvider;
 import com.naver.mycnex.viewpageapplication.adapter.ViewPagerAdapter;
 import com.squareup.otto.Bus;
@@ -30,7 +31,7 @@ import butterknife.Unbinder;
 
 public class ViewPagerActivity extends AppCompatActivity {
 
-
+    private BackPressCloseHandler backPressCloseHandler;
 
     ViewPagerAdapter viewPagerAdapter;
     Bus bus = BusProvider.getInstance().getBus();
@@ -63,7 +64,6 @@ public class ViewPagerActivity extends AppCompatActivity {
         //이벤트버스
         bus.register(this);
 
-
         //Spinner ( 드롭다운 메뉴 ) 관련설정
         ArrayAdapter addressAdapter = ArrayAdapter.createFromResource(this, R.array.address1, android.R.layout.simple_spinner_item);
         addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -83,14 +83,9 @@ public class ViewPagerActivity extends AppCompatActivity {
         lvNavList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navItems));
         lvNavList.setOnItemClickListener(new DrawerItemClickListener());
 
-        btn_openDrawer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "open", Toast.LENGTH_SHORT).show();
-                dlDrawer.openDrawer(lvNavList);
-            }
+        // 뒤로가기 두 번 앱 종료
+        backPressCloseHandler = new BackPressCloseHandler(this);
 
-        });
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -119,12 +114,17 @@ public class ViewPagerActivity extends AppCompatActivity {
 
     }
 
+    @Override   // 뒤로가기 두 번 앱 종료
+    public void onBackPressed() {
+        backPressCloseHandler.onBackPressed();
+    }
+
     /********** OnClick **********/
     @OnClick(R.id.btn_openDrawer)    //드로어 레이아웃
     public void btn_openDrawer(){
-        Toast.makeText(getApplicationContext(), "open", Toast.LENGTH_SHORT).show();
         dlDrawer.openDrawer(lvNavList);
     }
+
     @OnClick (R.id.btn_0)   //ViewPager 좌측이동
     public void btn_0(){
         viewpager.setCurrentItem(0);
