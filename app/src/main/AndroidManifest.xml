@@ -26,10 +26,7 @@
         <activity android:name=".SearchMapActivity" />
         <activity android:name=".SearchKeywordActivity" />
         <activity android:name=".BookmarkList_Activity" />
-        <activity android:name=".RegisterShopActivity" >
-
-
-        </activity>
+        <activity android:name=".RegisterShopActivity" />
         <activity android:name=".ShopListActivity" />
         <activity android:name=".ShopActivity" />
         <activity android:name=".ViewPagerActivity">
@@ -39,12 +36,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".IntroActivity"></activity>
-        <activity android:name=".JoinActivity">
-
-        </activity>
-        <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".GetAddressActivity"></activity>
+        <activity android:name=".IntroActivity" />
+        <activity android:name=".JoinActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".GetAddressActivity" />
+        <activity android:name=".ShopOnMapActivity" />
+        <activity android:name=".ReviewItemActivity"></activity>
     </application>
 
 </manifest>
