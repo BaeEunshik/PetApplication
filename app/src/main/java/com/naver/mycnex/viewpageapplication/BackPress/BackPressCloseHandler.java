@@ -25,9 +25,5 @@ public class BackPressCloseHandler {
         toast = Toast.makeText(activity, "한 번 더 누르면 앱이 종료됩니다.", Toast.LENGTH_SHORT);
         toast.show(); }
 
-
-
-
-
 }
 

@@ -8,7 +8,7 @@ import lombok.ToString;
 @Data
 @ToString
 public class Comment {
-    private Integer id;
+    private double id;
     private String comment;
     private Integer board_id;
 }

@@ -8,7 +8,7 @@ import lombok.ToString;
 @Data
 @ToString
 public class Member {
-    private String id;
+    private double id;
     private String login_id;
     private String login_pw;
     private String name;
