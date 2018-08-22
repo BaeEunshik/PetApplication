@@ -152,9 +152,8 @@ public class ViewPagerActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //TODO :
         // 로그인 여부에 따라
-        //Drawer Layout 내용 설정
+        // Drawer Layout 내용 설정
         LoginService loginService = LoginService.getInstance();
 
         if(loginService.getLoginMember()==null ){
@@ -164,10 +163,7 @@ public class ViewPagerActivity extends AppCompatActivity {
             memberName.setText(loginService.getLoginMember().getName());
             loginContentBox.setVisibility(View.GONE);
             MemberProfileBox.setVisibility(View.VISIBLE);
-
         }
-
-
     }
     /** onDestroy **/
     @Override
@@ -177,6 +173,7 @@ public class ViewPagerActivity extends AppCompatActivity {
         bus.unregister(this);
     }
 
+    // Spinner setting
     public void DropDownSetting() {
         ArrayAdapter addressAdapter = ArrayAdapter.createFromResource(this, R.array.address1, android.R.layout.simple_spinner_item);
         addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

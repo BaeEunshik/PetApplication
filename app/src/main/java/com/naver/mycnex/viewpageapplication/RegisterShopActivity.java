@@ -340,7 +340,7 @@ public class RegisterShopActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick(R.id.submit_btn)
+    @OnClick(R.id.submit_btn)   //등록
     public void submit() {
 
         String name = shop_name.getText().toString();
@@ -382,8 +382,11 @@ public class RegisterShopActivity extends AppCompatActivity {
             Log.d("asd","PARKING_VALET");
         }
 
-        Intent intent = new Intent(RegisterShopActivity.this, ViewPagerActivity.class);
-        startActivity(intent);
+        // Intent 사용하여 새 액티비티 띄우면 : ViewPagerActivity 2장 띄워지는 상황 ㅜㅜ
+        /*Intent intent = new Intent(RegisterShopActivity.this, ViewPagerActivity.class);
+        startActivity(intent);*/
+        // 액티비티 종료로 바탕에 이미 띄워진 뷰페이저 사용
+        finish();
     }
     /********** METHOD **********/
 

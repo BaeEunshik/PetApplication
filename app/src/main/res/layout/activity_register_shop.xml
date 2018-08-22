@@ -105,6 +105,7 @@
                 <Button
                     android:id="@+id/smallsize_btn"
                     android:text="소형견"
+                    android:layout_marginRight="2dp"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
@@ -113,10 +114,11 @@
                 <Button
                     android:id="@+id/middlesize_btn"
                     android:text="중형견"
+                    android:layout_marginRight="2dp"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/button_right_white"/>
+                    android:background="@drawable/edittext"/>
                 <Button
                     android:id="@+id/largesize_btn"
                     android:text="대형견"
@@ -150,6 +152,7 @@
                     <Button
                         android:id="@+id/btnMonday"
                         android:text="월"
+                        android:layout_marginRight="1dp"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
@@ -157,6 +160,7 @@
                     <Button
                         android:id="@+id/btnTuesday"
                         android:text="화"
+                        android:layout_marginRight="1dp"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
@@ -164,6 +168,7 @@
                     <Button
                         android:id="@+id/btnWednesday"
                         android:text="수"
+                        android:layout_marginRight="1dp"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
@@ -171,6 +176,7 @@
                     <Button
                         android:id="@+id/btnThursday"
                         android:text="목"
+                        android:layout_marginRight="1dp"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
@@ -178,6 +184,7 @@
                     <Button
                         android:id="@+id/btnFriday"
                         android:text="금"
+                        android:layout_marginRight="1dp"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
@@ -185,6 +192,7 @@
                     <Button
                         android:id="@+id/btnSaturday"
                         android:text="토"
+                        android:layout_marginRight="1dp"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
@@ -274,6 +282,7 @@
                         <Button
                             android:id="@+id/btnReserveOk"
                             android:text="예약가능"
+                            android:layout_marginRight="2dp"
                             android:textColor="@color/colorWhite"
                             android:background="@drawable/button_left_green"
                             android:layout_width="match_parent"
