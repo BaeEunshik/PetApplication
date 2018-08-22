@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 텍스트로 검색 Gridview 의 Item -->
+<!--TODO-->
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="10dp"
+    android:background="#ccc"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <!-- img ( 위 ) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/itemImg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_launcher_background"/>
+
+    </LinearLayout>
+    <!-- img -->
+
+    <!--  내용 ( 아래 ) -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!-- 좌측 -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_weight="5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+            <!-- 가게이름 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp">
+                <TextView
+                    android:id="@+id/TextName"
+                    android:text="@string/test"
+                    android:textSize="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+            <!-- 가게이름 -->
+            <!-- 거리 ( m , km ) -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="18dp">
+                <TextView
+                    android:id="@+id/TextDistance"
+                    android:text="@string/test"
+                    android:textSize="14dp"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+            <!-- 거리 ( m , km ) -->
+            <!-- 장소구분 ( ex. 일반카페 ) -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="18dp">
+                <TextView
+                    android:id="@+id/textPlace"
+                    android:text="@string/test"
+                    android:textSize="14dp"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+            <!-- 장소구분 ( ex. 일반카페 ) -->
+        </LinearLayout>
+        <!-- 좌측 -->
+        <!-- 우측 -->
+        <LinearLayout
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/TextPoint"
+                    android:text="5.0"
+                    android:textSize="35dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+        </LinearLayout>
+        <!-- 우측 -->
+    </LinearLayout>
+    <!-- 내용 -->
+
+</LinearLayout>
