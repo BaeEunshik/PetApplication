@@ -4,31 +4,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.naver.mycnex.viewpageapplication.R;
+import com.naver.mycnex.viewpageapplication.data.Store;
 
 import java.util.ArrayList;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.ToString;
+public class ShopListListAdapter extends BaseAdapter {
 
-@Data
-@AllArgsConstructor
-@ToString
-public class VP2GridAdapter extends BaseAdapter{
-
-    //테스트 위한 임시 리스트
-    ArrayList<Integer> items;
+    //테스트 스토어 리스트
+    //TODO : 이미지 객체와 합친 arrList 로 만들어야함
+    ArrayList<Store> stores;
 
     @Override
     public int getCount() {
-        return items.size();
+        return stores.size();
     }
     @Override
     public Object getItem(int position) {
-        return items.get(position);
+        return stores.get(position);
     }
     @Override
     public long getItemId(int position) {
@@ -39,21 +34,28 @@ public class VP2GridAdapter extends BaseAdapter{
 
         Holder holder = new Holder();
 
-        if( convertView == null ){
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_vp1_grid, parent, false);
-            holder.photo = convertView.findViewById(R.id.itemImg);
+        if(convertView == null){
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_shop_list_list, parent, false);
+
+            // 요소 정의
+
+
+            //////////
 
             convertView.setTag(holder);
         } else {
             holder = (Holder)convertView.getTag();
         }
 
-       // Integer item = (Integer)getItem(position);
-       // holder.photo.setImageResource(item);
+        // 동작
 
         return convertView;
     }
+
     public class Holder {
-        ImageView photo;
+        TextView TextName;
+        TextView TextDistance;
+        TextView textPlace;
+        TextView TextPoint;
     }
 }

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp">
+
+    <!-- 이미지 영역 -->
+    <RelativeLayout
+        android:layout_width="80dp"
+        android:layout_height="match_parent">
+        <ImageView
+            android:src="@drawable/dog1"
+            android:scaleType="centerCrop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <!-- 이미지 영역 -->
+    <!-- 정보 영역 -->
+    <LinearLayout
+        android:background="@color/defaultBackground"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent">
+        <!-- 장소이름 -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp">
+            <TextView
+                android:id="@+id/name"
+                android:layout_alignParentBottom="true"
+                android:text="장소이름"
+                android:textSize="18dp"
+                android:textColor="@color/defaultText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+        <!-- 장소이름 -->
+        <!-- 주소 -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="25dp">
+            <TextView
+                android:id="@+id/address"
+                android:layout_alignParentBottom="true"
+                android:text="주소"
+                android:textColor="@color/defaultText"
+                android:textSize="14dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+        <!-- 주소 -->
+        <!-- 장소구분 -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="25dp">
+            <TextView
+                android:id="@+id/place"
+                android:text="장소구분"
+                android:textColor="@color/defaultText"
+                android:textSize="14dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+        <!-- 장소구분 -->
+    </LinearLayout>
+    <!-- 정보 영역 -->
+    <!-- 검토여부 영역 -->
+    <RelativeLayout
+        android:background="@color/defaultBackground"
+        android:layout_width="80dp"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="검토중"
+            android:textColor="@color/defaultText"
+            android:textSize="20dp"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <!-- 검토여부 영역 -->
+
+
+</LinearLayout>

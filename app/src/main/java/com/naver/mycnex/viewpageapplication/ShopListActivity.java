@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -15,10 +16,11 @@ import butterknife.Unbinder;
 
 public class ShopListActivity extends AppCompatActivity {
 
-    Unbinder unbinder;
+    private Unbinder unbinder;
 
     @BindView(R.id.btnAdd) Button btnAdd;
     @BindView(R.id.btnGoBack) ImageButton btnGoBack;
+    @BindView(R.id.listView) ListView listView;
 
     /** OnCreate **/
     @Override

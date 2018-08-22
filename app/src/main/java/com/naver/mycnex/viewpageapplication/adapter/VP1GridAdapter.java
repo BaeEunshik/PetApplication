@@ -4,7 +4,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.naver.mycnex.viewpageapplication.R;
@@ -42,7 +41,7 @@ public class VP1GridAdapter extends BaseAdapter{
 
         Holder holder = new Holder();
         if( convertView == null ){
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_fragment_vp1, parent, false);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_vp1_grid, parent, false);
 
             holder.TextName = convertView.findViewById(R.id.TextName);
             holder.textPlace = convertView.findViewById(R.id.TextPoint);

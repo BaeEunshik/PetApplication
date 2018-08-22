@@ -56,7 +56,7 @@ public class ViewPagerActivity extends AppCompatActivity {
     @BindView(R.id.btnSrchMap) ImageButton btnSrchMap;//맵 검색버튼
 
     // 드로어 레이아웃 관련 변수
-    private final String[] navItems = {"북마크", "설정", "가게등록"};
+    private final String[] navItems = {"북마크", "설정", "내가게","가게등록"};
     @BindView(R.id.DrawerWrapper) DrawerLayout DrawerWrapper;
     @BindView(R.id.fl_activity_main_container) FrameLayout flContainer;
     @BindView(R.id.drawerListView) ListView drawerListView;
@@ -103,7 +103,11 @@ public class ViewPagerActivity extends AppCompatActivity {
                     intent = new Intent(ViewPagerActivity.this, SettingActivity.class);
                     startActivity(intent);
                     break;
-                case 2://가게등록
+                case 2://내 가게
+                    intent = new Intent(ViewPagerActivity.this, ShopListActivity.class);
+                    startActivity(intent);
+                    break;
+                case 3://가게등록
                     intent = new Intent(ViewPagerActivity.this, RegisterShopActivity.class);
                     startActivity(intent);
                     break;

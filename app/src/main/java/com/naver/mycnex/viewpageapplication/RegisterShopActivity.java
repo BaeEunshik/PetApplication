@@ -382,11 +382,14 @@ public class RegisterShopActivity extends AppCompatActivity {
             Log.d("asd","PARKING_VALET");
         }
 
-        // Intent 사용하여 새 액티비티 띄우면 : ViewPagerActivity 2장 띄워지는 상황 ㅜㅜ
+        // Intent 사용하여 새 액티비티 띄우면 : ViewPagerActivity 기존것과 함께 2장 띄워진 상황 ㅜㅜ
         /*Intent intent = new Intent(RegisterShopActivity.this, ViewPagerActivity.class);
         startActivity(intent);*/
-        // 액티비티 종료로 바탕에 이미 띄워진 뷰페이저 사용
+        // 변경)
+        Intent intent = new Intent(RegisterShopActivity.this, ShopActivity.class);
         finish();
+        startActivity(intent);
+
     }
     /********** METHOD **********/
 

@@ -71,7 +71,7 @@ public class ViewP1Fragment extends Fragment {
                 new Store(5,"NAME_5",000,2,"information","00:00","24:00",
                         2,1,"address","서울시 송파구","이런동",10.00,20.00,3
                 ));
-        
+
         // 그리드뷰
         vp1GridAdapter = new VP1GridAdapter(storeList);
         gridView.setAdapter(vp1GridAdapter);
