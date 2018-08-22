@@ -87,8 +87,7 @@ public class JoinActivity extends AppCompatActivity {
         }
 
         Toast.makeText(JoinActivity.this,nickname+"님 환영합니다",Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(JoinActivity.this,LoginActivity.class);
-        startActivity(intent);
+        finish();
     }
 
 

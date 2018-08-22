@@ -6,16 +6,21 @@
     <color name="colorWhite">#fff</color>
 
     <!--TODO Accent 컬러 아직 미정-->
+    <!-- 배은식 -->
     <color name="colorAccent">#fff</color>
     <color name="colorPrimary">#f39c12</color>
     <color name="colorPrimaryDark">#000</color>
     <color name="colorPrimaryButtonOn">#16a085</color>
+    <color name="defaultBackground">#e0e0e0</color>
+    <color name="defaultText">#333333</color>
 
 
-    <!-- 여기서부터 -->
+
+    <!-- 최미화님 -->
     <color name="colorPrimary2">#cf06fc</color>
     <color name="colorAccent1">#fc7100</color>
     <color name="colorAccent2">#ff000d</color>
+
 
 
 </resources>
