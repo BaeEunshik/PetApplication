@@ -40,7 +40,7 @@ public class VP2GridAdapter extends BaseAdapter{
         Holder holder = new Holder();
 
         if( convertView == null ){
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_text_search_gridview, parent, false);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_fragment_vp1, parent, false);
             holder.photo = convertView.findViewById(R.id.itemImg);
 
             convertView.setTag(holder);

@@ -7,13 +7,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 
 import com.naver.mycnex.viewpageapplication.Bus.BusProvider;
 import com.naver.mycnex.viewpageapplication.R;
+import com.naver.mycnex.viewpageapplication.adapter.VP1GridAdapter;
 import com.naver.mycnex.viewpageapplication.data.Store;
 import com.squareup.otto.Bus;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 
 public class ViewP1Fragment extends Fragment {
@@ -23,29 +29,83 @@ public class ViewP1Fragment extends Fragment {
         if (curr == null) {
             curr = new ViewP1Fragment();
         }
-
         return curr;
     }
 
+    //그리드뷰
     ArrayList<Store> storeList = new ArrayList<>();
+    VP1GridAdapter vp1GridAdapter;
 
+    //버터나이프
+    private Unbinder unbinder;
+    @BindView(R.id.gridView) GridView gridView;
 
     //이벤트버스
     Bus bus = BusProvider.getInstance().getBus();
+
     /** onCreateView **/
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_view1_layout, container, false);
+        View view = inflater.inflate(R.layout.fragment_vp1, container, false);
         bus.register(this);
+        unbinder = ButterKnife.bind(this,view);
+
+/*
+        private long id;
+        private String name;
+        private Integer contact;
+        private Integer dog_size;
+        private String store_information;
+        private String operation_day;
+        private String operation_time;
+        private Integer parking;
+        private Integer reservation;
+        private String address;
+        private String sigungu;
+        private String dong;
+        private double latitude;
+        private double longitude;
+        private Integer category;*/
+
+        //임시 객체리스트 생성
+
+        storeList.add(
+                new Store(1,"NAME_1",000,2,"information","00:00","24:00",
+                2,1,"address","서울시 강남구","논현동",10.00,20.00,3
+        ));
+        storeList.add(
+                new Store(2,"NAME_2",000,2,"information","00:00","24:00",
+                2,1,"address","서울시 강동구","둔촌동",10.00,20.00,3
+        ));
+        storeList.add(
+                new Store(3,"NAME_3",000,2,"information","00:00","24:00",
+                2,1,"address","서울시 강서구","무슨동",10.00,20.00,3
+        ));
+        storeList.add(new Store(4,"NAME_4",000,2,"information","00:00","24:00",
+                2,1,"address","서울시 강북구","어떤동",10.00,20.00,3
+        ));
+        storeList.add(
+                new Store(5,"NAME_5",000,2,"information","00:00","24:00",
+                2,1,"address","서울시 송파구","이런동",10.00,20.00,3
+        ));
+
+        vp1GridAdapter = new VP1GridAdapter(storeList);
+        gridView.setAdapter(vp1GridAdapter);
 
         return view;
     }
 
+    /** onResume **/
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
     /** onDestroy **/
     @Override
     public void onDestroy() {
         super.onDestroy();
         bus.unregister(this);
+        unbinder.unbind();
     }
 }
