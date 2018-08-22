@@ -21,7 +21,9 @@ import butterknife.Unbinder;
 
 public class RegisterShopActivity extends AppCompatActivity {
 
-    static Integer RESERVATION = 0;  // 예약가능 : 0 , 예약불가 : 1
+    public static Integer RESERVATION_ABLE = 0;  // 예약가능 : 0 , 예약불가 : 1
+    public static Integer RESERVATION_UNABLE = 1;
+    public static Integer RESERVATION = RESERVATION_ABLE;
 
     //btn_save
     //shop_address
@@ -86,33 +88,32 @@ public class RegisterShopActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnReserveOk)    // 개인 / 업체 가입자 버튼 클릭 이벤트
     public void btnIndividual(){
+        RESERVATION = RESERVATION_ABLE;
         switchMemberType();
     }
     @OnClick(R.id.btnReserveNo)
     public void btnCompany(){
+        RESERVATION = RESERVATION_UNABLE;
         switchMemberType();
     }
 
     /********** METHOD **********/
 
+
     // 예약에 대한 함수
     // 예약가능 / 불가 버튼 클릭시 view 와 함께
     // static 변수 RESERVATION 값을 변경 - DB 에 저장하는 값으로 사용
     public void switchMemberType(){
-        if(RESERVATION == 1) {
+        if(RESERVATION == RESERVATION_ABLE) {
             btnReserveOk.setBackground(ContextCompat.getDrawable(RegisterShopActivity.this,R.drawable.button_left_green));
             btnReserveOk.setTextColor(Color.parseColor("#FFFFFF"));
             btnReserveNo.setBackground(ContextCompat.getDrawable(RegisterShopActivity.this,R.drawable.button_right_white));
             btnReserveNo.setTextColor(Color.parseColor("#000000"));
-            RESERVATION = 0;
-            Log.d("예약 ",RESERVATION.toString());
-        } else if (RESERVATION == 0) {
+        } else if (RESERVATION == RESERVATION_UNABLE) {
             btnReserveOk.setBackground(ContextCompat.getDrawable(RegisterShopActivity.this,R.drawable.button_left_white));
             btnReserveOk.setTextColor(Color.parseColor("#000000"));
             btnReserveNo.setBackground(ContextCompat.getDrawable(RegisterShopActivity.this,R.drawable.button_right_green));
             btnReserveNo.setTextColor(Color.parseColor("#FFFFFF"));
-            RESERVATION = 1;
-            Log.d("예약 ",RESERVATION.toString());
         }
     }
 
