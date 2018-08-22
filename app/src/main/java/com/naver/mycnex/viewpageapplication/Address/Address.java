@@ -40,11 +40,17 @@ public class Address extends AppCompatActivity {
 
         String txt = result.getText().toString();
 
-        Log.d("asd", txt);
-        Intent intent = new Intent(Address.this,RegisterShopActivity.class);
+        Intent intent = new Intent();
         intent.putExtra("address",txt);
-        startActivity(intent);
+        setResult(RESULT_OK,intent);
+        finish();
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
     }
 
     @BindView(R.id.result) TextView result;

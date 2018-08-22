@@ -24,7 +24,7 @@
                 android:layout_height="50dp" />
             <!-- 제목 -->
             <TextView
-                android:text="내 가게 추가"
+                android:text="내 가게 등록"
                 android:textColor="@color/colorWhite"
                 android:textSize="16dp"
                 android:textStyle="bold"
@@ -51,7 +51,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="가게이름"/>
+                android:text="가게명"/>
             <EditText
                 android:id="@+id/shop_name"
                 android:layout_width="match_parent"
@@ -90,7 +90,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="반려견 사이즈"
+                android:text="입장가능한 반려견 크기"
                 android:paddingTop="5dp"/>
             <LinearLayout
                 android:weightSum="3"
@@ -103,20 +103,27 @@
                 android:gravity="center"
                 android:inputType="textNoSuggestions">
                 <Button
+                    android:id="@+id/smallsize_btn"
                     android:text="소형견"
                     android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="40dp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/button_left_green"/>
                 <Button
-                    android:text="~ 중형견"
+                    android:id="@+id/middlesize_btn"
+                    android:text="중형견"
                     android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="40dp"
+                    android:background="@drawable/button_right_white"/>
                 <Button
-                    android:text="~ 대형견"
+                    android:id="@+id/largesize_btn"
+                    android:text="대형견"
                     android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="40dp"
+                    android:background="@drawable/button_right_white"/>
             </LinearLayout>
             <!-- 반려견 크기 -->
 
@@ -124,7 +131,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="영업일/영업시간"/>
+                android:text="영업일 / 영업시간"/>
             <LinearLayout
                 android:weightSum="7"
                 android:orientation="vertical"
@@ -145,43 +152,50 @@
                         android:text="월"
                         android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="40dp"
+                        android:background="@drawable/button_right_white"/>
                     <Button
                         android:id="@+id/btnTuesday"
                         android:text="화"
                         android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="40dp"
+                        android:background="@drawable/button_right_white"/>
                     <Button
                         android:id="@+id/btnWednesday"
                         android:text="수"
                         android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="40dp"
+                        android:background="@drawable/button_right_white"/>
                     <Button
                         android:id="@+id/btnThursday"
                         android:text="목"
                         android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="40dp"
+                        android:background="@drawable/button_right_white"/>
                     <Button
                         android:id="@+id/btnFriday"
                         android:text="금"
                         android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="40dp"
+                        android:background="@drawable/button_right_white"/>
                     <Button
                         android:id="@+id/btnSaturday"
                         android:text="토"
                         android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="40dp"
+                        android:background="@drawable/button_right_white"/>
                     <Button
                         android:id="@+id/btnSunday"
                         android:text="일"
                         android:layout_weight="1"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="40dp"
+                        android:background="@drawable/button_right_white"/>
                 </LinearLayout>
                 <!-- 요일버튼 박스 -->
 
@@ -191,18 +205,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <!--TODO 작성해야함-->
                     <!--TimePicker-->
                     <LinearLayout
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent">
-                        <EditText
-                            android:id="@+id/startTime"
+                        <Button
+                            android:id="@+id/startTime_btn"
                             android:textAlignment="center"
                             android:background="@drawable/edittext"
                             android:layout_width="match_parent"
-                            android:layout_height="30dp" />
+                            android:layout_height="30dp"
+                            android:text="00:00"/>
                     </LinearLayout>
                     <RelativeLayout
                         android:layout_width="30dp"
@@ -217,11 +231,12 @@
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent">
-                        <EditText
-                            android:id="@+id/endTime"
+                        <Button
+                            android:id="@+id/endTime_btn"
                             android:background="@drawable/edittext"
                             android:layout_width="match_parent"
-                            android:layout_height="30dp" />
+                            android:layout_height="30dp"
+                            android:text="24:00"/>
                     </LinearLayout>
 
 
@@ -296,10 +311,11 @@
                 android:inputType="textNoSuggestions">
                 <!-- 02 / 010 -->
                 <Spinner
-                    android:id="@+id/phoneNumSelect"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/spinnerPhone"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2" />
+                    android:layout_weight="2"
+                    android:layout_marginLeft="10dp"/>
                 <RelativeLayout
                     android:layout_width="10dp"
                     android:layout_height="match_parent">
@@ -307,14 +323,19 @@
                         android:text="-"
                         android:layout_centerInParent="true"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"/>
                 </RelativeLayout>
                 <EditText
+                    android:id="@+id/middlePhone_edit"
                     android:paddingLeft="10dp"
                     android:background="@drawable/edittext"
                     android:layout_weight="3"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:inputType="number"
+                    android:maxLength="4"/>
+
                 <RelativeLayout
                     android:layout_width="10dp"
                     android:layout_height="match_parent">
@@ -322,14 +343,19 @@
                         android:text="-"
                         android:layout_centerInParent="true"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"/>
                 </RelativeLayout>
+
                 <EditText
+                    android:id="@+id/lastPhone_edit"
                     android:paddingLeft="10dp"
                     android:background="@drawable/edittext"
                     android:layout_weight="3"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:inputType="number"
+                    android:maxLength="4"/>
 
             </LinearLayout>
             <!-- 전화번호 -->
@@ -349,22 +375,31 @@
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
                 android:inputType="textNoSuggestions">
-                <Button
 
+                <Button
+                    android:id="@+id/parking_able_btn"
                     android:text="주차가능"
                     android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="40dp"
+                    android:background="@drawable/button_right_white"/>
+
                 <Button
-                    android:text="발렛주차"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
-                <Button
+                    android:id="@+id/parking_unable_btn"
                     android:text="주차불가"
                     android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="40dp"
+                    android:background="@drawable/button_right_white"/>
+
+                <Button
+                    android:id="@+id/parking_valet_btn"
+                    android:text="발렛주차"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/button_right_white"/>
+
             </LinearLayout>
             <!-- 주차여부 -->
 
@@ -372,7 +407,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="사진첨부"/>
+                android:text="매장사진"/>
 
             <!-- 사진 스크롤 뷰 -->
             <HorizontalScrollView
@@ -407,12 +442,12 @@
 
             <!-- 등록버튼 -->
             <Button
-                android:id="@+id/btn_save"
+                android:id="@+id/submit_btn"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="저장"/>
+                android:text="등록"/>
 
 
         </LinearLayout>

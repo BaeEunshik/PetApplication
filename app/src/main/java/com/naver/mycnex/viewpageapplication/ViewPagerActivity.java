@@ -72,15 +72,7 @@ public class ViewPagerActivity extends AppCompatActivity {
         bus.register(this);
 
         //Spinner ( 드롭다운 메뉴 ) 관련설정
-        ArrayAdapter addressAdapter = ArrayAdapter.createFromResource(this, R.array.address1, android.R.layout.simple_spinner_item);
-        addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerLocate.setAdapter(addressAdapter);
-        ArrayAdapter dogsizeAdapter = ArrayAdapter.createFromResource(this, R.array.dogSize, android.R.layout.simple_spinner_item);
-        dogsizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerSize.setAdapter(dogsizeAdapter);
-        ArrayAdapter placeAdapter = ArrayAdapter.createFromResource(this, R.array.place, android.R.layout.simple_spinner_item);
-        placeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerPlace.setAdapter(placeAdapter);
+        DropDownSetting();
 
         //ViewPager Adapter 설정
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -174,5 +166,17 @@ public class ViewPagerActivity extends AppCompatActivity {
         super.onDestroy();
         unbinder.unbind();
         bus.unregister(this);
+    }
+
+    public void DropDownSetting() {
+        ArrayAdapter addressAdapter = ArrayAdapter.createFromResource(this, R.array.address1, android.R.layout.simple_spinner_item);
+        addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerLocate.setAdapter(addressAdapter);
+        ArrayAdapter dogsizeAdapter = ArrayAdapter.createFromResource(this, R.array.dogSize, android.R.layout.simple_spinner_item);
+        dogsizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSize.setAdapter(dogsizeAdapter);
+        ArrayAdapter placeAdapter = ArrayAdapter.createFromResource(this, R.array.place, android.R.layout.simple_spinner_item);
+        placeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerPlace.setAdapter(placeAdapter);
     }
 }

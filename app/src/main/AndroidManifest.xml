@@ -47,9 +47,9 @@
         </activity>
         <activity android:name=".JoinActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".GetAddressActivity" />
         <activity android:name=".ShopOnMapActivity" />
         <activity android:name=".ReviewItemActivity"></activity>
+        <activity android:name=".Address.Address"/>
     </application>
 
 </manifest>

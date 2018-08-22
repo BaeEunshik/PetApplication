@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Result" />
+            android:text="서울특별시 서초구 서초1동 이젠아카데미"/>
 
         <Button
             android:id="@+id/submit_btn"
