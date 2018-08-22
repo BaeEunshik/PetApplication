@@ -41,6 +41,8 @@ public class RegisterShopActivity extends AppCompatActivity {
         //버터나이프
         unbinder = ButterKnife.bind(this);
 
+        String btn_txt = btn_shop_address.getText().toString();
+
         //TODO : 영업시간 다이얼로그
         /*
         btn_dialog_4.setOnClickListener(new View.OnClickListener() {
