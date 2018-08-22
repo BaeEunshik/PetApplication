@@ -1,10 +1,14 @@
 package com.naver.mycnex.viewpageapplication;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.naver.mycnex.viewpageapplication.login.LoginService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,6 +29,20 @@ public class SettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setting);
         //버터나이프
         unbinder = ButterKnife.bind(this);
+    }
+    /** onResume **/
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LoginService loginService = LoginService.getInstance();
+        // 로그아웃 텍스트
+        if(loginService.getLoginMember()==null ){
+            txtLoginLogout.setText("로그인");
+
+        } else {
+            txtLoginLogout.setText("로그아웃");
+
+        }
 
         // 로그인 / 로그아웃 텍스트
         //    현재 로그아웃 상태 : " 로그인 " 출력
@@ -37,8 +55,8 @@ public class SettingActivity extends AppCompatActivity {
                txtLoginLogout.setText("로그아웃");
             }
         * */
-
     }
+
     /** OnDestroy **/
     @Override
     protected void onDestroy() {
@@ -49,14 +67,24 @@ public class SettingActivity extends AppCompatActivity {
     /********** OnClick **********/
     @OnClick(R.id.btnLoginLogout)
     public void btnLoginLogout(){
-        // 로그인 여부에 따라 loginActivity 이동 || 로그아웃 ( loginMember 삭제 )
-        /*
-        if(로그인){
-            loginActivity 이동
-        } else {
-            로그아웃 ( loginMember 삭제 ),
-            loginActivity 이동
-        }
-        */
+        logOut();
     }
+
+    // 로그아웃
+    public void logOut() {
+        LoginService loginService = LoginService.getInstance();
+
+        if(loginService.getLoginMember()== null ){
+
+            Intent intent = new Intent(SettingActivity.this,LoginActivity.class);
+            startActivity(intent);
+
+        }else{
+
+            loginService.setLoginMember(null);
+            Intent intent = new Intent(SettingActivity.this,LoginActivity.class);
+            startActivity(intent);
+        }
+    }
+
 }

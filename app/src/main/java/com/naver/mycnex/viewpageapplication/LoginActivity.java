@@ -1,5 +1,8 @@
 package com.naver.mycnex.viewpageapplication;
 
+import android.app.Activity;
+import android.app.ListActivity;
+import android.app.Service;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import com.naver.mycnex.viewpageapplication.data.Member;
+import com.naver.mycnex.viewpageapplication.login.LoginService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,10 +42,11 @@ public class LoginActivity extends AppCompatActivity {
 
         if (id.equals("admin") && pw.equals("1234")) {
             Toast.makeText(LoginActivity.this,"계정이 있지만 로그인은 안됩니다.",Toast.LENGTH_SHORT).show();
-//            Intent intent = new Intent(LoginActivity.this, .class);
-//            startActivity(intent);
+            LoginService loginService = LoginService.getInstance();
+            Member loginMember = new Member(0,"admin","1234","데미소다");
+            loginService.setLoginMember(loginMember);
 
-            // 로그인 성공시 현재 Activity 종료하며 돌아감 ( 로그인멤버 설정되어야 함 )
+            finish(); // 로그인 성공시 현재 Activity 종료하며 돌아감 ( 로그인멤버 설정되어야 함 )
 
         } else {
             Toast.makeText(LoginActivity.this,"아이디 혹은 비밀번호가 맞지 않습니다.",Toast.LENGTH_SHORT).show();

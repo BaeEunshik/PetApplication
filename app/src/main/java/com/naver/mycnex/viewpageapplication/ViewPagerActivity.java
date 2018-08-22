@@ -24,12 +24,18 @@ import android.widget.Toast;
 import com.naver.mycnex.viewpageapplication.BackPress.BackPressCloseHandler;
 import com.naver.mycnex.viewpageapplication.Bus.BusProvider;
 import com.naver.mycnex.viewpageapplication.adapter.ViewPagerAdapter;
+import com.naver.mycnex.viewpageapplication.data.Member;
+import com.naver.mycnex.viewpageapplication.login.LoginService;
 import com.squareup.otto.Bus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
+import static com.naver.mycnex.viewpageapplication.R.id.memberImg;
+import static com.naver.mycnex.viewpageapplication.R.id.memberName;
+import static com.naver.mycnex.viewpageapplication.R.id.shop_name;
 
 public class ViewPagerActivity extends AppCompatActivity {
 
@@ -149,16 +155,19 @@ public class ViewPagerActivity extends AppCompatActivity {
         //TODO :
         // 로그인 여부에 따라
         //Drawer Layout 내용 설정
-        /*
-        if( 로그인상태 ){
+        LoginService loginService = LoginService.getInstance();
+
+        if(loginService.getLoginMember()==null ){
             MemberProfileBox.setVisibility(View.GONE);
-            memberName 에 멤버 이름 set
-            ( memberImg 에 멤버 이미지 set )
+            loginContentBox.setVisibility(View.VISIBLE);
         } else {
+            memberName.setText(loginService.getLoginMember().getName());
             loginContentBox.setVisibility(View.GONE);
+            MemberProfileBox.setVisibility(View.VISIBLE);
+
         }
 
-        * */
+
     }
     /** onDestroy **/
     @Override

@@ -52,6 +52,7 @@ public class LoginService {
     public Member getLoginMember() {
         return loginMember;
     }
+
     // 로그인멤버 set
     public void setLoginMember(Member loginMember) {
         this.loginMember = loginMember;
