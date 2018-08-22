@@ -14,9 +14,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.naver.mycnex.viewpageapplication.BackPress.BackPressCloseHandler;
@@ -48,10 +50,15 @@ public class ViewPagerActivity extends AppCompatActivity {
     @BindView(R.id.btnSrchMap) ImageButton btnSrchMap;//맵 검색버튼
 
     // 드로어 레이아웃 관련 변수
-    private final String[] navItems = {"로그인하러가기", "북마크", "설정", "가게등록" };
+    private final String[] navItems = {"북마크", "설정", "가게등록"};
+    @BindView(R.id.DrawerWrapper) DrawerLayout DrawerWrapper;
     @BindView(R.id.fl_activity_main_container) FrameLayout flContainer;
-    @BindView(R.id.dl_activity_main_drawer) DrawerLayout dlDrawer;
-    @BindView(R.id.lv_activity_main_nav_list) ListView lvNavList;
+    @BindView(R.id.drawerListView) ListView drawerListView;
+    @BindView(R.id.drawerBox) LinearLayout drawerBox;
+    @BindView(R.id.loginContentBox) LinearLayout loginContentBox;
+    @BindView(R.id.MemberProfileBox) LinearLayout MemberProfileBox;
+    @BindView(R.id.memberName) TextView memberName;
+    @BindView(R.id.btnGoLogin) TextView btnGoLogin;
 
 
     /** onCreate **/
@@ -80,56 +87,56 @@ public class ViewPagerActivity extends AppCompatActivity {
         viewpager.setAdapter(viewPagerAdapter);
 
         //Drawer Layout Adapter 설정
-        lvNavList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navItems));
-        lvNavList.setOnItemClickListener(new DrawerItemClickListener());
+        drawerListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navItems));
+        drawerListView.setOnItemClickListener(new DrawerItemClickListener());
 
-        // 뒤로가기 두 번 앱 종료
+        // 뒤로가기 두 번할 경우 앱 종료
         backPressCloseHandler = new BackPressCloseHandler(this);
-
     }
-
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
             switch (position) {
-                case 0://로그인/로그아웃
-                    Intent intent = new Intent(ViewPagerActivity.this, LoginActivity.class);
+                case 0://북마크
+                    Intent intent = new Intent(ViewPagerActivity.this, BookmarkList_Activity.class);
                     startActivity(intent);
                     break;
-                case 1://북마크
-                    intent = new Intent(ViewPagerActivity.this, BookmarkList_Activity.class);
-                    startActivity(intent);
-                    break;
-                case 2://설정
+                case 1://설정
                     intent = new Intent(ViewPagerActivity.this, SettingActivity.class);
                     startActivity(intent);
                     break;
-                case 3://가게등록
+                case 2://가게등록
                     intent = new Intent(ViewPagerActivity.this, RegisterShopActivity.class);
                     startActivity(intent);
                     break;
             }
-            dlDrawer.closeDrawer(lvNavList);
         }
-
     }
-
-    @Override   // 뒤로가기 두 번 앱 종료
-    public void onBackPressed() {
+    /** onBackPressed **/
+    @Override
+    public void onBackPressed() {   // 뒤로가기 두 번 - 앱 종료
         backPressCloseHandler.onBackPressed();
     }
 
     /********** OnClick **********/
     @OnClick(R.id.btn_openDrawer)    //드로어 레이아웃
     public void btn_openDrawer(){
-        dlDrawer.openDrawer(lvNavList);
+        DrawerWrapper.openDrawer(drawerBox);
     }
-
-    @OnClick (R.id.btnGoLeft)   //ViewPager 좌측이동
+    @OnClick(R.id.drawerBox)
+    public void drawerBox(){
+        // 드로어 레이아웃 떴을 때 - 뒤에 있는 버튼 이벤트 방지
+    }
+    @OnClick(R.id.btnGoLogin)    // LoginActivity 로 이동
+    public void btnGoLogin(){
+        Intent intent = new Intent(ViewPagerActivity.this, LoginActivity.class);
+        startActivity(intent);
+    }
+    @OnClick (R.id.btnGoLeft)   // ViewPager 좌측이동
     public void btnGoLeft(){
         viewpager.setCurrentItem(0);
     }
-    @OnClick (R.id.btnGoRight)   //ViewPager 우측이동
+    @OnClick (R.id.btnGoRight)   // ViewPager 우측이동
     public void setBtnGoRight(){
         viewpager.setCurrentItem(1);
     }
@@ -143,7 +150,24 @@ public class ViewPagerActivity extends AppCompatActivity {
         Intent intent = new Intent(ViewPagerActivity.this, SearchMapActivity.class);
         startActivity(intent);
     }
+    /** onResume **/
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //TODO :
+        // 로그인 여부에 따라
+        //Drawer Layout 내용 설정
+        /*
+        if( 로그인상태 ){
+            MemberProfileBox.setVisibility(View.GONE);
+            memberName 에 멤버 이름 set
+            ( memberImg 에 멤버 이미지 set )
+        } else {
+            loginContentBox.setVisibility(View.GONE);
+        }
 
+        * */
+    }
     /** onDestroy **/
     @Override
     protected void onDestroy() {
