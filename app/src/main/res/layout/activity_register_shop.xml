@@ -133,7 +133,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="영업일 / 영업시간"/>
+                android:text="영업시간"/>
             <LinearLayout
                 android:weightSum="7"
                 android:orientation="vertical"
@@ -425,7 +425,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <LinearLayout
-                    android:weightSum="3"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -434,11 +433,49 @@
 
                     <!-- + 버튼 및 아이템 레이아웃 -->
                     <LinearLayout
-                        android:layout_width="100dp"
+                        android:layout_width="match_parent"
                         android:layout_height="100dp">
-                        <Button
-                            android:layout_width="match_parent"
+
+                        <ImageView
+                            android:id="@+id/image1"
+                            android:layout_width="70dp"
                             android:layout_height="match_parent" />
+
+                        <ImageView
+                            android:id="@+id/image2"
+                            android:layout_width="70dp"
+                            android:layout_height="match_parent" />
+
+                        <Button
+                            android:id="@+id/select_photo_btn"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/addbtn"
+                            android:layout_marginLeft="130dp"
+                            />
+
+                        <ImageView
+                            android:id="@+id/image3"
+                            android:layout_width="70dp"
+                            android:layout_height="match_parent"/>
+
+
+                        <ImageView
+                            android:id="@+id/image4"
+                            android:layout_width="70dp"
+                            android:layout_height="match_parent" />
+
+                        <ImageView
+                            android:id="@+id/image5"
+                            android:layout_width="70dp"
+                            android:layout_height="match_parent" />
+
+                        <ImageView
+                            android:id="@+id/image6"
+                            android:layout_width="70dp"
+                            android:layout_height="match_parent" />
+
                     </LinearLayout>
                     <!-- + 버튼 및 아이템 레이아웃 -->
 
