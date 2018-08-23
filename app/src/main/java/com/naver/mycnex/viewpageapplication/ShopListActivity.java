@@ -88,8 +88,10 @@ public class ShopListActivity extends AppCompatActivity {
 
     /********** OnItemClick **********/
     @OnItemClick(R.id.listView)
-    public void listView(){
-        // TODO : 클릭한
-
+    public void listView(int position){
+        // TODO :
+        // 클릭한 요소의 객체정보를 담은 ShopActivity 를 실행해야 한다.
+        Intent intent = new Intent(ShopListActivity.this,ShopActivity.class);
+        startActivity(intent);
     }
 }

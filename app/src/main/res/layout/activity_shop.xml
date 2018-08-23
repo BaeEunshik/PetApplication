@@ -7,6 +7,7 @@
 
     <!-- Wrap -->
     <LinearLayout
+        android:background="@color/defaultBackground"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -39,9 +40,384 @@
         </RelativeLayout>
         <!-- 헤더 -->
 
-        <!-- 내용 -->
+        <!-- 스크롤뷰 -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!-- 스크롤뷰 컨테이너 -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <!-- 사진 가로 스크롤뷰 -->
+                <HorizontalScrollView
+                    android:background="@color/colorWhite"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp">
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <!--TODO : 그리드 뷰 같은 것으로 고쳐야 함-->
+                        <!--임시-->
+                        <ImageButton
+                            android:layout_width="100dp"
+                            android:layout_height="100dp" />
+                        <ImageButton
+                            android:layout_width="100dp"
+                            android:layout_height="100dp" />
+                        <ImageButton
+                            android:layout_width="100dp"
+                            android:layout_height="100dp" />
+                        <ImageButton
+                            android:layout_width="100dp"
+                            android:layout_height="100dp" />
+                        <ImageButton
+                            android:layout_width="100dp"
+                            android:layout_height="100dp" />
+                        <ImageButton
+                            android:layout_width="100dp"
+                            android:layout_height="100dp" />
+                        <!--임시-->
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+                <!-- 사진 가로 스크롤뷰 -->
+
+                <!-- 대표정보 -->
+                <LinearLayout
+                    android:background="@color/colorWhite"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp">
+                    <!--좌측-->
+                    <LinearLayout
+                        android:paddingLeft="10dp"
+                        android:orientation="vertical"
+                        android:layout_weight="3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent">
+                        <!-- 가게이름 -->
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp">
+                            <TextView
+                                android:layout_centerVertical="true"
+                                android:text="가게이름"
+                                android:textStyle="bold"
+                                android:textSize="20dp"
+                                android:textColor="@color/defaultText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </RelativeLayout>
+                        <!-- 가게이름 -->
+                        <!-- 조회수 / 리뷰수-->
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp">
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp">
+                                <ImageView
+                                    android:src="@drawable/chracter"
+                                    android:layout_width="30dp"
+                                    android:layout_height="match_parent" />
+                                <!-- 조회수 이미지 -->
+                                <RelativeLayout
+                                    android:minWidth="30dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent" >
+                                    <!-- 조회수 텍스트 -->
+                                    <TextView
+                                        android:id="@+id/textViews"
+                                        android:layout_centerInParent="true"
+                                        android:text="00"
+                                        android:textSize="15dp"
+                                        android:textColor="@color/defaultText"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content" />
+                                </RelativeLayout>
+                                <!-- 리뷰수 이미지 -->
+                                <ImageView
+                                    android:src="@drawable/chracter"
+                                    android:layout_width="30dp"
+                                    android:layout_height="match_parent" />
+                                <!-- 리뷰수 이미지 -->
+                                <RelativeLayout
+                                    android:minWidth="30dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent" >
+                                    <!-- 리뷰수 텍스트 -->
+                                    <TextView
+                                        android:id="@+id/textReviews"
+                                        android:layout_centerInParent="true"
+                                        android:text="00"
+                                        android:textSize="15dp"
+                                        android:textColor="@color/defaultText"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content" />
+                                </RelativeLayout>
+                            </LinearLayout>
+                        </RelativeLayout>
+                        <!-- 조회수 / 리뷰수-->
+                    </LinearLayout>
+                    <!--좌측-->
+                    <!--우측-->
+                    <RelativeLayout
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:id="@+id/textPoints"
+                            android:layout_centerInParent="true"
+                            android:text="5.0"
+                            android:textStyle="bold"
+                            android:textSize="35dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </RelativeLayout>
+                    <!--우측-->
+                </LinearLayout>
+                <!-- 대표정보 -->
+
+                <!-- 위치정보 -->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp">
+                    <!-- 구글맵 : 현재 가게에 해당하는 지도 ( 썸네일 ) 노출-->
+                    <!-- TODO : 연동 / 맵 스크롤 막기 -->
+                    <fragment
+                        android:id="@+id/mapThumb"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                        class="com.google.android.gms.maps.SupportMapFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentStart="true" />
+                    <!-- 구글맵 -->
+                    <!-- 주소 텍스트 영역 -->
+                    <RelativeLayout
+                        android:background="@color/colorWhite"
+                        android:paddingLeft="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:id="@+id/textAddress"
+                            android:layout_centerVertical="true"
+                            android:text="00시 00구 00동 000 - 00"
+                            android:textSize="12dp"
+                            android:textColor="@color/defaultText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </RelativeLayout>
+                    <!-- 주소 텍스트 영역 -->
+                </LinearLayout>
+                <!-- 위치정보 -->
+
+                <!-- 편의정보 -->
+                <LinearLayout
+                    android:background="@color/colorWhite"
+                    android:layout_marginTop="2dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <!--title-->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp">
+                        <TextView
+                            android:text="편의정보"
+                            android:textStyle="bold"
+                            android:textSize="14dp"
+                            android:textColor="@color/defaultText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </RelativeLayout>
+                    <!--title-->
+                    <!--content-->
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:paddingLeft="2dp"
+                        android:paddingRight="2dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <!--영업시간-->
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="22dp">
+                            <TextView
+                                android:layout_centerVertical="true"
+                                android:text="영업시간"
+                                android:textSize="12dp"
+                                android:textColor="@color/defaultText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:id="@+id/textOperateTime"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:text="00:00 - 00:00"
+                                android:textSize="12dp"
+                                android:textColor="@color/defaultText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </RelativeLayout>
+                        <!--영업시간-->
+                        <!--휴일-->
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="22dp">
+                            <TextView
+                                android:text="휴일"
+                                android:layout_centerVertical="true"
+                                android:textSize="12dp"
+                                android:textColor="@color/defaultText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:id="@+id/textRestDay"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:text="월,화,수"
+                                android:textSize="12dp"
+                                android:textColor="@color/defaultText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </RelativeLayout>
+                        <!--휴일-->
+                        <!--입장가능-->
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="22dp">
+                            <TextView
+                                android:text="입장가능"
+                                android:layout_centerVertical="true"
+                                android:textSize="12dp"
+                                android:textColor="@color/defaultText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:id="@+id/textDogSize"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentRight="true"
+                                android:text="~ 대형견"
+                                android:textSize="12dp"
+                                android:textColor="@color/defaultText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </RelativeLayout>
+                        <!--입장가능-->
+                        <!--주차-->
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="22dp">
+                            <TextView
+                                android:text="주차"
+                                android:layout_centerVertical="true"
+                                android:textSize="12dp"
+                                android:textColor="@color/defaultText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:id="@+id/textParking"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentRight="true"
+                                android:text="발렛파킹"
+                                android:textSize="12dp"
+                                android:textColor="@color/defaultText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </RelativeLayout>
+                        <!--주차-->
+                        <!--예약-->
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="22dp">
+                            <TextView
+                                android:text="예약"
+                                android:layout_centerVertical="true"
+                                android:textSize="12dp"
+                                android:textColor="@color/defaultText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:id="@+id/textReservation"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentRight="true"
+                                android:text="예약가능"
+                                android:textSize="12dp"
+                                android:textColor="@color/defaultText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </RelativeLayout>
+                        <!--예약-->
+                    </LinearLayout>
+                    <!--content-->
+                </LinearLayout>
+                <!-- 편의정보 -->
+
+                <!-- 전화하기 -->
+                <RelativeLayout
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+                    <!-- 전화버튼 -->
+                    <Button
+                        android:id="@+id/btnCall"
+                        android:text="전화하기"
+                        android:textSize="15dp"
+                        android:background="@drawable/button_right_white"
+                        android:layout_centerInParent="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </RelativeLayout>
+                <!-- 전화하기 -->
+
+                <!--- 리뷰영역 -->
+                <!-- Header -->
+                <RelativeLayout
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+                    <!-- 선 -->
+                    <View
+                        android:layout_centerInParent="true"
+                        android:background="@color/colorDarkHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"/>
+                    <!-- 타이틀 -->
+                    <TextView
+                        android:background="@color/defaultBackground"
+                        android:layout_centerInParent="true"
+                        android:text="리뷰(0)"
+                        android:textSize="15dp"
+                        android:textColor="@color/defaultText"
+                        android:textAlignment="center"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content" />
+                    <!-- 타이틀 -->
+                </RelativeLayout>
+                <!-- Header -->
+
+                <!-- 리뷰 작성하기-->
 
 
+                <!-- 리뷰영역 -->
+            </LinearLayout>
+            <!-- 스크롤뷰 컨테이너 -->
+        </ScrollView>
+        <!-- 스크롤뷰 ( 내용 ) -->
     </LinearLayout>
+    <!-- Wrap -->
 
 </LinearLayout>
