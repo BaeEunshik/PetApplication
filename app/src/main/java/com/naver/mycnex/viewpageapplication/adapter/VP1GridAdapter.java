@@ -80,14 +80,12 @@ public class VP1GridAdapter extends BaseAdapter{
                     break;
         }
         // TODO :
-        // 로직)
+        // 평점 계산 로직)
         // DB 로부터 데이터를 받아올 때에
         // 해당 Store 에 달린 리뷰의 점수를 모두 더하여
         // 갯수만큼 나눈 다음에
         // - 객체 배열에 넣어서 사용
         holder.TextPoint.setText("5.0");    // 점수
-
-
         return convertView;
     }
     public class Holder {
