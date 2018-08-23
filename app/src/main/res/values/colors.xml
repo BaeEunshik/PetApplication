@@ -13,6 +13,7 @@
     <color name="colorPrimaryButtonOn">#16a085</color>
     <color name="defaultBackground">#e0e0e0</color>
     <color name="defaultText">#333333</color>
+    <color name="grayLine">#999999</color>
 
 
 

@@ -221,7 +221,6 @@
                     android:background="@color/colorWhite"
                     android:layout_marginTop="2dp"
                     android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
                     android:orientation="vertical"
@@ -364,35 +363,37 @@
 
                 <!-- 전화하기 -->
                 <RelativeLayout
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
+                    android:background="@color/colorWhite"
+                    android:layout_marginBottom="10dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp">
+                    android:layout_height="80dp">
                     <!-- 전화버튼 -->
                     <Button
                         android:id="@+id/btnCall"
+                        android:layout_centerInParent="true"
                         android:text="전화하기"
                         android:textSize="15dp"
                         android:background="@drawable/button_right_white"
-                        android:layout_centerInParent="true"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                 </RelativeLayout>
                 <!-- 전화하기 -->
 
-                <!--- 리뷰영역 -->
+                <!--__________ 리뷰영역 __________-->
                 <!-- Header -->
                 <RelativeLayout
                     android:paddingLeft="30dp"
                     android:paddingRight="30dp"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp">
+                    android:layout_height="40dp">
                     <!-- 선 -->
                     <View
                         android:layout_centerInParent="true"
-                        android:background="@color/colorDarkHeader"
+                        android:background="@color/grayLine"
                         android:layout_width="match_parent"
                         android:layout_height="2dp"/>
                     <!-- 타이틀 -->
@@ -409,10 +410,34 @@
                 </RelativeLayout>
                 <!-- Header -->
 
-                <!-- 리뷰 작성하기-->
+                <!-- 리뷰 작성하기 버튼 -->
+                <RelativeLayout
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+                    <Button
+                        android:id="@+id/btnGoWriteReview"
+                        android:text="리뷰작성"
+                        android:textSize="15dp"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold"
+                        android:background="@color/colorPrimary"
+                        android:layout_centerInParent="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </RelativeLayout>
+                <!-- 리뷰 작성하기 버튼 -->
+
+                <!-- 리뷰 -->
+
+                   <!-- TODO : gridView ?? -->
 
 
-                <!-- 리뷰영역 -->
+                <!-- 리뷰 -->
+                <!--__________ 리뷰영역 __________-->
             </LinearLayout>
             <!-- 스크롤뷰 컨테이너 -->
         </ScrollView>
