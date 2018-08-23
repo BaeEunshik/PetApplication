@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,14 +29,16 @@ import butterknife.Unbinder;
 //  - 기능
 //  - 전화기 이미지 넣기
 
-// 2) 리뷰 작업
-//  - ReviewWriteActivity 생성 및 onclick 연결
-//  - 리뷰아이템 ( 미화님 ) 수정 및 재사용
-
-// 3) 이미지 클릭
+// 2) 이미지 클릭
 //    " 상단 스크롤뷰의 이미지 클릭하면 사진액티비티 이동 "
 //  - 스택 방식의 이미지 스크롤뷰 구현
 //  - PhotoActivity 생성 및 onclick 연결
+
+// 3) 리뷰 작업
+//  - ReviewWriteActivity 생성 및 onclick 연결
+//  - 리뷰아이템 ( 미화님 작업 ) 수정 및 재사용
+
+// 4) ShopOnMapActivity 작업
 
 
 public class ShopActivity extends AppCompatActivity
@@ -44,7 +47,7 @@ public class ShopActivity extends AppCompatActivity
     //버터나이프
     private Unbinder unbinder;
     @BindView(R.id.btnGoBack) ImageButton btnGoBack;
-    @BindView(R.id.btnGoWriteReview) ImageButton btnGoWriteReview;
+    @BindView(R.id.btnGoWriteReview) Button btnGoWriteReview;
 
     /** OnCreate **/
     @Override
