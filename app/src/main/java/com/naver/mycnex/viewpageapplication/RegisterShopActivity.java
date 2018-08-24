@@ -73,6 +73,26 @@ public class RegisterShopActivity extends AppCompatActivity {
     public static String OPERATION_DATE = "";
     public static String PHONE_NUMBER = "";
 
+    public static Integer GENERAL_CAFE = 11;
+    public static Integer GENERAL_RESTAURANT = 12;
+    public static Integer GENERAL_BAR = 13;
+    public static Integer GENERAL_ACCOMMODATION = 14;
+    public static Integer GENERAL_PARK = 15;
+    public static Integer GENERAL_STUDIO = 16;
+
+    public static Integer SPECIAL_CAFE = 111;
+    public static Integer SPECIAL_PETSHOP = 112;
+    public static Integer SPECIAL_BEAUTY = 113;
+    public static Integer SPECIAL_HOSPITAL = 114;
+    public static Integer SPECIAL_ADOPT = 115;
+    public static Integer SPECIAL_EDUCATION = 116;
+    public static Integer SPECIAL_ACCOMMODATION = 117;
+    public static Integer SPECIAL_LEISURE = 118;
+    public static Integer SPECIAL_FUNERAL = 119;
+    public static Integer SPECIAL_PLAYGROUND = 120;
+    public static Integer SPECIAL_STUDIO = 121;
+
+
     double lat = 0;
     double lng = 0;
 

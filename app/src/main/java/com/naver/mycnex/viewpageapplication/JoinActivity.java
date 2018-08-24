@@ -12,11 +12,18 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+import retrofit2.Call;
+
+import com.naver.mycnex.viewpageapplication.data.Member;
+import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class JoinActivity extends AppCompatActivity {
 
@@ -26,20 +33,38 @@ public class JoinActivity extends AppCompatActivity {
     @BindView(R.id.nickname_edit) EditText nickname_edit;
     @BindView(R.id.pw_edit) EditText pw_edit;
     @BindView(R.id.pw2_edit) EditText pw2_edit;
-    @BindView(R.id.email_edit) EditText email_edit;
     @BindView(R.id.join_finish_btn) Button join_finish_btn;
     @BindView(R.id.btnGoBack)ImageButton btnGoBack;
+
+    String name = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
         unbinder = ButterKnife.bind(this);
+
     }
 
     @OnClick(R.id.join_finish_btn)
     public void join_finish() {
+        OnclickJoinButton();
+    }
 
+    /** onDestroy **/
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
+
+    }
+
+    @OnClick(R.id.btnGoBack)
+    public void setBtnGoBack(){     //뒤로가기
+        finish();
+    }
+
+    public void OnclickJoinButton() {
         String id = id_edit.getText().toString();
 
         if (id.equals("") || id == null) {
@@ -47,23 +72,13 @@ public class JoinActivity extends AppCompatActivity {
             Toast.makeText(JoinActivity.this,"아이디를 입력하세요",Toast.LENGTH_SHORT).show();
             return;
         }
-        if (id.equals("admin")) {
-            id_edit.requestFocus();
-            Toast.makeText(JoinActivity.this,"이미 사용중인 아이디입니다",Toast.LENGTH_SHORT).show();
-            return;
-        }
+
         String nickname = nickname_edit.getText().toString();
+        name = nickname;
 
         if (nickname.equals("") || nickname == null) {
             nickname_edit.requestFocus();
             Toast.makeText(JoinActivity.this,"닉네임을 입력하세요",Toast.LENGTH_SHORT).show();
-            return;
-        }
-        String email = email_edit.getText().toString();
-
-        if (email.equals("") || email == null) {
-            email_edit.requestFocus();
-            Toast.makeText(JoinActivity.this,"이메일을 입력하세요.",Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -86,24 +101,29 @@ public class JoinActivity extends AppCompatActivity {
             return;
         }
 
-        Toast.makeText(JoinActivity.this,nickname+"님 환영합니다",Toast.LENGTH_SHORT).show();
-        finish();
-    }
+        Call<Boolean> joinMember = RetrofitService.getInstance().getRetrofitRequest().joinMember(id,pw,nickname);
+        joinMember.enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.isSuccessful()) {
+                    boolean checkId = response.body();
 
+                    if (checkId == false) {
+                        Toast.makeText(JoinActivity.this, "가입 중인 아이디입니다.",Toast.LENGTH_SHORT).show();
+                        id_edit.requestFocus();
+                    } else {
+                        Toast.makeText(JoinActivity.this, name+"님 환영합니다.",Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
 
+                }
+            }
 
-    /** onDestroy **/
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unbinder.unbind();
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
 
-    }
-
-    @OnClick(R.id.btnGoBack)
-    public void setBtnGoBack(){     //뒤로가기
-
-        finish();
+            }
+        });
     }
 
 }

@@ -74,15 +74,6 @@
                 android:gravity="center"
                 android:inputType="textNoSuggestions"/>
             <EditText
-                android:id="@+id/email_edit"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:hint="이메일"
-                android:background="@drawable/edittext"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:inputType="textNoSuggestions"/>
-            <EditText
                 android:id="@+id/pw_edit"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
@@ -90,7 +81,7 @@
                 android:background="@drawable/edittext"
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
-                android:inputType="textNoSuggestions"/>
+                android:inputType="textPassword" />
             <EditText
                 android:id="@+id/pw2_edit"
                 android:layout_width="200dp"
@@ -99,7 +90,7 @@
                 android:background="@drawable/edittext"
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
-                android:inputType="textNoSuggestions"/>
+                android:inputType="textPassword"/>
             <Button
                 android:id="@+id/join_finish_btn"
                 android:layout_width="200dp"

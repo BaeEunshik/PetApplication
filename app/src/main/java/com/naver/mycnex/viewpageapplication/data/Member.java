@@ -2,6 +2,7 @@ package com.naver.mycnex.viewpageapplication.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @AllArgsConstructor
@@ -12,4 +13,9 @@ public class Member {
     private String login_id;
     private String login_pw;
     private String name;
+
+    public Member(String login_id, String login_pw) {
+        this.login_id = login_id;
+        this.login_pw = login_pw;
+    }
 }

@@ -13,11 +13,15 @@ import android.widget.Toast;
 
 import com.naver.mycnex.viewpageapplication.data.Member;
 import com.naver.mycnex.viewpageapplication.login.LoginService;
+import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -28,6 +32,9 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.pw_edit) EditText pw_edit;
     @BindView(R.id.btnGoBack)ImageButton btnGoBack;
 
+    String id = "";
+    String pw = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,20 +44,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.login_btn)    //로그인
     public void Login() {
-        String id = id_edit.getText().toString();
-        String pw = pw_edit.getText().toString();
-
-        if (id.equals("admin") && pw.equals("1234")) {
-            Toast.makeText(LoginActivity.this,"계정이 있지만 로그인은 안됩니다.",Toast.LENGTH_SHORT).show();
-            LoginService loginService = LoginService.getInstance();
-            Member loginMember = new Member(0,"admin","1234","데미소다");
-            loginService.setLoginMember(loginMember);
-
-            finish(); // 로그인 성공시 현재 Activity 종료하며 돌아감 ( 로그인멤버 설정되어야 함 )
-
-        } else {
-            Toast.makeText(LoginActivity.this,"아이디 혹은 비밀번호가 맞지 않습니다.",Toast.LENGTH_SHORT).show();
-        }
+        OnclilckLoginBtn();
     }
 
     @OnClick(R.id.join_btn) //회원가입
@@ -72,6 +66,40 @@ public class LoginActivity extends AppCompatActivity {
     public void setBtnGoBack(){     //뒤로가기
 
         finish();
+    }
+
+    public void OnclilckLoginBtn() {
+
+       id = id_edit.getText().toString();
+       pw = pw_edit.getText().toString();
+
+        final Call<Boolean> loginService = RetrofitService.getInstance().getRetrofitRequest().login(id,pw);
+        loginService.enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.isSuccessful()) {
+                    boolean check = response.body();
+
+                    if (check) {
+                        LoginService loginService = LoginService.getInstance();
+                        Member member = new Member(id,pw);
+
+                        loginService.setLoginMember(member);
+
+                        Intent intent = new Intent(LoginActivity.this, ViewPagerActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(LoginActivity.this, "아이디 혹은 비밀번호가 맞지 않습니다.",Toast.LENGTH_SHORT).show();
+                        id_edit.requestFocus();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+
+            }
+        });
     }
 
 }
