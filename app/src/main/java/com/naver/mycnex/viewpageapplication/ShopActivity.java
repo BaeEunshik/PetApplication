@@ -1,22 +1,30 @@
 package com.naver.mycnex.viewpageapplication;
 
-import android.app.Fragment;
+import android.Manifest;
 import android.content.Intent;
-import android.location.Location;
-import android.support.annotation.NonNull;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
+import com.naver.mycnex.viewpageapplication.adapter.ShopActRecyclerAdapter;
+import com.naver.mycnex.viewpageapplication.data.TESTImage;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,12 +50,21 @@ import butterknife.Unbinder;
 
 
 public class ShopActivity extends AppCompatActivity
-        implements OnMapReadyCallback{
+        implements OnMapReadyCallback {
+
+    //전화번호
+    public static String PHONE_NUMBER = "";
 
     //버터나이프
     private Unbinder unbinder;
     @BindView(R.id.btnGoBack) ImageButton btnGoBack;
     @BindView(R.id.btnGoWriteReview) Button btnGoWriteReview;
+    @BindView(R.id.btnCall) Button btnCall;
+    @BindView(R.id.horizonRecyclerView) RecyclerView horizonRecyclerView;
+
+    //리사이클뷰
+    ShopActRecyclerAdapter shopActRecyclerAdapter;
+    ArrayList<TESTImage> testImages = new ArrayList<>();
 
     /** OnCreate **/
     @Override
@@ -62,6 +79,22 @@ public class ShopActivity extends AppCompatActivity
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        // 리사이클뷰 임시 데이터 삽입
+        TESTImage image = new TESTImage(R.drawable.dog1);
+        testImages.add(image);
+        testImages.add(image);
+        testImages.add(image);
+        testImages.add(image);
+        testImages.add(image);
+
+        Log.d("은식",Integer.toString(testImages.size()));
+
+        // 리사이클뷰 set
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        horizonRecyclerView.setLayoutManager(layoutManager);
+        shopActRecyclerAdapter = new ShopActRecyclerAdapter(testImages,getApplicationContext());
+        horizonRecyclerView.setAdapter(shopActRecyclerAdapter);
     }
     /** OnDestroy **/
     @Override
@@ -71,17 +104,43 @@ public class ShopActivity extends AppCompatActivity
         unbinder.unbind();
     }
 
-    /********** OnClick **********/
-    @OnClick(R.id.btnGoBack)
-    public void setBtnGoBack(){     // 뒤로가기
+    /****************************** OnClick ******************************/
+
+    @OnClick(R.id.btnGoBack)// 뒤로가기
+    public void setBtnGoBack() {
         finish();
     }
-    @OnClick(R.id.btnGoWriteReview)
-    public void btnGoWriteReview(){     // 리뷰작성 하러 가기
+    @OnClick(R.id.btnCall)// 전화하기
+    public void btnCall() {
+        // 전화번호
+        PHONE_NUMBER = "01026825414";
+        // 권한
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + PHONE_NUMBER));
+                if (ActivityCompat.checkSelfPermission(ShopActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    startActivity(intent);
+                }
+            }
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+
+            }
+        };
+        TedPermission.with(ShopActivity.this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                .setPermissions(Manifest.permission.CALL_PHONE)
+                .check();
+    }
+    @OnClick(R.id.btnGoWriteReview)// 리뷰작성 하러 가기
+    public void btnGoWriteReview(){
         //TODO
     }
 
-    /********** GoogleMap Fragment Interface Method ********/
+
+    /******************** GoogleMap Fragment Interface Method ******************/
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -106,6 +165,5 @@ public class ShopActivity extends AppCompatActivity
         );
         // 카메라 위치
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,15));
-
     }
 }
