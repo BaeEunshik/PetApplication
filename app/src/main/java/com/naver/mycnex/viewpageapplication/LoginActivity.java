@@ -25,6 +25,8 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
+    //test
+
     Unbinder unbinder;
     @BindView(R.id.login_btn) Button login_btn;
     @BindView(R.id.join_btn) Button join_btn;
