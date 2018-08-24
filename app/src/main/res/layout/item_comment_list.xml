@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="100dp"
-        android:gravity="center"
         android:layout_marginTop="20dp"
         android:layout_weight="1"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:background="@drawable/chracter" />
 
@@ -26,30 +25,31 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-        <TextView
-            android:id="@+id/txt_nickname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="20dp"
-            android:text="닉네임" />
-            <ImageButton
-                android:id="@+id/ibtn_dialog1"
-                android:layout_width="25dp"
-                android:layout_height="20dp"
-                android:background="@drawable/ic_dialog1"/>
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/txt_comment"
-            android:layout_width="320dp"
-            android:layout_height="40dp"
-            android:textSize="30dp"
-            />
+                <TextView
+                    android:id="@+id/txt_nickname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="닉네임"
+                    android:textSize="20dp" />
+
+                <ImageButton
+                    android:id="@+id/ibtn_dialog1"
+                    android:layout_width="25dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/ic_dialog1" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_comment"
+                android:layout_width="320dp"
+                android:layout_height="40dp"
+                android:textSize="30dp" />
         </LinearLayout>
 
     </LinearLayout>
