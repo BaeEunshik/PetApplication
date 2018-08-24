@@ -69,7 +69,7 @@ public class Address extends AppCompatActivity {
         // web client 를 chrome 으로 설정
         webView.setWebChromeClient(new WebChromeClient());
         // webview url load
-        webView.loadUrl("http://192.168.0.61:8090/kjhwert/");
+        webView.loadUrl("http://192.168.0.61:8090/petApplication/searchaddress");
     }
 
     private class AndroidBridge {

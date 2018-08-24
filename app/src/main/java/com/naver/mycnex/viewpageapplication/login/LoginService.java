@@ -28,6 +28,7 @@ public class LoginService {
 
     }
 
+    /*
     // 멤버 ArrList 를 모두 돌며 - login_id 체크
     public boolean checkId(String login_id) {
         for (int i = 0 ; i < memberList.size() ; i++) {
@@ -47,6 +48,7 @@ public class LoginService {
         }
         return false;
     }
+    */
 
     // 현재 로그인멤버 객체 리턴
     public Member getLoginMember() {
