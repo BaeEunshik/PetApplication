@@ -89,6 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                         loginService.setLoginMember(member);
 
                         Intent intent = new Intent(LoginActivity.this, ViewPagerActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     } else {
                         Toast.makeText(LoginActivity.this, "아이디 혹은 비밀번호가 맞지 않습니다.",Toast.LENGTH_SHORT).show();
