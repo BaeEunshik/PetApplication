@@ -16,16 +16,17 @@ import com.squareup.otto.Bus;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import lombok.NoArgsConstructor;
 
-
+@NoArgsConstructor
 public class ViewP2Fragment extends Fragment {
-    private static ViewP2Fragment curr = null;
+   /* private static ViewP2Fragment curr = null;
     public static ViewP2Fragment getInstance() {
         if (curr == null) {
             curr = new ViewP2Fragment();
         }
         return curr;
-    }
+    }*/
 
     // 이벤트 버스
     Bus bus = BusProvider.getInstance().getBus();

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,17 +25,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
 import butterknife.Unbinder;
+import lombok.NoArgsConstructor;
 
-
+@NoArgsConstructor
 public class ViewP1Fragment extends Fragment {
     //싱글톤
-    private static ViewP1Fragment curr = null;
+    /*private static ViewP1Fragment curr = null;
     public static ViewP1Fragment getInstance() {
         if (curr == null) {
             curr = new ViewP1Fragment();
         }
         return curr;
-    }
+    }*/
 
     //그리드뷰
     ArrayList<Store> storeList = new ArrayList<>();
@@ -52,6 +54,9 @@ public class ViewP1Fragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_vp1, container, false);
+
+        Log.d("은식","frag1 onCreateView");
+        //이벤트버스
         bus.register(this);
         unbinder = ButterKnife.bind(this,view);
 
@@ -70,13 +75,12 @@ public class ViewP1Fragment extends Fragment {
                 ));
         storeList.add(
                 new Store(4,"NAME_4",000,2,"information","00:00","24:00",
-                2,1,"address","서울시 강북구","어떤동",10.00,20.00,1
-        ));
+                        2,1,"address","서울시 강북구","어떤동",10.00,20.00,1
+                ));
         storeList.add(
                 new Store(5,"NAME_5",000,2,"information","00:00","24:00",
                         2,1,"address","서울시 송파구","이런동",10.00,20.00,1
                 ));
-
         // 그리드뷰
         vp1GridAdapter = new VP1GridAdapter(storeList);
         gridView.setAdapter(vp1GridAdapter);
@@ -97,6 +101,7 @@ public class ViewP1Fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
     }
     /** onDestroy **/
     @Override

@@ -66,12 +66,14 @@ public class ViewPagerActivity extends AppCompatActivity {
     @BindView(R.id.memberName) TextView memberName;
     @BindView(R.id.btnGoLogin) TextView btnGoLogin;
 
-
     /** onCreate **/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_pager);
+
+        Log.d("은식","뷰페이저 onCreate");
+
         //버터나이프
         unbinder = ButterKnife.bind(this);
         //이벤트버스
@@ -90,6 +92,26 @@ public class ViewPagerActivity extends AppCompatActivity {
 
         // 뒤로가기 두 번할 경우 앱 종료
         backPressCloseHandler = new BackPressCloseHandler(this);
+
+        // OnPageChange
+        viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+            @Override
+            public void onPageSelected(int position) {
+
+                if ( position == 0 ){
+                    Log.d("은식","0번째");
+                } else if( position == 1 ){
+                    Log.d("은식","1번째");
+                }
+
+            }
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
     }
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
@@ -189,4 +211,5 @@ public class ViewPagerActivity extends AppCompatActivity {
         placeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPlace.setAdapter(placeAdapter);
     }
+
 }

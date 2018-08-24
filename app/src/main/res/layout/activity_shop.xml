@@ -62,7 +62,7 @@
                         <!--TODO : 그리드 뷰 같은 것으로 고쳐야 함-->
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/horizonRecyclerView"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent">
                         </android.support.v7.widget.RecyclerView>
                         <Button

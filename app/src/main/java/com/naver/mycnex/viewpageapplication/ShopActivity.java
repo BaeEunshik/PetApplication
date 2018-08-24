@@ -92,6 +92,7 @@ public class ShopActivity extends AppCompatActivity
         // 리사이클뷰 set
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+
         horizonRecyclerView.setLayoutManager(layoutManager);
         shopActRecyclerAdapter = new ShopActRecyclerAdapter(testImages,getApplicationContext());
         horizonRecyclerView.setAdapter(shopActRecyclerAdapter);
