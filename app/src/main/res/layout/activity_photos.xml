@@ -5,14 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ShopOnMapActivity">
-
+    tools:context=".PhotosActivity">
     <!-- Wrap -->
     <LinearLayout
+        android:background="@color/defaultBackground"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <!-- 헤더 -->
+        android:layout_height="wrap_content">
+        <!-- Header -->
         <RelativeLayout
             android:background="#5e5e5e"
             android:layout_width="match_parent"
@@ -40,44 +40,20 @@
                     android:layout_height="wrap_content" />
             </RelativeLayout>
         </RelativeLayout>
-        <!-- 헤더 -->
+        <!-- Header -->
 
-
-
-        <!-- 내용 -->
-        <RelativeLayout
+        <!--사진 전체보기-->
+        <GridView
+            android:id="@+id/gridView"
+            android:background="@color/colorWhite"
+            android:horizontalSpacing="5dp"
+            android:verticalSpacing="5dp"
+            android:numColumns="4"
+            android:padding="5dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <!-- 구글맵 : 현재 가게에 해당하는 지도 노출 -->
-            <fragment
-                android:id="@+id/map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                class="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
-            <!-- 하단 -->
-            <RelativeLayout
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingBottom="10dp"
-                android:layout_alignParentBottom="true"
-                android:layout_width="match_parent"
-                android:layout_height="80dp">
-                <!-- 주소정보 박스 -->
-                <RelativeLayout
-                    android:background="@color/colorWhite"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                </RelativeLayout>
-                <!-- 주소정보 박스 -->
-            </RelativeLayout>
-            <!-- 하단 -->
-        </RelativeLayout>
-        <!-- 내용 -->
-
+        </GridView>
+        <!--사진 전체보기-->
     </LinearLayout>
     <!-- Wrap -->
-
 </LinearLayout>

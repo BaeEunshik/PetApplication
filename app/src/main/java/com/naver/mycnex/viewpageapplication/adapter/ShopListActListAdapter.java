@@ -18,7 +18,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Data
 @ToString
-public class ShopListListAdapter extends BaseAdapter {
+public class ShopListActListAdapter extends BaseAdapter {
 
     //TODO : 이미지 객체와 합친 arrList 로 만들어야함
     ArrayList<Store> stores;

@@ -30,6 +30,7 @@
                     android:layout_height="50dp" />
                 <!-- 제목 -->
                 <TextView
+                    android:id="@+id/title"
                     android:text="북마크"
                     android:textColor="@color/colorWhite"
                     android:textSize="16dp"

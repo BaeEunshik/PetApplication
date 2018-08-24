@@ -14,7 +14,7 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
-public class BookmarkGridAdapter extends BaseAdapter{
+public class BookmarkActGridAdapter extends BaseAdapter{
     /**
      * 현재 로그인 멤버의 북마크 장소 목록들을 가져와
      * BookmarkList_Activity 에 그리드뷰로 출력한다.
@@ -25,7 +25,7 @@ public class BookmarkGridAdapter extends BaseAdapter{
     // 북마크 리스트
     ArrayList<Bookmark> bookmarks;
     // 생성자
-    public BookmarkGridAdapter(ArrayList<Bookmark> bookmarks){
+    public BookmarkActGridAdapter(ArrayList<Bookmark> bookmarks){
         this.bookmarks = bookmarks;
     }
 

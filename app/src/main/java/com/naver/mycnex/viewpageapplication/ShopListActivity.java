@@ -3,12 +3,11 @@ package com.naver.mycnex.viewpageapplication;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-import com.naver.mycnex.viewpageapplication.adapter.ShopListListAdapter;
+import com.naver.mycnex.viewpageapplication.adapter.ShopListActListAdapter;
 import com.naver.mycnex.viewpageapplication.data.Store;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class ShopListActivity extends AppCompatActivity {
 
     // 리스트뷰 관련
     ArrayList<Store> storeList = new ArrayList<>();
-    ShopListListAdapter shopListListAdapter;
+    ShopListActListAdapter shopListActListAdapter;
 
     /** OnCreate **/
     @Override
@@ -63,8 +62,8 @@ public class ShopListActivity extends AppCompatActivity {
                 ));
 
 
-        shopListListAdapter = new ShopListListAdapter(storeList);
-        listView.setAdapter(shopListListAdapter);
+        shopListActListAdapter = new ShopListActListAdapter(storeList);
+        listView.setAdapter(shopListActListAdapter);
     }
 
     /********** OnClick **********/

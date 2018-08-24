@@ -33,14 +33,12 @@ import butterknife.Unbinder;
 
 
 // TODO :
-// 1) 전화하기
-//  - 기능
-//  - 전화기 이미지 넣기
 
-// 2) 이미지 클릭
-//    " 상단 스크롤뷰의 이미지 클릭하면 사진액티비티 이동 "
-//  - 스택 방식의 이미지 스크롤뷰 구현
-//  - PhotoActivity 생성 및 onclick 연결
+// 1) 이미지 클릭 ( 상단 )
+//  - 스택 방식의 이미지 스크롤 ( 리사이클러 뷰 ) 구현 ( o )
+//  - PhotosActivity / Adapter 생성 및 스크롤 내부 버튼 onclick 연결 ( o )
+//      - PhotosActivity 스크롤 내부 사진 onclick 연결 ( o )
+//  - PhotoActivity 생성 및 사진 onclick 연결 ( o )
 
 // 3) 리뷰 작업
 //  - ReviewWriteActivity 생성 및 onclick 연결
@@ -57,10 +55,14 @@ public class ShopActivity extends AppCompatActivity
 
     //버터나이프
     private Unbinder unbinder;
-    @BindView(R.id.btnGoBack) ImageButton btnGoBack;
-    @BindView(R.id.btnGoWriteReview) Button btnGoWriteReview;
-    @BindView(R.id.btnCall) Button btnCall;
-    @BindView(R.id.horizonRecyclerView) RecyclerView horizonRecyclerView;
+    @BindView(R.id.btnGoBack)
+    ImageButton btnGoBack;
+    @BindView(R.id.btnGoWriteReview)
+    Button btnGoWriteReview;
+    @BindView(R.id.btnCall)
+    Button btnCall;
+    @BindView(R.id.horizonRecyclerView)
+    RecyclerView horizonRecyclerView;
 
     //리사이클뷰
     ShopActRecyclerAdapter shopActRecyclerAdapter;
@@ -79,24 +81,27 @@ public class ShopActivity extends AppCompatActivity
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        // 리사이클뷰 임시 데이터 삽입
-        TESTImage image = new TESTImage(R.drawable.dog1);
-        testImages.add(image);
-        testImages.add(image);
-        testImages.add(image);
-        testImages.add(image);
-        testImages.add(image);
+        // 리사이클뷰 임시 데이터 삽입 ***
+        // TODO :
+        // 바꿔야 함
+        TESTImage imgObj = new TESTImage(R.drawable.dog1);
+        testImages.add(imgObj);
+        testImages.add(imgObj);
+        testImages.add(imgObj);
+        testImages.add(imgObj);
+        testImages.add(imgObj);
 
-        Log.d("은식",Integer.toString(testImages.size()));
+        Log.d("은식", Integer.toString(testImages.size()));
 
         // 리사이클뷰 set
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
 
         horizonRecyclerView.setLayoutManager(layoutManager);
-        shopActRecyclerAdapter = new ShopActRecyclerAdapter(testImages,getApplicationContext());
+        shopActRecyclerAdapter = new ShopActRecyclerAdapter(testImages, getApplicationContext());
         horizonRecyclerView.setAdapter(shopActRecyclerAdapter);
     }
+
     /** OnDestroy **/
     @Override
     protected void onDestroy() {
@@ -111,6 +116,7 @@ public class ShopActivity extends AppCompatActivity
     public void setBtnGoBack() {
         finish();
     }
+
     @OnClick(R.id.btnCall)// 전화하기
     public void btnCall() {
         // 전화번호
@@ -119,10 +125,13 @@ public class ShopActivity extends AppCompatActivity
         PermissionListener permissionlistener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
-                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + PHONE_NUMBER));
+                // 체크
                 if (ActivityCompat.checkSelfPermission(ShopActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    startActivity(intent);
+                    return;
                 }
+                // 전화
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + PHONE_NUMBER));
+                startActivity(intent);
             }
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
