@@ -155,8 +155,12 @@ public class ShopActivity extends AppCompatActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         // 이벤트 방지
-        googleMap.getUiSettings().setAllGesturesEnabled(false); // 모든 제스처 막기
-        googleMap.getUiSettings().setMapToolbarEnabled(false);  // 클릭시 나오는 툴바 제거
+        googleMap.getUiSettings().setRotateGesturesEnabled(false);  // Rotate false
+        googleMap.getUiSettings().setZoomGesturesEnabled(false);    // Zoom false
+        googleMap.getUiSettings().setZoomControlsEnabled(false);
+        googleMap.getUiSettings().setTiltGesturesEnabled(false);    // Tilt false
+        googleMap.getUiSettings().setScrollGesturesEnabled(false);  // Scroll false
+        googleMap.getUiSettings().setMapToolbarEnabled(false);      // 클릭시 나오는 툴바 제거
         // 맵 클릭 시
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override

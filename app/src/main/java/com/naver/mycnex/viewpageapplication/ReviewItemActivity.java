@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class ReviewItemActivity extends AppCompatActivity {
-    Unbinder unbinder;
+    private Unbinder unbinder;
     ArrayList<Comment> items = new ArrayList<>();
     CommentListAdapter commentListAdapter;
 
@@ -30,7 +30,6 @@ public class ReviewItemActivity extends AppCompatActivity {
     @BindView(R.id.lv_comment_list)ListView lv_comment_list;
     @BindView(R.id.btn_comment_save)Button btn_comment_save;
     @BindView(R.id.et_input_comment)EditText et_input_comment;
-    @BindView(R.id.txt_comment)TextView txt_comment;
 
 
     @Override
@@ -38,9 +37,6 @@ public class ReviewItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_item);
         unbinder = ButterKnife.bind(this);
-
-
-
 
 
 
