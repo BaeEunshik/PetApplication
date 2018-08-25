@@ -57,8 +57,8 @@ public class ShopActivity extends AppCompatActivity
     private Unbinder unbinder;
     @BindView(R.id.btnGoBack)
     ImageButton btnGoBack;
-    @BindView(R.id.btnGoWriteReview)
-    Button btnGoWriteReview;
+    @BindView(R.id.btnGoReviewWrite)
+    Button btnGoReviewWrite;
     @BindView(R.id.btnCall)
     Button btnCall;
     @BindView(R.id.horizonRecyclerView)
@@ -144,20 +144,19 @@ public class ShopActivity extends AppCompatActivity
                 .setPermissions(Manifest.permission.CALL_PHONE)
                 .check();
     }
-    @OnClick(R.id.btnGoWriteReview)// 리뷰작성 하러 가기
-    public void btnGoWriteReview(){
-        //TODO
+    @OnClick(R.id.btnGoReviewWrite)// 리뷰작성 하러 가기
+    public void btnGoReviewWrite(){
+        Intent intent = new Intent(ShopActivity.this,ReviewWrite.class);
+        startActivity(intent);
     }
 
 
     /******************** GoogleMap Fragment Interface Method ******************/
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         // 이벤트 방지
         googleMap.getUiSettings().setAllGesturesEnabled(false); // 모든 제스처 막기
         googleMap.getUiSettings().setMapToolbarEnabled(false);  // 클릭시 나오는 툴바 제거
-
         // 맵 클릭 시
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override

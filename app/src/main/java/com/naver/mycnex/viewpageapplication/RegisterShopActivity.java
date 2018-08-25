@@ -2,21 +2,12 @@ package com.naver.mycnex.viewpageapplication;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.ClipData;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.location.Criteria;
 import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,24 +26,18 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLng;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.naver.mycnex.viewpageapplication.Address.Address;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
-import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import lombok.Builder;
 
 public class RegisterShopActivity extends AppCompatActivity {
 
@@ -171,16 +156,14 @@ public class RegisterShopActivity extends AppCompatActivity {
                     InitImage();
                     select_photo_btn.setVisibility(View.GONE);
                     for (int i = 0; i < clipData.getItemCount(); i++) {
-                        Uri urione =  clipData.getItemAt(i).getUri();
-                        images[i].setImageURI(urione);
+                        Uri uriOne =  clipData.getItemAt(i).getUri();
+                        images[i].setImageURI(uriOne);
                         images[i].setVisibility(View.VISIBLE);
                     }
 
                 }
             }
         }
-
-
     }
 
     /********** OnClick **********/
@@ -479,7 +462,7 @@ public class RegisterShopActivity extends AppCompatActivity {
             images[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    IntentToCameraGAllery();
+                    IntentToCameraGallery();
                 }
             });
         }
@@ -514,7 +497,7 @@ public class RegisterShopActivity extends AppCompatActivity {
         }
     }
 
-    public void IntentToCameraGAllery() {
+    public void IntentToCameraGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         intent.setType("image/*");
@@ -565,7 +548,7 @@ public class RegisterShopActivity extends AppCompatActivity {
             @Override
             public void onPermissionGranted() {
 
-                IntentToCameraGAllery();
+                IntentToCameraGallery();
 
             }
             //권한 거부시

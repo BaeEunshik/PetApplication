@@ -5,13 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PhotoActivity">
+    tools:context=".ReviewWrite">
+
     <!-- Wrap -->
     <LinearLayout
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/defaultBackground"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <!-- Header -->
         <RelativeLayout
             android:background="#5e5e5e"
@@ -31,7 +32,7 @@
                 <!-- 제목 -->
                 <TextView
                     android:id="@+id/title"
-                    android:text="가게이름"
+                    android:text="리뷰작성"
                     android:textColor="@color/colorWhite"
                     android:textSize="16dp"
                     android:textStyle="bold"
@@ -42,12 +43,13 @@
         </RelativeLayout>
         <!-- Header -->
 
-        <!-- 이미지 -->
-        <ImageView
-            android:id="@+id/img"
-            android:scaleType="fitCenter"
+        <!-- Content -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-        <!-- 이미지 -->
+            android:layout_height="match_parent">
+
+        </LinearLayout>
+        <!-- Content -->
     </LinearLayout>
+    <!-- Wrap -->
 </LinearLayout>

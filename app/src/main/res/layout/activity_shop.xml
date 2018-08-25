@@ -406,7 +406,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="60dp">
                     <Button
-                        android:id="@+id/btnGoWriteReview"
+                        android:id="@+id/btnGoReviewWrite"
                         android:text="리뷰작성"
                         android:textSize="15dp"
                         android:textColor="@color/colorWhite"
