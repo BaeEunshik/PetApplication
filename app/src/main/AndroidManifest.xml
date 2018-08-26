@@ -54,9 +54,12 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".Address.Address" />
         <activity android:name=".ShopOnMapActivity" />
-        <activity android:name=".ReviewItemActivity" />
+        <activity android:name=".ReviewItemActivity" >
+
+        </activity>
         <activity android:name=".PhotosActivity" />
-        <activity android:name=".PhotoActivity"></activity>
+        <activity android:name=".PhotoActivity" />
+        <activity android:name=".ReviewWrite"></activity>
     </application>
 
 </manifest>

@@ -1,30 +1,25 @@
 package com.naver.mycnex.viewpageapplication;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.naver.mycnex.viewpageapplication.BackPress.BackPressCloseHandler;
-import com.naver.mycnex.viewpageapplication.Bus.BusProvider;
+import com.naver.mycnex.viewpageapplication.bus.BusProvider;
 import com.naver.mycnex.viewpageapplication.adapter.ViewPagerAdapter;
-import com.naver.mycnex.viewpageapplication.data.Member;
 import com.naver.mycnex.viewpageapplication.login.LoginService;
 import com.squareup.otto.Bus;
 
@@ -32,10 +27,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-
-import static com.naver.mycnex.viewpageapplication.R.id.memberImg;
-import static com.naver.mycnex.viewpageapplication.R.id.memberName;
-import static com.naver.mycnex.viewpageapplication.R.id.shop_name;
 
 public class ViewPagerActivity extends AppCompatActivity {
 

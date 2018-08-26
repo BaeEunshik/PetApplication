@@ -1,8 +1,5 @@
 package com.naver.mycnex.viewpageapplication;
 
-import android.app.Activity;
-import android.app.ListActivity;
-import android.app.Service;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

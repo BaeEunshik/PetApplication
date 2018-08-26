@@ -1,4 +1,4 @@
-package com.naver.mycnex.viewpageapplication.Bus;
+package com.naver.mycnex.viewpageapplication.bus;
 
 import com.squareup.otto.Bus;
 

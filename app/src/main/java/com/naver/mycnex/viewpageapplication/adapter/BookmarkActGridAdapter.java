@@ -1,16 +1,12 @@
 package com.naver.mycnex.viewpageapplication.adapter;
 
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.naver.mycnex.viewpageapplication.R;
 import com.naver.mycnex.viewpageapplication.data.Bookmark;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 

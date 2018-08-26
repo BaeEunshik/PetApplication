@@ -3,18 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary">
-
-
+    android:background="@color/colorWhite">
     <GridView
         android:id="@+id/gridView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:numColumns="2"
-        android:horizontalSpacing="30dp"
-        android:verticalSpacing="30dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp">
+        android:layout_height="match_parent"
+        android:numColumns="auto_fit"
+        android:columnWidth="160dp"
+        android:stretchMode="columnWidth"
+        android:horizontalSpacing="10dp"
+        android:verticalSpacing="10dp"
+        android:padding="10dp">
     </GridView>
-
 </LinearLayout>

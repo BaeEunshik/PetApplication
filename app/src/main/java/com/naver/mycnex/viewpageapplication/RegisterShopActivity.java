@@ -28,7 +28,7 @@ import android.widget.Toast;
 
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
-import com.naver.mycnex.viewpageapplication.Address.Address;
+import com.naver.mycnex.viewpageapplication.address.Address;
 
 import java.io.IOException;
 import java.util.ArrayList;

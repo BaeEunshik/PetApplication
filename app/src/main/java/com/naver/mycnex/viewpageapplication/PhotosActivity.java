@@ -2,7 +2,6 @@ package com.naver.mycnex.viewpageapplication;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.GridView;
 
 import com.naver.mycnex.viewpageapplication.adapter.PhotosActGridAdapter;

@@ -1,10 +1,9 @@
-package com.naver.mycnex.viewpageapplication.Address;
+package com.naver.mycnex.viewpageapplication.address;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -12,7 +11,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.naver.mycnex.viewpageapplication.R;
-import com.naver.mycnex.viewpageapplication.RegisterShopActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

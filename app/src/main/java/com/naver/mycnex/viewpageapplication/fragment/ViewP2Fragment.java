@@ -1,4 +1,4 @@
-package com.naver.mycnex.viewpageapplication.Fragment;
+package com.naver.mycnex.viewpageapplication.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
-import com.naver.mycnex.viewpageapplication.Bus.BusProvider;
+import com.naver.mycnex.viewpageapplication.bus.BusProvider;
 import com.naver.mycnex.viewpageapplication.R;
 import com.squareup.otto.Bus;
 

@@ -1,4 +1,4 @@
-package com.naver.mycnex.viewpageapplication.Fragment;
+package com.naver.mycnex.viewpageapplication.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,10 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
-import com.naver.mycnex.viewpageapplication.Bus.BusProvider;
+import com.naver.mycnex.viewpageapplication.bus.BusProvider;
 import com.naver.mycnex.viewpageapplication.R;
 import com.naver.mycnex.viewpageapplication.ShopActivity;
-import com.naver.mycnex.viewpageapplication.ShopListActivity;
 import com.naver.mycnex.viewpageapplication.adapter.VP1GridAdapter;
 import com.naver.mycnex.viewpageapplication.data.Store;
 import com.squareup.otto.Bus;
@@ -93,6 +92,7 @@ public class ViewP1Fragment extends Fragment {
     public void gridView(int position){
         // TODO :
         // 실행되는 ShopActivity 는 클릭한 요소의 정보를 담고 있어야 한다.
+        Log.d("은식","onItemClick");
         Intent intent = new Intent(getActivity(),ShopActivity.class);
         startActivity(intent);
     }

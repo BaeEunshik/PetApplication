@@ -5,32 +5,37 @@
 <LinearLayout
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="10dp"
-    android:background="#ccc"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
     <!-- img ( 위 ) -->
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <Button
+            android:id="@+id/btnBookmark"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
 
-        <ImageView
+        <com.naver.mycnex.viewpageapplication.custom.SquareImageView
             android:id="@+id/itemImg"
-            android:scaleType="centerCrop"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_launcher_background"/>
+            android:layout_height="match_parent"/>
 
-    </LinearLayout>
+    </RelativeLayout>
     <!-- img -->
 
     <!--  내용 ( 아래 ) -->
     <LinearLayout
+        android:id="@+id/contents"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <!-- 좌측 -->
         <LinearLayout
+            android:layout_marginTop="5dp"
             android:orientation="vertical"
             android:layout_weight="5"
             android:layout_width="0dp"
@@ -38,12 +43,13 @@
             <!-- 가게이름 -->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="25dp">
+                android:layout_height="18dp">
                 <TextView
                     android:id="@+id/TextName"
                     android:text="@string/test"
-                    android:textSize="20dp"
-                    android:layout_centerVertical="true"
+                    android:textColor="@color/defaultText"
+                    android:textSize="16dp"
+                    android:layout_alignParentBottom="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RelativeLayout>
@@ -51,11 +57,12 @@
             <!-- 거리 ( m , km ) -->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="18dp">
+                android:layout_height="14dp">
                 <TextView
                     android:id="@+id/TextDistance"
                     android:text="@string/test"
-                    android:textSize="14dp"
+                    android:textColor="@color/defaultText"
+                    android:textSize="12dp"
                     android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -64,11 +71,12 @@
             <!-- 장소구분 ( ex. 일반카페 ) -->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="18dp">
+                android:layout_height="14dp">
                 <TextView
                     android:id="@+id/textPlace"
                     android:text="@string/test"
-                    android:textSize="14dp"
+                    android:textColor="@color/defaultText"
+                    android:textSize="12dp"
                     android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -82,12 +90,15 @@
             android:layout_width="0dp"
             android:layout_height="match_parent">
             <RelativeLayout
+                android:paddingRight="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
                 <TextView
                     android:id="@+id/TextPoint"
+                    android:textColor="@color/colorPrimary"
                     android:text="5.0"
                     android:textSize="35dp"
+                    android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
