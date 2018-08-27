@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.login_btn)    //로그인
     public void Login() {
-        OnclilckLoginBtn();
+        onClickLoginBtn();
     }
 
     @OnClick(R.id.join_btn) //회원가입
@@ -52,22 +52,19 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     /** onDestroy **/
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
-
     }
 
     @OnClick(R.id.btnGoBack)
     public void setBtnGoBack(){     //뒤로가기
-
         finish();
     }
 
-    public void OnclilckLoginBtn() {
+    public void onClickLoginBtn() {
 
        id = id_edit.getText().toString();
        pw = pw_edit.getText().toString();

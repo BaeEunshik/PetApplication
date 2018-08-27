@@ -45,13 +45,12 @@
         <!--사진 전체보기-->
         <GridView
             android:id="@+id/gridView"
-            android:background="@color/colorWhite"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:numColumns="4"
             android:horizontalSpacing="5dp"
             android:verticalSpacing="5dp"
-            android:numColumns="4"
-            android:padding="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:padding="5dp">
         </GridView>
         <!--사진 전체보기-->
     </LinearLayout>

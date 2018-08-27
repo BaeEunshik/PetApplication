@@ -2,4 +2,9 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- 배은식 -->
+    <!-- gridView item width-->
+    <dimen name="gridView_item_columnWidth">150dp</dimen>
+    <dimen name="gridView_photos_columnWidth">100dp</dimen>
 </resources>

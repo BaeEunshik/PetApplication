@@ -10,20 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <com.naver.mycnex.viewpageapplication.custom.SquareImageView
             android:id="@+id/itemImg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-
-        <ImageView
-            android:id="@+id/btnBookmark"
-            android:background="#000"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="15dp"
-            android:layout_width="35dp"
-            android:layout_height="35dp" />
 
     </RelativeLayout>
     <!-- img -->

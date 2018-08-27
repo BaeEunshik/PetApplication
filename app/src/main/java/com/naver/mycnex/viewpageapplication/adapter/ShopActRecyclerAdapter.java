@@ -64,7 +64,9 @@ public class ShopActRecyclerAdapter extends RecyclerView.Adapter<ShopActRecycler
             public void onClick(View v) {
                 //TODO :
                 // 현재 가게의 모든 이미지 데이터 넘겨줘야 함
-                context.startActivity(new Intent(context, PhotosActivity.class));
+                Intent intent = new Intent(context, PhotosActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //
+                context.startActivity(intent);
             }
         });
         // 사진 클릭 시 이동
@@ -75,6 +77,7 @@ public class ShopActRecyclerAdapter extends RecyclerView.Adapter<ShopActRecycler
                 // 현재는 임시 객체의 getter() 사용 - 객체 변경
                 Intent intent = new Intent(context, PhotoActivity.class);
                 intent.putExtra("imgData",testImages.get(position).getImg());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
         });
@@ -84,7 +87,6 @@ public class ShopActRecyclerAdapter extends RecyclerView.Adapter<ShopActRecycler
         // 버튼 생성을 위해 item 을 한번 더 사용함
         return testImages.size() + 1;
     }
-
 
     /******************** HOLDER ********************/
     public class Holder extends RecyclerView.ViewHolder {

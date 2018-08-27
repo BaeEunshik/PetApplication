@@ -109,7 +109,7 @@ public class ViewPagerActivity extends AppCompatActivity {
         public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
             switch (position) {
                 case 0://북마크
-                    Intent intent = new Intent(ViewPagerActivity.this, BookmarkList_Activity.class);
+                    Intent intent = new Intent(ViewPagerActivity.this, BookmarksActivity.class);
                     startActivity(intent);
                     break;
                 case 1://설정

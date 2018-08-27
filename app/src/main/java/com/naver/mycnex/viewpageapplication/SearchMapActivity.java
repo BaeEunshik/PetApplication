@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -136,6 +137,8 @@ public class SearchMapActivity extends AppCompatActivity
                 LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                 String provider = locationManager.getBestProvider(criteria, false);
                 Location location = locationManager.getLastKnownLocation(provider);
+
+                Log.d("은식-location",Double.toString(location.getLatitude()));
 
                 double lat =  location.getLatitude();
                 double lng = location.getLongitude();

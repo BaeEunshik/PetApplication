@@ -1,29 +1,39 @@
 package com.naver.mycnex.viewpageapplication.adapter;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.naver.mycnex.viewpageapplication.data.Bookmark;
+import com.naver.mycnex.viewpageapplication.R;
+import com.naver.mycnex.viewpageapplication.custom.SquareImageView;
+import com.naver.mycnex.viewpageapplication.data.Store;
+import com.naver.mycnex.viewpageapplication.glide.GlideApp;
 
 import java.util.ArrayList;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.ToString;
+
+@Data
+@ToString
+@AllArgsConstructor
 public class BookmarkActGridAdapter extends BaseAdapter{
     /**
      * 현재 로그인 멤버의 북마크 장소 목록들을 가져와
      * BookmarkList_Activity 에 그리드뷰로 출력한다.
      */
 
-    // TODO : item 생성및 적용, 객체 생성및 적용 등...
+    // TODO :
+    // 북마크 데이터 구조 구현
+    // 이미지 객체와 합친 arrList 로 만들어야함
 
     // 북마크 리스트
-    ArrayList<Bookmark> bookmarks;
+    ArrayList<Store> bookmarks;
     // 생성자
-    public BookmarkActGridAdapter(ArrayList<Bookmark> bookmarks){
-        this.bookmarks = bookmarks;
-    }
 
     @Override
     public int getCount() {
@@ -42,63 +52,59 @@ public class BookmarkActGridAdapter extends BaseAdapter{
     public View getView(int position, View convertView, ViewGroup parent) {
 
         Holder holder = new Holder();
-
         if(convertView == null){
-
-            //convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.그리드아이템, parent, false);
-
-            //북마크의 그리드뷰 내용
-
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bookmarks_grid, parent, false);
             // 1. 이미지
             // 2. 가게이름
             // 3. 평점
-            // 4. 카페구분
+            // 4. 가게구분
             // 5. 구 ( ex. 강남구 ) , 현재 위치로부터의 거리 km
-            // 6. 조회수
-            // 7. 리뷰수
-
-            /**
-                holder.shopImg = convertView.findViewById(R.id.);
-                holder.shopName = convertView.findViewById(R.id.);
-                holder.point = convertView.findViewById(R.id.);
-                holder.placeKind = convertView.findViewById(R.id.);
-                holder.location_gu = convertView.findViewById(R.id.);
-                holder.location_km = convertView.findViewById(R.id.);
-                holder.viewNum = convertView.findViewById(R.id.);
-                holder.reviewNum = convertView.findViewById(R.id.);
-            */
+            // ( 6. 조회수 ??? )
+            // ( 7. 리뷰수 ??? )
+            holder.itemImg = convertView.findViewById(R.id.itemImg);
+            holder.TextName = convertView.findViewById(R.id.textName);
+            holder.textPlace = convertView.findViewById(R.id.textPlace);
+            holder.TextDistance = convertView.findViewById(R.id.TextDistance);
+            holder.TextPoint = convertView.findViewById(R.id.TextPoint);
 
             convertView.setTag(holder);
         } else {
             holder = (Holder)convertView.getTag();
         }
+        /** setText **/
+        holder.TextName.setText(bookmarks.get(position).getName());    // 이름
+        holder.TextDistance.setText("00km");                        // TODO : 거리 ( 구현? 삭제? )
+        switch ( bookmarks.get(position).getCategory() ){                // 장소구분
+            case 0: holder.textPlace.setText("일반카페");
+                break;
+            case 1: holder.textPlace.setText("일반식당");
+                break;
+            default: holder.textPlace.setText("invalid");
+                break;
+        }
 
-            /**
-             // 이미지
-                GlideApp.with(context)
-                 .load( 이미지 경로 - 객체로부터 가져와야 할)
-                 .into(holder.shopImg);
+        // TODO :
+        // 평점 계산 로직)
+        // DB 로부터 데이터를 받아올 때에
+        // 해당 Store 에 달린 리뷰의 점수를 모두 더하여
+        // 리뷰의 갯수만큼 나눈 다음에
+        // - 객체 배열에 넣어서 사용
+        holder.TextPoint.setText("5.0");    // 점수
 
-             // 텍스트
-                holder.shopName.setText( 장소이름 );
-                holder.point.setText( 평점 );
-                holder.placeKind.setText( 장소구분 );
-                holder.location_gu.setText( 구( ex.강남구 ) );
-                holder.location_km.setText( 현재위치로부터의 거리 km );
-                holder.viewNum.setText( 조회수 );
-                holder.reviewNum.setText( 리뷰갯수 );
-            */
+        /** setIMG **/
+        // 그리드 이미지
+        GlideApp.with(parent.getContext())
+                .load( R.drawable.dog1 )
+                .centerCrop()
+                .into( holder.itemImg );
 
         return convertView;
     }
     public class Holder{
-        ImageView shopImg;
-        TextView shopName;
-        TextView point;
-        TextView placeKind;
-        TextView location_gu;
-        TextView location_km;
-        TextView viewNum;
-        TextView reviewNum;
+        SquareImageView itemImg;
+        TextView TextName;
+        TextView TextDistance;
+        TextView textPlace;
+        TextView TextPoint;
     }
 }

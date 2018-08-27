@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".BookmarkList_Activity">
+    tools:context=".BookmarksActivity">
 
     <!-- Wrap -->
     <LinearLayout
@@ -45,14 +45,15 @@
 
         <!--북마크 그리드 뷰-->
         <GridView
-            android:id="@+id/gridViewBookmarks"
+            android:id="@+id/gridView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:numColumns="2"
-            android:horizontalSpacing="30dp"
-            android:verticalSpacing="30dp"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp">
+            android:layout_height="match_parent"
+            android:numColumns="auto_fit"
+            android:columnWidth="@dimen/gridView_item_columnWidth"
+            android:stretchMode="columnWidth"
+            android:horizontalSpacing="10dp"
+            android:verticalSpacing="10dp"
+            android:padding="10dp">
         </GridView>
         <!--북마크 그리드 뷰-->
 
