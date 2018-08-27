@@ -18,16 +18,17 @@ import butterknife.Unbinder;
 public class ReviewItemActivity extends AppCompatActivity {
     private Unbinder unbinder;
     ArrayList<Comment> items = new ArrayList<>();
-    CommentListAdapter commentListAdapter;
+    CommentListAdapter commentListAdapter;//
 
     @BindView(R.id.btnGoBack)ImageButton btnGoBack;
     @BindView(R.id.txt_nickname) TextView txt_nickname;
+    //@BindView(R.id.txt_date) TextView txt_date;
     @BindView(R.id.txt_point) TextView txt_point;
-    @BindView(R.id.txt_content)TextView txt_content;
+    @BindView(R.id.txt_content)TextView txt_content;//리뷰내용
     @BindView(R.id.txt_ComCount)TextView txt_ComCount;
     @BindView(R.id.ibtn_review) ImageButton ibtn_review;
     @BindView(R.id.ibtn_dialog1)ImageButton ibtn_dialog1;
-    @BindView(R.id.lv_comment_list)ListView lv_comment_list;
+    @BindView(R.id.lv_comment_list)ListView lv_comment_list;//댓글
     @BindView(R.id.btn_comment_save)Button btn_comment_save;
     @BindView(R.id.et_input_comment)EditText et_input_comment;
 
@@ -38,10 +39,12 @@ public class ReviewItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_review_item);
         unbinder = ButterKnife.bind(this);
 
+        Comment comment = new Comment(0l,"이 가게 정말 좋아요!!",1);
+        items.add(comment);
 
 
+        commentListAdapter = new CommentListAdapter(items);
+        lv_comment_list.setAdapter(commentListAdapter);
 
     }
-
-
 }
