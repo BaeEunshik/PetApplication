@@ -146,8 +146,9 @@ public class ShopActivity extends AppCompatActivity
     }
     @OnClick(R.id.btnGoReviewWrite)// 리뷰작성 하러 가기
     public void btnGoReviewWrite(){
-        Intent intent = new Intent(ShopActivity.this,ReviewWrite.class);
+        Intent intent = new Intent(ShopActivity.this,ReviewWriteActivity.class);
         startActivity(intent);
+
     }
 
 

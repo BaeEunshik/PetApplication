@@ -59,7 +59,7 @@
         </activity>
         <activity android:name=".PhotosActivity" />
         <activity android:name=".PhotoActivity" />
-        <activity android:name=".ReviewWrite"></activity>
+        <activity android:name=".ReviewWriteActivity"></activity>
     </application>
 
 </manifest>

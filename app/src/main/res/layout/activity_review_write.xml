@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ReviewWrite">
+    android:orientation="vertical"
+    tools:context=".ReviewWriteActivity">
 
     <!-- Wrap -->
     <LinearLayout
@@ -42,14 +42,96 @@
             </RelativeLayout>
         </RelativeLayout>
         <!-- Header -->
-
-        <!-- Content -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:textSize="20dp"
+                android:text="별점"/>
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                style="@drawable/customratingstars"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="false"
+                android:numStars="5"
+                android:rating="4"
+                android:stepSize="0.5"
+                android:max="5"
+                />
+
 
         </LinearLayout>
+
+            <!-- 상단 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/colorWhite"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <!-- 이미지 ( 프로필 사진 ) -->
+                <RelativeLayout
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                  >
+                    <ImageView
+                        android:layout_centerInParent="true"
+                        android:layout_width="46dp"
+                        android:layout_height="46dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/chracter" />
+                </RelativeLayout>
+                <!-- 이미지 ( 프로필 사진 ) -->
+                <!-- 닉네임 -->
+                        <TextView
+                            android:id="@+id/txt_nickname"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:text="닉네임"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+                <!-- 평점 -->
+                    <TextView
+                        android:id="@+id/txt_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="5.0"
+                        android:textColor="@color/colorAccent1"
+                        android:textSize="30dp" />
+                <!-- 평점 -->
+            </LinearLayout>
         <!-- Content -->
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@color/colorWhite">
+
+            <EditText
+                android:id="@+id/edit_write"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="내용을 입력해주세요"
+                />
+
+        </LinearLayout>
+
+        <!-- Content -->
+        <!-- <GridView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content">
+
+                   </GridView> -->
     </LinearLayout>
     <!-- Wrap -->
 </LinearLayout>
