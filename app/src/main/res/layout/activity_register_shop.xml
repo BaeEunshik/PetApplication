@@ -87,12 +87,60 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
+            <!-- 카테고리 선택 -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="매장성격"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext"
+                android:layout_marginBottom="10dp">
+
+                <Spinner
+                    android:id="@+id/select_general_special"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"/>
+
+                <Spinner
+                    android:id="@+id/select_category"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="매장 상세설명"
+                    />
+
+                <EditText
+                    android:id="@+id/shop_detail_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edittext"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:inputType="textNoSuggestions"/>
+
+            </LinearLayout>
+
             <!-- 반려견 크기 -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="입장가능한 반려견 크기"
-                android:paddingTop="5dp"/>
+                android:text="입장가능한 반려견 크기"/>
             <LinearLayout
                 android:weightSum="3"
                 android:orientation="horizontal"

@@ -41,23 +41,23 @@ public class ShopListActivity extends AppCompatActivity {
 
         // 임시 객체리스트 생성
         storeList.add(
-                new Store(1,"NAME_1",000,2,"information","00:00","24:00",
+                new Store(1,"NAME_1","0000",2,"information","00:00","24:00",
                         2,1,"address","서울시 강남구","논현동",10.00,20.00,1
                 ));
         storeList.add(
-                new Store(2,"NAME_2",000,2,"information","00:00","24:00",
+                new Store(2,"NAME_2","0000",2,"information","00:00","24:00",
                         2,1,"address","서울시 강동구","둔촌동",10.00,20.00,1
                 ));
         storeList.add(
-                new Store(3,"NAME_3",000,2,"information","00:00","24:00",
+                new Store(3,"NAME_3","0000",2,"information","00:00","24:00",
                         2,1,"address","서울시 강서구","무슨동",10.00,20.00,1
                 ));
         storeList.add(
-                new Store(4,"NAME_4",000,2,"information","00:00","24:00",
+                new Store(4,"NAME_4","0000",2,"information","00:00","24:00",
                 2,1,"address","서울시 강북구","어떤동",10.00,20.00,1
         ));
         storeList.add(
-                new Store(5,"NAME_5",000,2,"information","00:00","24:00",
+                new Store(5,"NAME_5","0000",2,"information","00:00","24:00",
                         2,1,"address","서울시 송파구","이런동",10.00,20.00,1
                 ));
 

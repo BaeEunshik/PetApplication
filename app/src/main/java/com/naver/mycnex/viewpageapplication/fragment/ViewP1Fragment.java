@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.naver.mycnex.viewpageapplication.bus.BusProvider;
@@ -16,6 +17,7 @@ import com.naver.mycnex.viewpageapplication.R;
 import com.naver.mycnex.viewpageapplication.ShopActivity;
 import com.naver.mycnex.viewpageapplication.adapter.VP1GridAdapter;
 import com.naver.mycnex.viewpageapplication.data.Store;
+import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 import com.squareup.otto.Bus;
 
 import java.util.ArrayList;
@@ -25,6 +27,9 @@ import butterknife.ButterKnife;
 import butterknife.OnItemClick;
 import butterknife.Unbinder;
 import lombok.NoArgsConstructor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 @NoArgsConstructor
 public class ViewP1Fragment extends Fragment {
@@ -38,7 +43,7 @@ public class ViewP1Fragment extends Fragment {
     }*/
 
     //그리드뷰
-    ArrayList<Store> storeList = new ArrayList<>();
+    ArrayList<Store> stores;
     VP1GridAdapter vp1GridAdapter;
 
     //버터나이프
@@ -53,55 +58,19 @@ public class ViewP1Fragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_vp1, container, false);
-
-        Log.d("은식","frag1 onCreateView");
-        //이벤트버스
         bus.register(this);
         unbinder = ButterKnife.bind(this,view);
 
-        // 임시 객체리스트 생성
-        storeList.add(
-                new Store(1,"NAME_1",000,2,"information","00:00","24:00",
-                        2,1,"address","서울시 강남구","논현동",10.00,20.00,1
-                ));
-        storeList.add(
-                new Store(2,"NAME_2",000,2,"information","00:00","24:00",
-                        2,1,"address","서울시 강동구","둔촌동",10.00,20.00,1
-                ));
-        storeList.add(
-                new Store(3,"NAME_3",000,2,"information","00:00","24:00",
-                        2,1,"address","서울시 강서구","무슨동",10.00,20.00,1
-                ));
-        storeList.add(
-                new Store(4,"NAME_4",000,2,"information","00:00","24:00",
-                        2,1,"address","서울시 강북구","어떤동",10.00,20.00,1
-                ));
-        storeList.add(
-                new Store(5,"NAME_5",000,2,"information","00:00","24:00",
-                        2,1,"address","서울시 송파구","이런동",10.00,20.00,1
-                ));
-        // 그리드뷰
-        vp1GridAdapter = new VP1GridAdapter(storeList);
-        gridView.setAdapter(vp1GridAdapter);
+        InitWhenCreated();
 
         return view;
-    }
-
-    /********** OnItemClick **********/
-    @OnItemClick(R.id.gridView)
-    public void gridView(int position){
-        // TODO :
-        // 실행되는 ShopActivity 는 클릭한 요소의 정보를 담고 있어야 한다.
-        Log.d("은식","onItemClick");
-        Intent intent = new Intent(getActivity(),ShopActivity.class);
-        startActivity(intent);
     }
 
     /** onResume **/
     @Override
     public void onResume() {
         super.onResume();
-
+        InitWhenCreated();
     }
     /** onDestroy **/
     @Override
@@ -110,4 +79,44 @@ public class ViewP1Fragment extends Fragment {
         bus.unregister(this);
         unbinder.unbind();
     }
+
+    public void InitWhenCreated() {
+        getDataFromServer();
+        GridViewOnItemClick();
+    }
+
+    public void GridViewOnItemClick() {
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(),ShopActivity.class);
+                intent.putExtra("id",stores.get(position).getId());
+                startActivity(intent);
+            }
+        });
+    }
+
+    public void getDataFromServer() {
+        Call<ArrayList<Store>> getStoreData = RetrofitService.getInstance().getRetrofitRequest().getStoreData();
+        getStoreData.enqueue(new Callback<ArrayList<Store>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Store>> call, Response<ArrayList<Store>> response) {
+                if (response.isSuccessful()) {
+                    stores = response.body();
+                    initAdapter();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Store>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void initAdapter() {
+        vp1GridAdapter = new VP1GridAdapter(stores);
+        gridView.setAdapter(vp1GridAdapter);
+    }
+
 }

@@ -90,8 +90,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="40dp">
                             <TextView
+                                android:id="@+id/storeName_txt"
                                 android:layout_centerVertical="true"
-                                android:text="가게이름"
                                 android:textStyle="bold"
                                 android:textSize="20dp"
                                 android:textColor="@color/defaultText"
@@ -193,7 +193,6 @@
                         <TextView
                             android:id="@+id/textAddress"
                             android:layout_centerVertical="true"
-                            android:text="00시 00구 00동 000 - 00"
                             android:textSize="12dp"
                             android:textColor="@color/defaultText"
                             android:layout_width="wrap_content"
@@ -245,10 +244,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" />
                             <TextView
-                                android:id="@+id/textOperateTime"
+                                android:id="@+id/operate_time_txt"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                android:text="00:00 - 00:00"
                                 android:textSize="12dp"
                                 android:textColor="@color/defaultText"
                                 android:layout_width="wrap_content"
@@ -260,17 +258,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="22dp">
                             <TextView
-                                android:text="휴일"
+                                android:text="영업 요일"
                                 android:layout_centerVertical="true"
                                 android:textSize="12dp"
                                 android:textColor="@color/defaultText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" />
                             <TextView
-                                android:id="@+id/textRestDay"
+                                android:id="@+id/operate_day_txt"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                android:text="월,화,수"
                                 android:textSize="12dp"
                                 android:textColor="@color/defaultText"
                                 android:layout_width="wrap_content"
@@ -282,17 +279,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="22dp">
                             <TextView
-                                android:text="입장가능"
+                                android:text="반려견 크기"
                                 android:layout_centerVertical="true"
                                 android:textSize="12dp"
                                 android:textColor="@color/defaultText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" />
                             <TextView
-                                android:id="@+id/textDogSize"
+                                android:id="@+id/dogSize_txt"
                                 android:layout_centerVertical="true"
                                 android:layout_alignParentRight="true"
-                                android:text="~ 대형견"
                                 android:textSize="12dp"
                                 android:textColor="@color/defaultText"
                                 android:layout_width="wrap_content"
@@ -311,10 +307,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" />
                             <TextView
-                                android:id="@+id/textParking"
+                                android:id="@+id/parking_txt"
                                 android:layout_centerVertical="true"
                                 android:layout_alignParentRight="true"
-                                android:text="발렛파킹"
                                 android:textSize="12dp"
                                 android:textColor="@color/defaultText"
                                 android:layout_width="wrap_content"
@@ -333,10 +328,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" />
                             <TextView
-                                android:id="@+id/textReservation"
+                                android:id="@+id/reservation_txt"
                                 android:layout_centerVertical="true"
                                 android:layout_alignParentRight="true"
-                                android:text="예약가능"
                                 android:textSize="12dp"
                                 android:textColor="@color/defaultText"
                                 android:layout_width="wrap_content"
