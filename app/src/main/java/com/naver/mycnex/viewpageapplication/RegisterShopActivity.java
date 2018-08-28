@@ -50,6 +50,8 @@ import retrofit2.Response;
 
 public class RegisterShopActivity extends AppCompatActivity {
 
+    //
+
     private final int ADDRESS_SUBMIT = 11;
     private final int CAMERA_GALLERY = 111;
 
