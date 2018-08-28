@@ -9,36 +9,37 @@
 
     <!-- Wrap -->
     <LinearLayout
-        android:background="@color/defaultBackground"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/defaultBackground"
+        android:orientation="vertical">
         <!-- Header -->
         <RelativeLayout
-            android:background="#5e5e5e"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="50dp"
+            android:background="#5e5e5e">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <!-- 뒤로가기 -->
                 <ImageButton
                     android:id="@+id/btnGoBack"
-                    android:src="@drawable/ic_left"
-                    android:scaleType="fitCenter"
-                    android:background="@null"
                     android:layout_width="50dp"
-                    android:layout_height="50dp" />
+                    android:layout_height="50dp"
+                    android:background="@null"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_left" />
                 <!-- 제목 -->
                 <TextView
                     android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
                     android:text="리뷰작성"
                     android:textColor="@color/colorWhite"
                     android:textSize="16dp"
-                    android:textStyle="bold"
-                    android:layout_centerInParent="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:textStyle="bold" />
             </RelativeLayout>
         </RelativeLayout>
         <!-- Header -->
@@ -46,12 +47,13 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:gravity="center"
-                android:textSize="20dp"
-                android:text="별점"/>
+                android:text="별점"
+                android:textSize="20dp" />
 
             <RatingBar
                 android:id="@+id/ratingBar"
@@ -59,70 +61,80 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:isIndicator="false"
+                android:max="5"
                 android:numStars="5"
                 android:rating="4"
-                android:stepSize="0.5"
-                android:max="5"
-                />
+                android:stepSize="0.5" />
 
 
         </LinearLayout>
 
-            <!-- 상단 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@color/colorWhite"
+        <!-- 상단 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/colorWhite"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <!-- 이미지 ( 프로필 사진 ) -->
+            <RelativeLayout
+                android:layout_width="60dp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="46dp"
+                    android:layout_height="46dp"
+                    android:layout_centerInParent="true"
+                    android:layout_weight="1"
+                    android:background="@drawable/chracter" />
+            </RelativeLayout>
+            <!-- 이미지 ( 프로필 사진 ) -->
+            <!-- 닉네임 -->
+            <TextView
+                android:id="@+id/txt_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="닉네임"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+            <!-- 평점 -->
+            <TextView
+                android:id="@+id/txt_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:orientation="horizontal">
-                <!-- 이미지 ( 프로필 사진 ) -->
-                <RelativeLayout
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"
-                  >
-                    <ImageView
-                        android:layout_centerInParent="true"
-                        android:layout_width="46dp"
-                        android:layout_height="46dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/chracter" />
-                </RelativeLayout>
-                <!-- 이미지 ( 프로필 사진 ) -->
-                <!-- 닉네임 -->
-                        <TextView
-                            android:id="@+id/txt_nickname"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:layout_weight="1"
-                            android:text="닉네임"
-                            android:textSize="20dp"
-                            android:textStyle="bold" />
-                <!-- 평점 -->
-                    <TextView
-                        android:id="@+id/txt_rating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="5.0"
-                        android:textColor="@color/colorAccent1"
-                        android:textSize="30dp" />
-                <!-- 평점 -->
-            </LinearLayout>
+                android:text="5.0"
+                android:textColor="@color/colorAccent1"
+                android:textSize="30dp" />
+            <!-- 평점 -->
+        </LinearLayout>
         <!-- Content -->
         <LinearLayout
             android:layout_width="350dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:background="@color/colorWhite">
+            android:layout_marginTop="10dp"
+            android:background="@color/colorWhite"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnAdd"
+                android:layout_width="55dp"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="right"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/ic_add" />
 
             <EditText
                 android:id="@+id/edit_write"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="내용을 입력해주세요"
-                />
+                android:hint="내용을 입력해주세요" />
+
 
         </LinearLayout>
 

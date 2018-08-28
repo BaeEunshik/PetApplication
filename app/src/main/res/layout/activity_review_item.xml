@@ -120,7 +120,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="4.0"
                                 android:textColor="@color/colorAccent1"
-                                android:textSize="30dp" />
+                                android:textSize="20dp" />
                         </RelativeLayout>
                         <!-- 평점 -->
                     </LinearLayout>
