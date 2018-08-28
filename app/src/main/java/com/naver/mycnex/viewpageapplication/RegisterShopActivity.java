@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.location.Geocoder;
 import android.net.Uri;
+import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,8 +30,14 @@ import android.widget.Toast;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.naver.mycnex.viewpageapplication.address.Address;
+import com.naver.mycnex.viewpageapplication.data.Store;
+import com.naver.mycnex.viewpageapplication.retrofit.RetrofitRequest;
+import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
+
+import retrofit2.Call;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +45,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterShopActivity extends AppCompatActivity {
 
@@ -49,15 +58,18 @@ public class RegisterShopActivity extends AppCompatActivity {
     public static Integer RESERVATION = RESERVATION_ABLE;
     public static Integer PETSIZE_PERMISSION = 1;
     public static Integer PETSIZE_SMALL = 1;
-    public static Integer PETSIZE_MIDDLE = 2;
+    public static Integer PETSIZE_MIDIUM = 2;
     public static Integer PETSIZE_LARGE = 3;
     public static Integer PARKING_ABLE = 1;
     public static Integer PARKING_UNABLE = 2;
     public static Integer PARKING_VALET = 3;
     public static Integer PARKING = PARKING_UNABLE;
-    public static String OPERATION_DATE = "";
-    public static String PHONE_NUMBER = "";
+    private static String PHONE_NUMBER = "";
 
+    private static int GENERAL = 0;
+    private static int SPECIAL = 1;
+
+    private static int GENERAL_LENGTH = 6;
     public static Integer GENERAL_CAFE = 11;
     public static Integer GENERAL_RESTAURANT = 12;
     public static Integer GENERAL_BAR = 13;
@@ -65,6 +77,7 @@ public class RegisterShopActivity extends AppCompatActivity {
     public static Integer GENERAL_PARK = 15;
     public static Integer GENERAL_STUDIO = 16;
 
+    private static int SPECIAL_LENGTH = 11;
     public static Integer SPECIAL_CAFE = 111;
     public static Integer SPECIAL_PETSHOP = 112;
     public static Integer SPECIAL_BEAUTY = 113;
@@ -77,7 +90,7 @@ public class RegisterShopActivity extends AppCompatActivity {
     public static Integer SPECIAL_PLAYGROUND = 120;
     public static Integer SPECIAL_STUDIO = 121;
 
-
+    Integer selectedCategory = 0;
     double lat = 0;
     double lng = 0;
 
@@ -87,6 +100,7 @@ public class RegisterShopActivity extends AppCompatActivity {
     Button[] buttons = new Button[7];
 
     Unbinder unbinder;
+    @BindView(R.id.shop_detail_edit) EditText shop_detail_edit;
     @BindView(R.id.middlePhone_edit) EditText middlePhone_edit;
     @BindView(R.id.lastPhone_edit) EditText lastPhone_edit;
     @BindView(R.id.shop_name) TextView shop_name;
@@ -112,6 +126,8 @@ public class RegisterShopActivity extends AppCompatActivity {
     @BindView(R.id.btnSunday) Button btnSunday;
     @BindView(R.id.submit_btn) Button submit_btn;
     @BindView(R.id.select_photo_btn) Button select_photo_btn;
+    @BindView(R.id.select_general_special) Spinner select_general_special;
+    @BindView(R.id.select_category) Spinner select_category;
 
     @BindView(R.id.image1) ImageView image1;
     @BindView(R.id.image2) ImageView image2;
@@ -181,12 +197,12 @@ public class RegisterShopActivity extends AppCompatActivity {
     @OnClick(R.id.btnReserveOk)    // 개인 / 업체 가입자 버튼 클릭 이벤트
     public void btnIndividual(){
         RESERVATION = RESERVATION_ABLE;
-        switchMemberType();
+        switchReservationType();
     }
     @OnClick(R.id.btnReserveNo)
     public void btnCompany(){
         RESERVATION = RESERVATION_UNABLE;
-        switchMemberType();
+        switchReservationType();
     }
 
     @OnClick(R.id.smallsize_btn)
@@ -300,17 +316,26 @@ public class RegisterShopActivity extends AppCompatActivity {
 
         String name = shop_name.getText().toString();
         String address = btn_shop_address.getText().toString();
-        getLatLng();
+        String[] str = address.split(" ");
 
-        for (int i = 0; i < bool_date.length; i++) {
-            if (bool_date[i] == false) {
-                OPERATION_DATE += str_date[i];
-            }
-        }
+        String sigungu = str[2];
+        String dong = str[3];
+
+        getLatLng();
+        String store_info = shop_detail_edit.getText().toString();
 
         String startTime = startTime_btn.getText().toString();
         String endTime = endTime_btn.getText().toString();
-        PHONE_NUMBER += "-" + middlePhone_edit.getText().toString() + "-" + lastPhone_edit.getText().toString();
+        String operation_time = startTime + "~" + endTime;
+
+        String phone = PHONE_NUMBER + "-" + middlePhone_edit.getText().toString() + "-" + lastPhone_edit.getText().toString();
+
+        String oper_date = "";
+        for (int i = 0; i < bool_date.length; i++) {
+            if (bool_date[i] == false) {
+                oper_date += str_date[i];
+            }
+        }
 
         if (name == null || name.equals("")) {
             Toast.makeText(RegisterShopActivity.this, "가게명을 입력하세요", Toast.LENGTH_SHORT).show();
@@ -326,57 +351,74 @@ public class RegisterShopActivity extends AppCompatActivity {
             return;
         }
 
-        if (OPERATION_DATE == "") {
+        /* 상세설명을 원하지 않을 수도 있기 때문에, 일단은 주석처리.
+        if (store_info == null || store_info.equals("")) {
+            Toast.makeText(RegisterShopActivity.this, "상세설명을 입력하세요", Toast.LENGTH_SHORT).show();
+            shop_detail_edit.requestFocus();
+            shop_detail_edit.setFocusableInTouchMode(true);
+            return;
+        }
+        */
+
+        if (oper_date == "") {
             Toast.makeText(RegisterShopActivity.this, "영업시간을 선택하세요", Toast.LENGTH_SHORT).show();
             btnMonday.requestFocus();
             btnMonday.setFocusableInTouchMode(true);
             return;
         }
 
-        if (PHONE_NUMBER.length() < 9) {
+        if (phone.length() < 9) {
             Toast.makeText(RegisterShopActivity.this, "번호를 입력하세요", Toast.LENGTH_SHORT).show();
             middlePhone_edit.requestFocus();
             middlePhone_edit.setFocusableInTouchMode(true);
             return;
         }
 
-        Log.d("asd",name);
-        Log.d("asd", address);
-        if (PETSIZE_PERMISSION == PETSIZE_SMALL) {
-            Log.d("asd", "PETSIZE_SMALL");
-        } else if (PETSIZE_PERMISSION == PETSIZE_MIDDLE) {
-            Log.d("asd", "PETSIZE_MIDDLE");
-        } else if (PETSIZE_PERMISSION == PETSIZE_LARGE) {
-            Log.d("asd", "PETSIZE_LARGE");
-        }
-        Log.d("asd",OPERATION_DATE);
-        Log.d("asd", startTime + "~" + endTime);
-        if (RESERVATION == RESERVATION_ABLE) {
-            Log.d("asd","RESERVATION_ABLE");
-        } else {
-            Log.d("asd","RESERVATION_UNABLE");
-        }
-        Log.d("asd",PHONE_NUMBER);
+        Log.d("asd",address);
+        Log.d("asd", sigungu);
+        Log.d("asd", dong);
 
-        if (PARKING == PARKING_ABLE) {
-            Log.d("asd","PARKING_ABLE");
-        } else if (PARKING == PARKING_UNABLE) {
-            Log.d("asd","PARKING_UNABLE");
-        } else if (PARKING == PARKING_VALET) {
-            Log.d("asd","PARKING_VALET");
-        }
+         Call<Long> submitStore = RetrofitService.getInstance().getRetrofitRequest().submitStore(name,phone,PETSIZE_PERMISSION,store_info,oper_date,operation_time,
+                 PARKING,RESERVATION,address,sigungu,dong,lat,lng,selectedCategory);
+         submitStore.enqueue(new Callback<Long>() {
+             @Override
+             public void onResponse(Call<Long> call, Response<Long> response) {
+                 if (response.isSuccessful()) {
+                     Long id = response.body();
 
-        Log.d("asd", String.valueOf(lat) + " " + String.valueOf(lng));
+                     Toast.makeText(RegisterShopActivity.this,"매장이 등록되었습니다.", Toast.LENGTH_SHORT).show();
+                     Intent intent = new Intent(RegisterShopActivity.this, ShopActivity.class);
+                     intent.putExtra("id", id);
+                     startActivity(intent);
+                 }
+             }
 
-//        Intent intent = new Intent(RegisterShopActivity.this, ShopActivity.class);
-//        startActivity(intent);
+             @Override
+             public void onFailure(Call<Long> call, Throwable t) {
+
+             }
+         });
     }
     /********** METHOD **********/
+
+    // Oncreated시 초기화(initiation)
+    public void InitWhenCreated() {
+
+        spinnerPhoneInit();
+        InitOperation_Day();
+        setselect_general_special();
+        DateOnclickListener();
+        spinnerPhoneGetData();
+        getLastPhoneNumberFocus();
+        Parking();
+        setOnClickimage();
+
+    }
 
     // 예약에 대한 함수
     // 예약가능 / 불가 버튼 클릭시 view 와 함께
     // static 변수 RESERVATION 값을 변경 - DB 에 저장하는 값으로 사용
-    public void switchMemberType(){
+    public void switchReservationType(){
         if(RESERVATION == RESERVATION_ABLE) {
             btnReserveOk.setBackground(ContextCompat.getDrawable(RegisterShopActivity.this,R.drawable.button_left_green));
             btnReserveOk.setTextColor(Color.parseColor("#FFFFFF"));
@@ -400,7 +442,7 @@ public class RegisterShopActivity extends AppCompatActivity {
             largesize_btn.setBackground(ContextCompat.getDrawable(RegisterShopActivity.this,R.drawable.button_right_white));
             largesize_btn.setTextColor(Color.parseColor("#000000"));
 
-        } else if (PETSIZE_PERMISSION == PETSIZE_MIDDLE) {
+        } else if (PETSIZE_PERMISSION == PETSIZE_MIDIUM) {
 
             middlesize_btn.setBackground(ContextCompat.getDrawable(RegisterShopActivity.this,R.drawable.button_left_green));
             middlesize_btn.setTextColor(Color.parseColor("#FFFFFF"));
@@ -417,56 +459,6 @@ public class RegisterShopActivity extends AppCompatActivity {
             largesize_btn.setTextColor(Color.parseColor("#FFFFFF"));
 
         }
-    }
-
-    // Oncreated시 초기화(initiation)
-    public void InitWhenCreated() {
-        // 핸드폰 번호 카테고리
-        ArrayAdapter addressAdapter = ArrayAdapter.createFromResource(this, R.array.phoneNumSelect, android.R.layout.simple_spinner_item);
-        addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerPhone.setAdapter(addressAdapter);
-
-        bool_date = new boolean[7];
-
-        for (int i = 0; i < bool_date.length; i++) {
-            bool_date[i] = true;
-        }
-
-        DateOnclickListener();
-
-        spinnerPhone.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                PHONE_NUMBER = String.valueOf(parent.getItemAtPosition(position));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        getLastPhoneNumberFocus();
-        Parking();
-
-        images[0] = image1;
-        images[1] = image2;
-        images[2] = image3;
-        images[3] = image4;
-        images[4] = image5;
-        images[5] = image6;
-
-        InitImage();
-
-        for (int i = 0; i < images.length; i++) {
-            images[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    IntentToCameraGallery();
-                }
-            });
-        }
-
     }
 
     public void getLastPhoneNumberFocus() {
@@ -605,6 +597,118 @@ public class RegisterShopActivity extends AppCompatActivity {
 
                         bool_date[finalI] = true;
                     }
+                }
+            });
+        }
+    }
+
+    public void setselect_general_special() {
+
+        ArrayAdapter addressAdapter = ArrayAdapter.createFromResource(this, R.array.purpose, android.R.layout.simple_spinner_item);
+        addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        select_general_special.setAdapter(addressAdapter);
+
+        select_general_special.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == GENERAL) {
+
+                    ArrayAdapter addressAdapter = ArrayAdapter.createFromResource(RegisterShopActivity.this, R.array.petGeneral, android.R.layout.simple_spinner_item);
+                    addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    select_category.setAdapter(addressAdapter);
+
+                    select_category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            for (int i = 0; i < GENERAL_LENGTH; i++) {
+                                if (position == i) {
+                                    selectedCategory = position + GENERAL_CAFE;
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+
+                } else if (position == SPECIAL) {
+
+                    ArrayAdapter addressAdapter = ArrayAdapter.createFromResource(RegisterShopActivity.this, R.array.petSpecial, android.R.layout.simple_spinner_item);
+                    addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    select_category.setAdapter(addressAdapter);
+
+                    select_category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            for (int i = 0; i < SPECIAL_LENGTH; i++) {
+                                if (position == i) {
+                                    selectedCategory = position + SPECIAL_CAFE;
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+    }
+
+    public void spinnerPhoneGetData() {
+        spinnerPhone.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                PHONE_NUMBER = String.valueOf(parent.getItemAtPosition(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    public void spinnerPhoneInit() {
+        ArrayAdapter addressAdapter = ArrayAdapter.createFromResource(this, R.array.phoneNumSelect, android.R.layout.simple_spinner_item);
+        addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerPhone.setAdapter(addressAdapter);
+    }
+
+    public void InitOperation_Day() {
+        bool_date = new boolean[7];
+
+        for (int i = 0; i < bool_date.length; i++) {
+            bool_date[i] = true;
+        }
+    }
+
+    public void setOnClickimage() {
+        images[0] = image1;
+        images[1] = image2;
+        images[2] = image3;
+        images[3] = image4;
+        images[4] = image5;
+        images[5] = image6;
+
+        InitImage();
+
+        for (int i = 0; i < images.length; i++) {
+            images[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    IntentToCameraGallery();
                 }
             });
         }

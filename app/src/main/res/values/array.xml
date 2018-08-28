@@ -39,6 +39,31 @@
         <item>애견전문</item>
     </string-array>
 
+    <!-- 등록시 -->
+    <string-array name="petGeneral">
+        <item>일반카페</item>
+        <item>일반식당</item>
+        <item>일반주점</item>
+        <item>일반숙박</item>
+        <item>공원</item>
+        <item>일반스튜디오</item>
+
+    </string-array>
+
+    <string-array name="petSpecial">
+        <item>애견카페</item>
+        <item>애견용품</item>
+        <item>애견미용</item>
+        <item>동물병원</item>
+        <item>애견분양</item>
+        <item>애견교육</item>
+        <item>애견숙박</item>
+        <item>애견레저</item>
+        <item>애견장묘</item>
+        <item>애견놀이터</item>
+        <item>애견스튜디오</item>
+    </string-array>
+
     <string-array name="phoneNumSelect">
         <item>010</item>
         <item>02</item>

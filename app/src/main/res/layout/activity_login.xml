@@ -73,7 +73,7 @@
                 android:background="@drawable/edittext"
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
-                android:inputType="textNoSuggestions"/>
+                android:inputType="textPassword"/>
             <Button
                 android:id="@+id/login_btn"
                 android:layout_width="200dp"

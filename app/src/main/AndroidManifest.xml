@@ -52,7 +52,7 @@
         <activity android:name=".IntroActivity" />
         <activity android:name=".JoinActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".Address.Address" />
+        <activity android:name=".address.Address" />
         <activity android:name=".ShopOnMapActivity" />
         <activity android:name=".ReviewItemActivity" >
 
