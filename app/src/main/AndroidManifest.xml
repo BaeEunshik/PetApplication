@@ -42,14 +42,15 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".ShopListActivity" />
         <activity android:name=".ShopActivity" />
-        <activity android:name=".ViewPagerActivity">
+        <activity android:name=".ViewPagerActivity"/>
+            <activity android:name=".IntroActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".IntroActivity" />
+
         <activity android:name=".JoinActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".address.Address" />

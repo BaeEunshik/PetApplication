@@ -5,8 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="@color/colorAccent"
+    android:background="@color/colorPrimary"
     tools:context=".IntroActivity">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <RelativeLayout
         android:id="@+id/layout_images"
@@ -15,11 +18,13 @@
         android:layout_marginTop="250dp"
         >
 
+
+
             <ImageView
                 android:id="@+id/iv_intro"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/dog1"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:background="@drawable/ic_accompany_pet"
                 />
 
     </RelativeLayout>
