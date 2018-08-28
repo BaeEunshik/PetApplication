@@ -31,8 +31,8 @@
                 android:layout_height="match_parent">
                 <EditText
                     android:textColor="@color/colorWhite"
-                    android:textCursorDrawable="@color/colorWhite"
                     android:textColorHint="#ccc"
+                    android:cursorVisible="false"
                     android:background="@null"
                     android:hint="검색할 가게"
                     android:textSize="16dp"

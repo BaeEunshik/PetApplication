@@ -159,10 +159,12 @@
                             android:id="@+id/textPoints"
                             android:layout_centerInParent="true"
                             android:text="5.0"
+                            android:textColor="@color/colorPrimary"
                             android:textStyle="bold"
                             android:textSize="35dp"
+                            android:includeFontPadding="false"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="35dp" />
                     </RelativeLayout>
                     <!--우측-->
                 </LinearLayout>

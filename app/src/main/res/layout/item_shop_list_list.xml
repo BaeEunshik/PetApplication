@@ -33,6 +33,7 @@
                 android:layout_alignParentBottom="true"
                 android:text="장소이름"
                 android:textSize="18dp"
+                android:includeFontPadding="false"
                 android:textColor="@color/defaultText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -78,9 +79,10 @@
             android:text="검토중"
             android:textColor="@color/defaultText"
             android:textSize="20dp"
+            android:includeFontPadding="false"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="21dp" />
     </RelativeLayout>
     <!-- 검토여부 영역 -->
 
