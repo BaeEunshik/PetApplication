@@ -34,6 +34,7 @@ import com.naver.mycnex.viewpageapplication.data.Store;
 import com.naver.mycnex.viewpageapplication.retrofit.RetrofitRequest;
 import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 
+import gun0912.tedbottompicker.TedBottomPicker;
 import retrofit2.Call;
 
 import java.io.IOException;
@@ -159,12 +160,7 @@ public class RegisterShopActivity extends AppCompatActivity {
     @Override // Activity Result
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADDRESS_SUBMIT) {
-            if (resultCode == RESULT_OK) {
-                String address = data.getStringExtra("address");
-                btn_shop_address.setText(address);
-            }
-        } else if (requestCode == CAMERA_GALLERY) {
+        if (requestCode == CAMERA_GALLERY) {
             if (resultCode == RESULT_OK) {
 
                 ClipData clipData = data.getClipData();
@@ -309,7 +305,7 @@ public class RegisterShopActivity extends AppCompatActivity {
 
     @OnClick(R.id.select_photo_btn)
     public void select_photo_btn() {
-        Permission();
+        PermissionImg();
     }
 
     /*************** 등록 버튼 ******************/
@@ -491,13 +487,6 @@ public class RegisterShopActivity extends AppCompatActivity {
         }
     }
 
-    public void IntentToCameraGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        intent.setType("image/*");
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"),  CAMERA_GALLERY);
-    }
-
     public void Parking() {
 
         if (PARKING == PARKING_ABLE) {
@@ -536,14 +525,12 @@ public class RegisterShopActivity extends AppCompatActivity {
         }
     }
 
-    public void Permission() {
+    public void PermissionImg() {
         PermissionListener permissionlistener = new PermissionListener() {
             //권한 획득시
             @Override
             public void onPermissionGranted() {
-
-                IntentToCameraGallery();
-
+                getImageFromTedPicker();
             }
             //권한 거부시
             @Override
@@ -557,7 +544,36 @@ public class RegisterShopActivity extends AppCompatActivity {
                 .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .check();
     }
+    public void getImageFromTedPicker(){
+        // 이미지 피커 실행
+        TedBottomPicker bottomSheetDialogFragment = new TedBottomPicker.Builder(RegisterShopActivity.this)
+                .setOnMultiImageSelectedListener(new TedBottomPicker.OnMultiImageSelectedListener() {
+                    @Override
+                    public void onImagesSelected(ArrayList<Uri> uriList) {
+                        // uriList 활용
+                        if (uriList != null) {
+                            InitImage();
+                            select_photo_btn.setVisibility(View.GONE);
+                            for (int i = 0; i < uriList.size(); i++) {
+                                Uri uriOne = uriList.get(i);
+                                images[i].setImageURI(uriOne);
+                                images[i].setVisibility(View.VISIBLE);
+                            }
 
+                        }
+                    }
+                })
+                .setSelectMaxCountErrorText(" 6장까지 선택 가능합니다. ")
+                .setSelectMaxCount(6)
+                .setCompleteButtonText("확인")
+                .setEmptySelectionText("No Select")
+                .showCameraTile(false)
+                .showGalleryTile(false)
+                .showTitle(false)
+                .create();
+
+        bottomSheetDialogFragment.show(getSupportFragmentManager());
+    }
     public void getLatLng() {
         Geocoder geocoder = new Geocoder(RegisterShopActivity.this);
 
@@ -710,7 +726,7 @@ public class RegisterShopActivity extends AppCompatActivity {
             images[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    IntentToCameraGallery();
+                    getImageFromTedPicker();
                 }
             });
         }

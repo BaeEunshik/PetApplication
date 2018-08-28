@@ -38,7 +38,7 @@ public class VP1GridAdapter extends BaseAdapter{
         return stores.size();
     }
     @Override
-    public Object getItem(int position) {
+    public Store getItem(int position) {
         return stores.get(position);
     }
     @Override
@@ -71,10 +71,12 @@ public class VP1GridAdapter extends BaseAdapter{
             holder = (Holder)convertView.getTag();
         }
 
+        // 그리드뷰 아이템 세팅
+        Store store = getItem(position);
         /** setText **/
-        holder.TextName.setText(stores.get(position).getName());    // 이름
-        holder.TextDistance.setText("00km");                        // TODO : 거리 ( 구현? 삭제? )
-        switch ( stores.get(position).getCategory() ){                // 장소구분
+        holder.TextName.setText(store.getName());    // 이름
+        holder.TextDistance.setText("00km");                         // TODO : 현재 위치로부터의 거리 ( 구현? 삭제? )
+        switch ( store.getCategory() ){               // 장소구분
             case 0: holder.textPlace.setText("일반카페");
                     break;
             case 1: holder.textPlace.setText("일반식당");

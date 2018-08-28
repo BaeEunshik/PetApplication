@@ -17,7 +17,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorAccent">
+            android:background="@color/colorWhite">
             <!-- 좌측 ( 검색지역 )-->
             <LinearLayout
                 android:orientation="vertical"

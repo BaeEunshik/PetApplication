@@ -28,6 +28,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'gun0912.ted:tedpermission:2.2.0'
+    implementation 'gun0912.ted:tedbottompicker:1.2.6'
     implementation 'org.projectlombok:lombok:1.16.20'
     annotationProcessor "org.projectlombok:lombok:1.16.20"
     implementation 'com.jakewharton:butterknife:8.8.1'
