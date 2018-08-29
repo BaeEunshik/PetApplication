@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <com.naver.mycnex.viewpageapplication.custom.SquareImageView
             android:id="@+id/itemImg"
             android:layout_width="match_parent"
@@ -24,7 +23,6 @@
             android:layout_marginRight="15dp"
             android:layout_width="35dp"
             android:layout_height="35dp" />
-
     </RelativeLayout>
     <!-- img -->
 
@@ -35,7 +33,7 @@
         android:layout_height="wrap_content">
         <!-- 좌측 -->
         <LinearLayout
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="2dp"
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -49,7 +47,6 @@
                     android:textColor="@color/defaultText"
                     android:textSize="16dp"
                     android:includeFontPadding="false"
-                    android:layout_alignParentBottom="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RelativeLayout>
@@ -58,15 +55,16 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="12dp">
+
                 <TextView
                     android:id="@+id/TextDistance"
-                    android:text="@string/test"
-                    android:textColor="@color/defaultText"
-                    android:textSize="12dp"
-                    android:includeFontPadding="false"
-                    android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:includeFontPadding="false"
+                    android:text="@string/test"
+                    android:textColor="@color/grayText"
+                    android:textSize="11dp" />
             </RelativeLayout>
             <!-- 거리 ( m , km ) -->
             <!-- 장소구분 ( ex. 일반카페 ) -->
@@ -76,35 +74,86 @@
                 <TextView
                     android:id="@+id/textPlace"
                     android:text="@string/test"
-                    android:textColor="@color/defaultText"
-                    android:textSize="12dp"
+                    android:textColor="@color/grayText"
+                    android:textSize="11dp"
                     android:includeFontPadding="false"
                     android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent" />
             </RelativeLayout>
             <!-- 장소구분 ( ex. 일반카페 ) -->
         </LinearLayout>
         <!-- 좌측 -->
         <!-- 우측 -->
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
             <RelativeLayout
-                android:paddingRight="5dp"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/TextPoint"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/grayText"
                     android:text="5.0"
-                    android:textSize="35dp"
+                    android:textStyle="bold"
+                    android:textSize="24dp"
                     android:includeFontPadding="false"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="35dp" />
+                    android:layout_height="25dp" />
             </RelativeLayout>
+            <!-- 조회수, 리뷰수 -->
+            <RelativeLayout
+                android:paddingTop="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_alignParentRight="true"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <!-- 조회수 -->
+                    <LinearLayout
+                        android:layout_marginRight="2dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:src="@drawable/view"
+                            android:layout_width="20dp"
+                            android:layout_height="14dp" />
+                        <TextView
+                            android:id="@+id/textViews"
+                            android:layout_marginTop="2dp"
+                            android:text="00"
+                            android:textSize="10dp"
+                            android:textColor="@color/grayText"
+                            android:includeFontPadding="false"
+                            android:layout_width="wrap_content"
+                            android:layout_height="11dp" />
+                    </LinearLayout>
+                    <!-- 리뷰수 -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+                        <ImageView
+                            android:src="@drawable/review"
+                            android:layout_width="20dp"
+                            android:layout_height="14dp" />
+                        <TextView
+                            android:id="@+id/textReviews"
+                            android:layout_marginTop="2dp"
+                            android:textSize="10dp"
+                            android:text="00"
+                            android:textColor="@color/grayText"
+                            android:includeFontPadding="false"
+                            android:layout_width="wrap_content"
+                            android:layout_height="11dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+            <!-- 조회수, 리뷰수 -->
         </LinearLayout>
         <!-- 우측 -->
     </LinearLayout>

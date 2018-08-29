@@ -17,7 +17,7 @@
             <!-- 뒤로가기 -->
             <ImageButton
                 android:id="@+id/btnGoBack"
-                android:src="@drawable/ic_left"
+                android:src="@drawable/ic_left_white"
                 android:scaleType="fitCenter"
                 android:background="@null"
                 android:layout_width="50dp"

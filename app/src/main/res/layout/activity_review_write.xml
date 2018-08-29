@@ -29,7 +29,7 @@
                     android:layout_height="50dp"
                     android:background="@null"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_left" />
+                    android:src="@drawable/ic_left_white" />
                 <!-- 제목 -->
                 <TextView
                     android:id="@+id/title"

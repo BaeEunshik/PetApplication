@@ -61,6 +61,8 @@
                         <ImageButton
                             android:id="@+id/btnSrchMap"
                             android:background="@drawable/ic_map_alt"
+                            android:scaleX="1.1"
+                            android:scaleY="1.1"
                             android:layout_marginRight="10dp"
                             android:layout_width="35dp"
                             android:layout_height="35dp" />
@@ -72,19 +74,20 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/colorDarkHeader"
                 android:orientation="horizontal">
-                <Button
+                <ImageButton
                     android:id="@+id/btnGoLeft"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_accompany_pet"
+                    android:scaleType="fitCenter"
                     android:background="@color/colorPrimary"
                     android:layout_weight="1"
                     android:text="애견동반" />
-                <Button
+                <ImageButton
                     android:id="@+id/btnGoRight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:background="@color/colorWhite"
                     android:layout_weight="1"
                     android:text="애견전문" />
@@ -147,13 +150,13 @@
         <!-- 메뉴버튼 -->
         <Button
             android:id="@+id/btn_openDrawer"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="15dp"
             android:background="@drawable/menubar"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_width="59dp"
-            android:layout_height="64dp" />
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
     </RelativeLayout>
     <!-- CONTENT ( 드로어 제외 나머지 요소 ) -->
 
@@ -226,7 +229,7 @@
                     android:id="@+id/memberImg"
                     android:layout_centerInParent="true"
                     android:src="@drawable/chracter"
-                    android:scaleType="fitCenter"
+                    android:scaleType="center"
                     android:background="@null"
                     android:layout_width="70dp"
                     android:layout_height="70dp" />

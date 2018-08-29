@@ -18,7 +18,7 @@
             <!-- 뒤로가기 -->
             <ImageButton
                 android:id="@+id/btnGoBack"
-                android:src="@drawable/ic_left"
+                android:src="@drawable/ic_left_white"
                 android:scaleType="fitCenter"
                 android:background="@null"
                 android:layout_width="50dp"
@@ -35,11 +35,12 @@
                     android:cursorVisible="false"
                     android:background="@null"
                     android:hint="검색할 가게"
-                    android:textSize="16dp"
+                    android:textSize="18dp"
                     android:textStyle="bold"
+                    android:includeFontPadding="false"
                     android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="22dp" />
             </LinearLayout>
 
 
@@ -52,7 +53,7 @@
                 <ImageButton
                     android:id="@+id/btnSrchText"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/ic_search"
+                    android:background="@drawable/ic_search_white"
                     android:layout_marginRight="10dp"
                     android:layout_width="35dp"
                     android:layout_height="35dp" />

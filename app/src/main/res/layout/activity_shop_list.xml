@@ -22,7 +22,7 @@
                 <!-- 뒤로가기 -->
                 <ImageButton
                     android:id="@+id/btnGoBack"
-                    android:src="@drawable/ic_left"
+                    android:src="@drawable/ic_left_white"
                     android:scaleType="fitCenter"
                     android:background="@null"
                     android:layout_width="50dp"
@@ -53,11 +53,11 @@
                 android:id="@+id/btnAdd"
                 android:layout_marginBottom="10dp"
                 android:layout_marginEnd="10dp"
-                android:background="@drawable/ic_add"
+                android:background="@drawable/addbtn"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:layout_width="66dp"
-                android:layout_height="60dp" />
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
         </RelativeLayout>
         <!-- 내용 -->
     </LinearLayout>
