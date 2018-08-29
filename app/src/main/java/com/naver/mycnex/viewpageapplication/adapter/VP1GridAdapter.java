@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.naver.mycnex.viewpageapplication.R;
+import com.naver.mycnex.viewpageapplication.RegisterShopActivity;
 import com.naver.mycnex.viewpageapplication.ShopActivity;
 import com.naver.mycnex.viewpageapplication.custom.SquareImageView;
 import com.naver.mycnex.viewpageapplication.data.Store;
@@ -73,17 +74,19 @@ public class VP1GridAdapter extends BaseAdapter{
 
         // 그리드뷰 아이템 세팅
         Store store = getItem(position);
+        // Context
+        Context context = parent.getContext();
+
         /** setText **/
-        holder.TextName.setText(store.getName());    // 이름
-        holder.TextDistance.setText("00km");                         // TODO : 현재 위치로부터의 거리 ( 구현? 삭제? )
-        switch ( store.getCategory() ){               // 장소구분
-            case 0: holder.textPlace.setText("일반카페");
-                    break;
-            case 1: holder.textPlace.setText("일반식당");
-                    break;
-            default: holder.textPlace.setText("invalid");
-                    break;
-        }
+
+        //장소이름
+        holder.TextName.setText(store.getName());
+        //현재위치로부터의 거리
+        holder.TextDistance.setText("00km"); // TODO : ( 구현? 삭제? )
+        //카테고리 ( 장소구분 )
+        String[] categoies = context.getResources().getStringArray(R.array.petGeneral);
+
+        store.getCategory();
 
         // TODO :
         // 평점 계산 로직)
@@ -93,15 +96,16 @@ public class VP1GridAdapter extends BaseAdapter{
         // - 객체 배열에 넣어서 사용
         holder.TextPoint.setText("5.0");    // 점수
 
-
         /** setIMG **/
+
         // 그리드 이미지
-        GlideApp.with(parent.getContext())
+        GlideApp.with(context)
                 .load( R.drawable.dog1 )
                 .centerCrop()
                 .into( holder.itemImg );
+
         // 북마크 여부 표시 ( TODO : 북마크 여부에 따라 다른 이미지 적용 )
-        GlideApp.with(parent.getContext())
+        GlideApp.with(context)
                 .load( R.drawable.ic_add )
                 .fitCenter()
                 .into( holder.btnBookmark );
@@ -118,9 +122,10 @@ public class VP1GridAdapter extends BaseAdapter{
                         .into( onClickHolder.btnBookmark );
             }
         });
-
         return convertView;
     }
+
+
 
     public class Holder {
         SquareImageView itemImg;

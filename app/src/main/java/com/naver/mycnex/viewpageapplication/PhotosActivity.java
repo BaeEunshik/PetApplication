@@ -3,6 +3,8 @@ package com.naver.mycnex.viewpageapplication;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.naver.mycnex.viewpageapplication.adapter.PhotosActGridAdapter;
 import com.naver.mycnex.viewpageapplication.data.TESTImage;
@@ -11,13 +13,17 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class PhotosActivity extends AppCompatActivity {
 
     //버터나이프
     private Unbinder unbinder;
+    @BindView(R.id.title) TextView title;
     @BindView(R.id.gridView) GridView gridView;
+    @BindView(R.id.btnGoBack) ImageButton btnGoBack;
+
 
     ArrayList<TESTImage> testImages = new ArrayList<>();
     PhotosActGridAdapter photosActGridAdapter;
@@ -38,9 +44,17 @@ public class PhotosActivity extends AppCompatActivity {
         testImages.add(imgObj);
         testImages.add(imgObj);
 
+        // 가게 ( 장소 ) 이름 set
+        title.setText("가게이름(객체연동필요)");
+
         // 어댑터 set
         photosActGridAdapter = new PhotosActGridAdapter(testImages);
         gridView.setAdapter(photosActGridAdapter);
+    }
+
+    @OnClick(R.id.btnGoBack)
+    public void btnGoBack(){
+        finish();
     }
 
     @Override

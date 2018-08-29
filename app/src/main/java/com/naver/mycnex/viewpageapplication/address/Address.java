@@ -77,7 +77,8 @@ public class Address extends AppCompatActivity {
                 @Override
                 public void run() {
                     result.setText(String.format("(%s) %s %s", arg1, arg2, arg3));
-                    // WebView를 초기화 하지않으면 재사용할 수 없음
+                    result.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    // WebView 를 초기화 하지않으면 재사용할 수 없음
                     init_webView();
                 }
             });
