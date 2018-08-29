@@ -17,6 +17,7 @@ import com.naver.mycnex.viewpageapplication.ShopActivity;
 import com.naver.mycnex.viewpageapplication.custom.SquareImageView;
 import com.naver.mycnex.viewpageapplication.data.Store;
 import com.naver.mycnex.viewpageapplication.glide.GlideApp;
+import com.naver.mycnex.viewpageapplication.global.Global;
 
 import java.util.ArrayList;
 
@@ -85,6 +86,11 @@ public class VP1GridAdapter extends BaseAdapter{
         holder.TextDistance.setText("00km"); // TODO : ( 구현? 삭제? )
         //카테고리 ( 장소구분 )
         String[] categoies = context.getResources().getStringArray(R.array.petGeneral);
+
+
+
+
+
 
         store.getCategory();
 

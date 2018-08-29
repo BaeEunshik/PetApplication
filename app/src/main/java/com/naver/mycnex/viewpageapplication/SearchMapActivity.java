@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -25,6 +26,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.gun0912.tedpermission.PermissionListener;
@@ -53,7 +55,6 @@ public class SearchMapActivity extends AppCompatActivity
     @BindView(R.id.spinnerPurpose) Spinner spinnerPurpose;
     @BindView(R.id.spinnerPlace) Spinner spinnerPlace;
 
-
     /** onCreate **/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,21 +63,7 @@ public class SearchMapActivity extends AppCompatActivity
         //버터나이프
         unbinder = ButterKnife.bind(this);
 
-        //맵 화면 컴포넌트
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
-        //Spinner ( 드롭다운 메뉴 ) 관련설정
-        ArrayAdapter addressAdapter = ArrayAdapter.createFromResource(this, R.array.address1, android.R.layout.simple_spinner_item);
-        addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerLocate.setAdapter(addressAdapter);
-        ArrayAdapter dogsizeAdapter = ArrayAdapter.createFromResource(this, R.array.purpose, android.R.layout.simple_spinner_item);
-        dogsizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerPurpose.setAdapter(dogsizeAdapter);
-        ArrayAdapter placeAdapter = ArrayAdapter.createFromResource(this, R.array.place, android.R.layout.simple_spinner_item);
-        placeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerPlace.setAdapter(placeAdapter);
+        InitWhenCreated();
 
     }
     /** onDestroy **/
@@ -98,8 +85,6 @@ public class SearchMapActivity extends AppCompatActivity
        finish();
     }
 
-
-
     /********** 맵 관련 **********/
     //OnMapReady
     @Override
@@ -115,6 +100,7 @@ public class SearchMapActivity extends AppCompatActivity
     //onMyLocationButtonClick
     @Override
     public boolean onMyLocationButtonClick() {
+
         return false;
     }
 
@@ -124,33 +110,7 @@ public class SearchMapActivity extends AppCompatActivity
             //권한 획득시
             @Override
             public void onPermissionGranted() {
-                if (ContextCompat.checkSelfPermission(SearchMapActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED) {
-                    mMap.setMyLocationEnabled(true);
-                } else {
-                    // Show rationale and request permission.
-                }
-                mMap.setOnMyLocationButtonClickListener(SearchMapActivity.this);
-                mMap.setOnMyLocationClickListener(SearchMapActivity.this);
-
-                Criteria criteria = new Criteria();
-                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                String provider = locationManager.getBestProvider(criteria, false);
-                Location location = locationManager.getLastKnownLocation(provider);
-
-                Log.d("은식-location",Double.toString(location.getLatitude()));
-
-                double lat =  location.getLatitude();
-                double lng = location.getLongitude();
-                LatLng currentLocation = new LatLng(lat, lng);
-
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
-
-                /**
-                    LatLng Palace = new LatLng(37.579882, 126.977027);
-                    mMap.addMarker(new MarkerOptions().position(Palace).title("경복궁"));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Palace, 15));
-                */
+                getCurrentLocationAndCircle();
             }
             //권한 거부시
             @Override
@@ -164,5 +124,61 @@ public class SearchMapActivity extends AppCompatActivity
                 .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
                 .check();
     }
+    /************************* Oncreated *************************/
+    public void InitWhenCreated() {
+        //맵 화면 컴포넌트
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+        InitSpinner();
+    }
+
+    public void InitSpinner() {
+        //Spinner ( 드롭다운 메뉴 ) 관련설정
+        ArrayAdapter addressAdapter = ArrayAdapter.createFromResource(this, R.array.address1, android.R.layout.simple_spinner_item);
+        addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerLocate.setAdapter(addressAdapter);
+        ArrayAdapter dogsizeAdapter = ArrayAdapter.createFromResource(this, R.array.purpose, android.R.layout.simple_spinner_item);
+        dogsizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerPurpose.setAdapter(dogsizeAdapter);
+        ArrayAdapter placeAdapter = ArrayAdapter.createFromResource(this, R.array.place, android.R.layout.simple_spinner_item);
+        placeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerPlace.setAdapter(placeAdapter);
+    }
+
+    public void getCurrentLocationAndCircle() {
+        if (ContextCompat.checkSelfPermission(SearchMapActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+        } else {
+            // Show rationale and request permission.
+        }
+        mMap.setOnMyLocationButtonClickListener(SearchMapActivity.this);
+        mMap.setOnMyLocationClickListener(SearchMapActivity.this);
+
+        Criteria criteria = new Criteria();
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        String provider = locationManager.getBestProvider(criteria, false);
+        Location location = locationManager.getLastKnownLocation(provider);
+
+        double lat =  location.getLatitude();
+        double lng = location.getLongitude();
+        LatLng currentLocation = new LatLng(lat, lng);
+
+        CircleOptions circle1KM = new CircleOptions().center(currentLocation) //원점
+                .radius(1000)      //반지름 단위 : m
+                .strokeWidth(0f)  //선너비 0f : 선없음
+                .fillColor(Color.parseColor("#880000ff")); //배경색
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
+        mMap.addCircle(circle1KM);
+    }
+
+    public void setOnClickCurrentLocation() {
+
+
+
+    }
+
 }
 

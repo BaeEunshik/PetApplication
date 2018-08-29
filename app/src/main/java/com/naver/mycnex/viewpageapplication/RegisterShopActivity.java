@@ -274,6 +274,7 @@ public class RegisterShopActivity extends AppCompatActivity {
         String dong = str[3];
 
         getLatLng();
+
         String store_info = shop_detail_edit.getText().toString();
 
         String startTime = startTime_btn.getText().toString();
@@ -325,10 +326,6 @@ public class RegisterShopActivity extends AppCompatActivity {
             middlePhone_edit.setFocusableInTouchMode(true);
             return;
         }
-
-        Log.d("asd",address);
-        Log.d("asd", sigungu);
-        Log.d("asd", dong);
 
          Call<Long> submitStore = RetrofitService.getInstance().getRetrofitRequest().submitStore(name,phone,PETSIZE_PERMISSION,store_info,oper_date,operation_time,
                  PARKING,RESERVATION,address,sigungu,dong,lat,lng,selectedCategory);
@@ -530,9 +527,7 @@ public class RegisterShopActivity extends AppCompatActivity {
     }
     public void getLatLng() {
         Geocoder geocoder = new Geocoder(RegisterShopActivity.this);
-
         try {
-
             List<android.location.Address> addr = geocoder.getFromLocationName( btn_shop_address.getText().toString(),1); // 주소가 저장된 값을 넣으면 된다. Address 는 안드로이드가 제공하는 객체.
             lat = addr.get(0).getLatitude();
             lng = addr.get(0).getLongitude();
