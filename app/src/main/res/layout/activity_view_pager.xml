@@ -36,7 +36,7 @@
                         android:textSize="10dp"/>
                     <Spinner
                         android:id="@+id/spinnerLocate"
-                        android:layout_width="100dp"
+                        android:layout_width="120dp"
                         android:layout_height="35dp"/>
                 </LinearLayout>
 
@@ -75,22 +75,62 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="horizontal">
-                <ImageButton
+                <!--애견동반-->
+                <RelativeLayout
                     android:id="@+id/btnGoLeft"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_accompany_pet"
-                    android:scaleType="fitCenter"
                     android:background="@color/colorPrimary"
                     android:layout_weight="1"
-                    android:text="애견동반" />
-                <ImageButton
-                    android:id="@+id/btnGoRight"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorWhite"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <View
+                            android:background="@drawable/ic_accompany_pet"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp" />
+                        <TextView
+                            android:layout_gravity="center_vertical"
+                            android:text="애견동반"
+                            android:textSize="20dp"
+                            android:textColor="@color/defaultText"
+                            android:textStyle="bold"
+                            android:includeFontPadding="false"
+                            android:layout_width="wrap_content"
+                            android:layout_height="22dp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <!--애견동반-->
+                <!--애견전용-->
+                <RelativeLayout
+                    android:id="@+id/btnGoRight"
+                    android:background="@drawable/flat_box_gray"
                     android:layout_weight="1"
-                    android:text="애견전문" />
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_gravity="center_vertical"
+                            android:text="애견전용"
+                            android:textSize="20dp"
+                            android:textColor="@color/defaultText"
+                            android:textStyle="bold"
+                            android:includeFontPadding="false"
+                            android:layout_width="wrap_content"
+                            android:layout_height="22dp" />
+                        <View
+                            android:background="@drawable/ic_pet1"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <!--애견전용-->
+
             </LinearLayout>
             <!-- 헤더 ( 중단 )  -->
             <!-- 헤더 ( 하단 )  -->
