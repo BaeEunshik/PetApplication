@@ -99,10 +99,11 @@
                     android:textColor="@color/colorPrimary"
                     android:text="5.0"
                     android:textSize="35dp"
+                    android:includeFontPadding="false"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="35dp" />
             </RelativeLayout>
         </LinearLayout>
         <!-- 우측 -->

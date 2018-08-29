@@ -31,6 +31,7 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.naver.mycnex.viewpageapplication.address.Address;
 import com.naver.mycnex.viewpageapplication.data.Store;
+import com.naver.mycnex.viewpageapplication.global.Global;
 import com.naver.mycnex.viewpageapplication.retrofit.RetrofitRequest;
 import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 
@@ -51,47 +52,12 @@ import retrofit2.Response;
 
 public class RegisterShopActivity extends AppCompatActivity {
 
-    //
-
     private final int ADDRESS_SUBMIT = 11;
-    private final int CAMERA_GALLERY = 111;
-
-    public static Integer RESERVATION_ABLE = 0;  // 예약가능 : 0 , 예약불가 : 1
-    public static Integer RESERVATION_UNABLE = 1;
-    public static Integer RESERVATION = RESERVATION_ABLE;
-    public static Integer PETSIZE_PERMISSION = 1;
-    public static Integer PETSIZE_SMALL = 1;
-    public static Integer PETSIZE_MIDIUM = 2;
-    public static Integer PETSIZE_LARGE = 3;
-    public static Integer PARKING_ABLE = 1;
-    public static Integer PARKING_UNABLE = 2;
-    public static Integer PARKING_VALET = 3;
-    public static Integer PARKING = PARKING_UNABLE;
-    private static String PHONE_NUMBER = "";
-
-    private static int GENERAL = 0;
-    private static int SPECIAL = 1;
-
-    private static int GENERAL_LENGTH = 6;
-    public static Integer GENERAL_CAFE = 11;
-    public static Integer GENERAL_RESTAURANT = 12;
-    public static Integer GENERAL_BAR = 13;
-    public static Integer GENERAL_ACCOMMODATION = 14;
-    public static Integer GENERAL_PARK = 15;
-    public static Integer GENERAL_STUDIO = 16;
-
-    private static int SPECIAL_LENGTH = 11;
-    public static Integer SPECIAL_CAFE = 111;
-    public static Integer SPECIAL_PETSHOP = 112;
-    public static Integer SPECIAL_BEAUTY = 113;
-    public static Integer SPECIAL_HOSPITAL = 114;
-    public static Integer SPECIAL_ADOPT = 115;
-    public static Integer SPECIAL_EDUCATION = 116;
-    public static Integer SPECIAL_ACCOMMODATION = 117;
-    public static Integer SPECIAL_LEISURE = 118;
-    public static Integer SPECIAL_FUNERAL = 119;
-    public static Integer SPECIAL_PLAYGROUND = 120;
-    public static Integer SPECIAL_STUDIO = 121;
+    //전역변수
+    private String PHONE_NUMBER = "";
+    private Integer RESERVATION = Global.RESERVATION_ABLE;
+    private Integer PETSIZE_PERMISSION = Global.PETSIZE_SMALL;
+    private Integer PARKING = Global.PARKING_UNABLE;
 
     Integer selectedCategory = 0;
     double lat = 0;
@@ -160,22 +126,10 @@ public class RegisterShopActivity extends AppCompatActivity {
     @Override // Activity Result
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAMERA_GALLERY) {
+        if (requestCode == ADDRESS_SUBMIT) {
             if (resultCode == RESULT_OK) {
-
-                ClipData clipData = data.getClipData();
-
-                if (clipData != null) {
-
-                    InitImage();
-                    select_photo_btn.setVisibility(View.GONE);
-                    for (int i = 0; i < clipData.getItemCount(); i++) {
-                        Uri uriOne =  clipData.getItemAt(i).getUri();
-                        images[i].setImageURI(uriOne);
-                        images[i].setVisibility(View.VISIBLE);
-                    }
-
-                }
+                String address = data.getStringExtra("address");
+                btn_shop_address.setText(address);
             }
         }
     }
@@ -194,44 +148,44 @@ public class RegisterShopActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnReserveOk)    // 개인 / 업체 가입자 버튼 클릭 이벤트
     public void btnIndividual(){
-        RESERVATION = RESERVATION_ABLE;
+        RESERVATION = Global.RESERVATION_ABLE;
         switchReservationType();
     }
     @OnClick(R.id.btnReserveNo)
     public void btnCompany(){
-        RESERVATION = RESERVATION_UNABLE;
+        RESERVATION = Global.RESERVATION_UNABLE;
         switchReservationType();
     }
 
     @OnClick(R.id.smallsize_btn)
     public void smallsize() {
-        PETSIZE_PERMISSION = 1;
+        PETSIZE_PERMISSION = Global.PETSIZE_SMALL;
         PetSizeSelection();
     }
     @OnClick(R.id.middlesize_btn)
     public void middlesize() {
-        PETSIZE_PERMISSION = 2;
+        PETSIZE_PERMISSION = Global.PETSIZE_MIDIUM;
         PetSizeSelection();
     }
     @OnClick(R.id.largesize_btn)
     public void largesize() {
-        PETSIZE_PERMISSION = 3;
+        PETSIZE_PERMISSION = Global.PETSIZE_LARGE;
         PetSizeSelection();
     }
 
     @OnClick(R.id.parking_able_btn)
     public void parkingAble() {
-        PARKING = PARKING_ABLE;
+        PARKING = Global.PARKING_ABLE;
         Parking();
     }
     @OnClick(R.id.parking_unable_btn)
     public void parkingUnable() {
-        PARKING = PARKING_UNABLE;
+        PARKING = Global.PARKING_UNABLE;
         Parking();
     }
     @OnClick(R.id.parking_valet_btn)
     public void parkingValet() {
-        PARKING = PARKING_VALET;
+        PARKING = Global.PARKING_VALET;
         Parking();
     }
 
@@ -417,12 +371,12 @@ public class RegisterShopActivity extends AppCompatActivity {
     // 예약가능 / 불가 버튼 클릭시 view 와 함께
     // static 변수 RESERVATION 값을 변경 - DB 에 저장하는 값으로 사용
     public void switchReservationType(){
-        if(RESERVATION == RESERVATION_ABLE) {
+        if(RESERVATION == Global.RESERVATION_ABLE) {
             btnReserveOk.setBackground(ContextCompat.getDrawable(RegisterShopActivity.this,R.drawable.button_left_green));
             btnReserveOk.setTextColor(Color.parseColor("#FFFFFF"));
             btnReserveNo.setBackground(ContextCompat.getDrawable(RegisterShopActivity.this,R.drawable.button_right_white));
             btnReserveNo.setTextColor(Color.parseColor("#000000"));
-        } else if (RESERVATION == RESERVATION_UNABLE) {
+        } else if (RESERVATION == Global.RESERVATION_UNABLE) {
             btnReserveOk.setBackground(ContextCompat.getDrawable(RegisterShopActivity.this,R.drawable.button_left_white));
             btnReserveOk.setTextColor(Color.parseColor("#000000"));
             btnReserveNo.setBackground(ContextCompat.getDrawable(RegisterShopActivity.this,R.drawable.button_right_green));
@@ -432,7 +386,7 @@ public class RegisterShopActivity extends AppCompatActivity {
 
     public void PetSizeSelection() {
 
-        if (PETSIZE_PERMISSION == PETSIZE_SMALL) {
+        if (PETSIZE_PERMISSION == Global.PETSIZE_SMALL) {
 
             middlesize_btn.setBackground(ContextCompat.getDrawable(RegisterShopActivity.this,R.drawable.button_right_white));
             middlesize_btn.setTextColor(Color.parseColor("#000000"));
@@ -440,7 +394,7 @@ public class RegisterShopActivity extends AppCompatActivity {
             largesize_btn.setBackground(ContextCompat.getDrawable(RegisterShopActivity.this,R.drawable.button_right_white));
             largesize_btn.setTextColor(Color.parseColor("#000000"));
 
-        } else if (PETSIZE_PERMISSION == PETSIZE_MIDIUM) {
+        } else if (PETSIZE_PERMISSION == Global.PETSIZE_MIDIUM) {
 
             middlesize_btn.setBackground(ContextCompat.getDrawable(RegisterShopActivity.this,R.drawable.button_left_green));
             middlesize_btn.setTextColor(Color.parseColor("#FFFFFF"));
@@ -448,7 +402,7 @@ public class RegisterShopActivity extends AppCompatActivity {
             largesize_btn.setBackground(ContextCompat.getDrawable(RegisterShopActivity.this,R.drawable.button_right_white));
             largesize_btn.setTextColor(Color.parseColor("#000000"));
 
-        } else if (PETSIZE_PERMISSION == PETSIZE_LARGE) {
+        } else if (PETSIZE_PERMISSION == Global.PETSIZE_LARGE) {
 
             middlesize_btn.setBackground(ContextCompat.getDrawable(RegisterShopActivity.this,R.drawable.button_left_green));
             middlesize_btn.setTextColor(Color.parseColor("#FFFFFF"));
@@ -489,7 +443,7 @@ public class RegisterShopActivity extends AppCompatActivity {
 
     public void Parking() {
 
-        if (PARKING == PARKING_ABLE) {
+        if (PARKING == Global.PARKING_ABLE) {
 
             parking_able_btn.setBackground(ContextCompat.getDrawable(RegisterShopActivity.this,R.drawable.button_left_green));
             parking_able_btn.setTextColor(Color.parseColor("#FFFFFF"));
@@ -500,7 +454,7 @@ public class RegisterShopActivity extends AppCompatActivity {
             parking_valet_btn.setBackground(ContextCompat.getDrawable(RegisterShopActivity.this,R.drawable.button_right_white));
             parking_valet_btn.setTextColor(Color.parseColor("#000000"));
 
-        } else if (PARKING == PARKING_UNABLE) {
+        } else if (PARKING == Global.PARKING_UNABLE) {
 
             parking_able_btn.setBackground(ContextCompat.getDrawable(RegisterShopActivity.this,R.drawable.button_right_white));
             parking_able_btn.setTextColor(Color.parseColor("#000000"));
@@ -511,7 +465,7 @@ public class RegisterShopActivity extends AppCompatActivity {
             parking_valet_btn.setBackground(ContextCompat.getDrawable(RegisterShopActivity.this,R.drawable.button_right_white));
             parking_valet_btn.setTextColor(Color.parseColor("#000000"));
 
-        } else if (PARKING == PARKING_VALET) {
+        } else if (PARKING == Global.PARKING_VALET) {
 
             parking_able_btn.setBackground(ContextCompat.getDrawable(RegisterShopActivity.this,R.drawable.button_right_white));
             parking_able_btn.setTextColor(Color.parseColor("#000000"));
@@ -629,7 +583,7 @@ public class RegisterShopActivity extends AppCompatActivity {
         select_general_special.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == GENERAL) {
+                if (position == Global.CATEGORY_GENERAL) {
 
                     ArrayAdapter addressAdapter = ArrayAdapter.createFromResource(RegisterShopActivity.this, R.array.petGeneral, android.R.layout.simple_spinner_item);
                     addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -638,9 +592,9 @@ public class RegisterShopActivity extends AppCompatActivity {
                     select_category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            for (int i = 0; i < GENERAL_LENGTH; i++) {
+                            for (int i = 0; i < Global.CATEGORY_GENERAL_LENGTH; i++) {
                                 if (position == i) {
-                                    selectedCategory = position + GENERAL_CAFE;
+                                    selectedCategory = position + Global.CATEGORY_GENERAL_CAFE;
                                 }
                             }
                         }
@@ -651,7 +605,7 @@ public class RegisterShopActivity extends AppCompatActivity {
                         }
                     });
 
-                } else if (position == SPECIAL) {
+                } else if (position == Global.CATEGORY_SPECIAL) {
 
                     ArrayAdapter addressAdapter = ArrayAdapter.createFromResource(RegisterShopActivity.this, R.array.petSpecial, android.R.layout.simple_spinner_item);
                     addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -660,9 +614,9 @@ public class RegisterShopActivity extends AppCompatActivity {
                     select_category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            for (int i = 0; i < SPECIAL_LENGTH; i++) {
+                            for (int i = 0; i < Global.CATEGORY_SPECIAL_LENGTH; i++) {
                                 if (position == i) {
-                                    selectedCategory = position + SPECIAL_CAFE;
+                                    selectedCategory = position + Global.CATEGORY_SPECIAL_CAFE;
                                 }
                             }
                         }

@@ -25,6 +25,7 @@ import com.gun0912.tedpermission.TedPermission;
 import com.naver.mycnex.viewpageapplication.adapter.ShopActRecyclerAdapter;
 import com.naver.mycnex.viewpageapplication.data.Store;
 import com.naver.mycnex.viewpageapplication.data.TESTImage;
+import com.naver.mycnex.viewpageapplication.global.Global;
 import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ public class ShopActivity extends AppCompatActivity
         implements OnMapReadyCallback {
 
     //전화번호
-    public static String PHONE_NUMBER = "";
+    private String PHONE_NUMBER = "";
     private GoogleMap mMap;
 
     //버터나이프
@@ -236,23 +237,23 @@ public class ShopActivity extends AppCompatActivity
         textAddress.setText(store.getAddress());
         operate_time_txt.setText(store.getOperation_time());
         operate_day_txt.setText(store.getOperation_day());
-        if (store.getDog_size() == RegisterShopActivity.PETSIZE_SMALL) {
+        if (store.getDog_size() == Global.PETSIZE_SMALL) {
             dogSize_txt.setText("소형견");
-        } else if (store.getDog_size() == RegisterShopActivity.PETSIZE_MIDIUM) {
+        } else if (store.getDog_size() == Global.PETSIZE_MIDIUM) {
             dogSize_txt.setText("중형견");
-        } else if (store.getDog_size() == RegisterShopActivity.PETSIZE_LARGE) {
+        } else if (store.getDog_size() == Global.PETSIZE_LARGE) {
             dogSize_txt.setText("대형견");
         }
-        if (store.getParking() == RegisterShopActivity.PARKING_ABLE) {
+        if (store.getParking() == Global.PARKING_ABLE) {
             parking_txt.setText("주차가능");
-        } else if (store.getParking() == RegisterShopActivity.PARKING_UNABLE) {
+        } else if (store.getParking() == Global.PARKING_UNABLE) {
             parking_txt.setText("주차불가");
-        } else if (store.getParking() == RegisterShopActivity.PARKING_VALET) {
+        } else if (store.getParking() == Global.PARKING_VALET) {
             parking_txt.setText("발렛주차");
         }
-        if (store.getReservation() == RegisterShopActivity.RESERVATION_ABLE) {
+        if (store.getReservation() == Global.RESERVATION_ABLE) {
             reservation_txt.setText("예약가능");
-        } else if (store.getReservation() == RegisterShopActivity.RESERVATION_UNABLE) {
+        } else if (store.getReservation() == Global.RESERVATION_UNABLE) {
             reservation_txt.setText("예약불가");
         }
     }

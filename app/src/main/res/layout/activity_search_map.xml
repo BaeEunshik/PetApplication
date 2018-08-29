@@ -129,18 +129,180 @@
                 android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
                 android:layout_height="80dp">
-                <!-- 주소정보 박스 -->
+                <!-- 정보 박스 -->
                 <RelativeLayout
+                    android:orientation="horizontal"
                     android:background="@color/colorWhite"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+                    <!-- 이미지 ( 좌측 )-->
+                    <ImageView
+                        android:id="@+id/btnImg"
+                        android:src="@drawable/dog1"
+                        android:scaleType="centerCrop"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent" />
+                    <!-- 이미지 ( 좌측 )-->
+                    <!-- 정보 ( 중앙 )-->
+                    <LinearLayout
+                        android:layout_toRightOf="@+id/btnImg"
+                        android:layout_toLeftOf="@+id/informBoxRight"
+                        android:paddingLeft="10dp"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <!-- 가게이름 -->
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp">
+                            <TextView
+                                android:id="@+id/TextName"
+                                android:layout_centerVertical="true"
+                                android:text="가게이름"
+                                android:textSize="20dp"
+                                android:textColor="@color/defaultText"
+                                android:includeFontPadding="false"
+                                android:layout_width="wrap_content"
+                                android:layout_height="20dp" />
+                        </RelativeLayout>
+                        <!-- 가게이름 -->
+                        <!-- 지역 -->
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp">
+                            <TextView
+                                android:id="@+id/TextLocation"
+                                android:layout_centerVertical="true"
+                                android:text="지역"
+                                android:textSize="12dp"
+                                android:textColor="@color/defaultText"
+                                android:includeFontPadding="false"
+                                android:layout_width="wrap_content"
+                                android:layout_height="13dp" />
+                        </RelativeLayout>
+                        <!-- 지역 -->
+                        <!-- 기타 -->
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <!-- 카테고리 -->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:id="@+id/TextCategory"
+                                    android:text="어떤카페"
+                                    android:textSize="12dp"
+                                    android:textColor="@color/defaultText"
+                                    android:includeFontPadding="false"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="13dp" />
+                            </LinearLayout>
+                            <!-- 카테고리 -->
+                            <View
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:background="@color/defaultText"
+                                android:layout_width="1dp"
+                                android:layout_height="13dp"/>
 
+                            <!-- 반려견 크기 -->
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:id="@+id/TextSize"
+                                    android:text="~견 입장 가능"
+                                    android:textSize="12dp"
+                                    android:textColor="@color/defaultText"
+                                    android:includeFontPadding="false"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="13dp" />
+                            </LinearLayout>
+                            <!-- 반려견 크기 -->
+                        </LinearLayout>
+                        <!-- 기타 -->
+                    </LinearLayout>
+                    <!-- 정보 ( 중앙 )-->
+                    <!-- 정보 ( 우측 )-->
+                    <LinearLayout
+                        android:id="@+id/informBoxRight"
+                        android:orientation="vertical"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent">
+                        <!-- 평점 -->
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/TextPoint"
+                                android:textColor="@color/colorPrimary"
+                                android:text="5.0"
+                                android:textSize="35dp"
+                                android:includeFontPadding="false"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp" />
+                        </RelativeLayout>
+                        <!-- 평점 -->
+                        <!-- 조회수, 리뷰수 -->
+                        <LinearLayout
+                            android:paddingTop="5dp"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <!-- 조회수 -->
+                            <LinearLayout
+                                android:layout_weight="1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content">
+                                <ImageView
+                                    android:src="@drawable/addbtn"
+                                    android:layout_width="20dp"
+                                    android:layout_height="14dp" />
+                                <TextView
+                                    android:id="@+id/textViews"
+                                    android:layout_marginTop="2dp"
+                                    android:text="0000"
+                                    android:textSize="10dp"
+                                    android:textColor="@color/defaultText"
+                                    android:includeFontPadding="false"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="11dp" />
+                            </LinearLayout>
+                            <!-- 리뷰수 -->
+                            <LinearLayout
+                                android:layout_weight="1"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent">
+                                <ImageView
+                                    android:src="@drawable/addbtn"
+                                    android:layout_width="20dp"
+                                    android:layout_height="14dp" />
+                                <TextView
+                                    android:id="@+id/textReviews"
+                                    android:layout_marginTop="2dp"
+                                    android:textSize="10dp"
+                                    android:text="0000"
+                                    android:textColor="@color/defaultText"
+                                    android:includeFontPadding="false"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="11dp" />
+                            </LinearLayout>
+                        </LinearLayout>
+                        <!-- 조회수, 리뷰수 -->
+                    </LinearLayout>
+                    <!-- 정보 ( 우측 )-->
                 </RelativeLayout>
-                <!-- 주소정보 박스 -->
+                <!-- 정보 박스 -->
             </RelativeLayout>
             <!-- 하단 -->
         </RelativeLayout>
         <!-- 내용 -->
     </LinearLayout>
-
 </RelativeLayout>

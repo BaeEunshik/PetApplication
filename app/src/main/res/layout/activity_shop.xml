@@ -94,9 +94,10 @@
                                 android:layout_centerVertical="true"
                                 android:textStyle="bold"
                                 android:textSize="20dp"
+                                android:includeFontPadding="false"
                                 android:textColor="@color/defaultText"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="20dp" />
                         </RelativeLayout>
                         <!-- 가게이름 -->
                         <!-- 조회수 / 리뷰수-->
@@ -161,10 +162,10 @@
                             android:text="5.0"
                             android:textColor="@color/colorPrimary"
                             android:textStyle="bold"
-                            android:textSize="35dp"
+                            android:textSize="50dp"
                             android:includeFontPadding="false"
                             android:layout_width="wrap_content"
-                            android:layout_height="35dp" />
+                            android:layout_height="50dp" />
                     </RelativeLayout>
                     <!--우측-->
                 </LinearLayout>
