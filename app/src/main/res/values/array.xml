@@ -16,13 +16,24 @@
     </string-array>
 
     <string-array name="dogSize">
-        <item>사이즈</item>
-        <item>소형견</item>
-        <item>중형견</item>
         <item>대형견</item>
-        <item>무관</item>
-        <item>전체</item>
+        <item>중형견</item>
+        <item>소형견</item>
     </string-array>
+
+    <string-array name="DrawerNav">
+        <item>북마크</item>
+        <item>설정</item>
+        <item>내가게</item>
+        <item>가게등록</item>
+    </string-array>
+
+    <string-array name="purpose">
+        <item>애견동반</item>
+        <item>애견전문</item>
+    </string-array>
+
+
 <!--
     <string-array name="place">
         <item>전체</item>
@@ -33,15 +44,6 @@
         <item>애견장묘</item>
         <item>애견놀이터</item>
     </string-array>-->
-
-    <string-array name="purpose">
-        <item>애견동반</item>
-        <item>애견전문</item>
-    </string-array>
-
-    <string-array name="all">
-        <item>전체</item>
-    </string-array>
 
     <string-array name="petGeneral">
         <item>일반카페</item>

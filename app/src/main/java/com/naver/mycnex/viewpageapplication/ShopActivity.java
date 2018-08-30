@@ -52,7 +52,6 @@ public class ShopActivity extends AppCompatActivity
         implements OnMapReadyCallback {
 
     //전화번호
-    //private String PHONE_NUMBER = "";
     private GoogleMap mMap;
 
     //버터나이프

@@ -27,8 +27,8 @@ public class Global {
     public static Integer CATEGORY_GENERAL_STUDIO = 5;
     public static Integer[] CATEGORY_GENENRAL_ID_ARR = {CATEGORY_GENERAL_CAFE,CATEGORY_GENERAL_RESTAURANT,CATEGORY_GENERAL_BAR,CATEGORY_GENERAL_ACCOMMODATION,CATEGORY_GENERAL_PARK,
                                                  CATEGORY_GENERAL_STUDIO};
-
-    public static Integer CATEGORY_DIVISION_NUM = 100;
+    // 일반 , 전용 구분값
+    public static Integer CATEGORY_DIVISION_NUM= 100;
 
     //전용장소
     public static String[] CATEGORY_SPECIAL_STR_ARR = {"애견카페","펫샵","애견미용","동물병원","애견분양","애견교육","애견숙박","애견레저","애견장묘","애견놀이터","애견스튜디오"};

@@ -88,7 +88,7 @@ public class VP1GridAdapter extends BaseAdapter{
 
         //카테고리 ( 장소구분 )
         // DB 필드값 : Global 클래스의 CATEGORY_GENERAL_ARR 배열에서 인덱스 값으로 사용할 수 있도록 설계
-        if(store.getCategory() >= Global.CATEGORY_DIVISION_NUM) {
+        if( store.getCategory() >= Global.CATEGORY_DIVISION_NUM) {
             holder.textPlace.setText(Global.CATEGORY_SPECIAL_STR_ARR[ store.getCategory() ]);
         } else {
             holder.textPlace.setText(Global.CATEGORY_GENERAL_STR_ARR[ store.getCategory() ]);
