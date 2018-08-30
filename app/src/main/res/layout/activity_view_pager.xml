@@ -168,7 +168,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <Spinner
-                            android:id="@+id/spinnerPlace"
+                            android:id="@+id/spinnerPlaceGeneral"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="35dp"/>
+                        <Spinner
+                            android:id="@+id/spinnerPlaceSpecial"
+                            android:visibility="gone"
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="35dp"/>

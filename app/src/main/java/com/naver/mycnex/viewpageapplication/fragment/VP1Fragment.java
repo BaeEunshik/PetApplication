@@ -12,13 +12,16 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.naver.mycnex.viewpageapplication.ViewPagerActivity;
 import com.naver.mycnex.viewpageapplication.bus.BusProvider;
 import com.naver.mycnex.viewpageapplication.R;
 import com.naver.mycnex.viewpageapplication.ShopActivity;
 import com.naver.mycnex.viewpageapplication.adapter.VP1GridAdapter;
 import com.naver.mycnex.viewpageapplication.data.Store;
+import com.naver.mycnex.viewpageapplication.event.VPSpinnerItemSelected;
 import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 
@@ -69,12 +72,11 @@ public class VP1Fragment extends Fragment {
         bus.unregister(this);
         unbinder.unbind();
     }
-
+    /******************** METHOD ********************/
     public void InitWhenCreated() {
         getDataFromServer();
         GridViewOnItemClick();
     }
-
     public void GridViewOnItemClick() {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -85,7 +87,6 @@ public class VP1Fragment extends Fragment {
             }
         });
     }
-
     public void getDataFromServer() {
         Call<ArrayList<Store>> getStoreData = RetrofitService.getInstance().getRetrofitRequest().getStoreGeneral();
         getStoreData.enqueue(new Callback<ArrayList<Store>>() {
@@ -96,17 +97,24 @@ public class VP1Fragment extends Fragment {
                     initAdapter();
                 }
             }
-
             @Override
             public void onFailure(Call<ArrayList<Store>> call, Throwable t) {
 
             }
         });
     }
-
     public void initAdapter() {
         vp1GridAdapter = new VP1GridAdapter(stores);
         gridView.setAdapter(vp1GridAdapter);
+    }
+
+    /******************** EVENT BUS ********************/
+    @Subscribe
+    public void vPSpinnerItemSelected(VPSpinnerItemSelected evt){
+        Log.d("버스확인1",Integer.toString(evt.getLocation_idx()));
+        Log.d("버스확인2",Integer.toString(evt.getSize_idx()));
+        Log.d("버스확인3",Integer.toString(evt.getGeneral_idx()));
+        Log.d("버스확인4",Integer.toString(evt.getSpecial_idx()));
     }
 
 }
