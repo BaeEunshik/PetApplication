@@ -39,10 +39,10 @@ public class ReviewWriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_review_write);
         unbinder = ButterKnife.bind(this);
 
+//TEST
 
-
-        Review review = new Review(0l,"이 가게 정말 좋아요!!",1);
-        items.add(review);
+       // Review review = new Review(0l,"이 가게 정말 좋아요!!",1);
+        //items.add(review);
 
 
         reviewListAdapter = new ReviewListAdapter(items);
