@@ -21,8 +21,11 @@ import android.widget.TextView;
 import com.naver.mycnex.viewpageapplication.BackPress.BackPressCloseHandler;
 import com.naver.mycnex.viewpageapplication.bus.BusProvider;
 import com.naver.mycnex.viewpageapplication.adapter.ViewPagerAdapter;
+import com.naver.mycnex.viewpageapplication.global.Global;
 import com.naver.mycnex.viewpageapplication.login.LoginService;
 import com.squareup.otto.Bus;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +40,14 @@ public class ViewPagerActivity extends AppCompatActivity {
     Bus bus = BusProvider.getInstance().getBus();
     Unbinder unbinder;
 
+    // 뷰페이저 위치
+    private static int STATE_LEFT = 0;
+    private static int STATE_RIGHT = 1;
+
+    // 카테고리 Spinner 에 사용할 배열 변수
+    private String[] CATEGORY_GENERAL = new String[Global.CATEGORY_GENERAL_STR_ARR.length + 1];
+    private String[] CATEGORY_SPECIAL = new String[Global.CATEGORY_SPECIAL_STR_ARR.length + 1];
+
     @BindView(R.id.viewpager) ViewPager viewpager;
     @BindView(R.id.spinnerLocate) Spinner spinnerLocate;
     @BindView(R.id.spinnerSize) Spinner spinnerSize;
@@ -44,11 +55,9 @@ public class ViewPagerActivity extends AppCompatActivity {
     @BindView(R.id.btnGoLeft) RelativeLayout btnGoLeft;
     @BindView(R.id.btnGoRight) RelativeLayout btnGoRight;
     @BindView(R.id.btn_openDrawer) Button btn_openDrawer;//메뉴버튼
-    @BindView(R.id.btnSrchText)ImageButton btnSrchText;//키워드 검색버튼
-    @BindView(R.id.btnSrchMap) ImageButton btnSrchMap;//맵 검색버튼
-
+    @BindView(R.id.btnSrchText)ImageButton btnSrchText; //키워드 검색버튼
+    @BindView(R.id.btnSrchMap) ImageButton btnSrchMap;  //맵 검색버튼
     // 드로어 레이아웃 관련 변수
-    private final String[] navItems = {"북마크", "설정", "내가게","가게등록"};
     @BindView(R.id.DrawerWrapper) DrawerLayout DrawerWrapper;
     @BindView(R.id.fl_activity_main_container) FrameLayout flContainer;
     @BindView(R.id.drawerListView) ListView drawerListView;
@@ -64,38 +73,33 @@ public class ViewPagerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_pager);
 
-        //버터나이프
+        // 버터나이프
         unbinder = ButterKnife.bind(this);
-        //이벤트버스
+        // 이벤트버스
         bus.register(this);
 
-        //Spinner ( 드롭다운 메뉴 ) 관련설정
-        DropDownSetting();
+        // Spinner ( 드롭다운 메뉴 ) 에 사용될 카테고리의 Arr 설정
+        dropDownCategoryArrSet();
 
-        //ViewPager Adapter 설정
+        // Spinner ( 드롭다운 메뉴 ) 관련설정
+        basicDropDownSet();
+        vpPosLeftDropDownSet();
+
+        // ViewPager Adapter 설정
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewpager.setAdapter(viewPagerAdapter);
 
-        //Drawer Layout Adapter 설정
-        drawerListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navItems));
+        // Drawer Layout Adapter 설정
+        String[] drawerStrArr = getResources().getStringArray(R.array.DrawerNav);
+        drawerListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, drawerStrArr));
         drawerListView.setOnItemClickListener(new DrawerItemClickListener());
 
         // 뒤로가기 두 번할 경우 앱 종료
         backPressCloseHandler = new BackPressCloseHandler(this);
 
-        // OnPageChange
-        viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-            @Override
-            public void onPageSelected(int position) {
+        // Spinner 아이템 클릭 리스너
+        spinnerSetOnItemClick();
 
-            }
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
     }
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
@@ -144,24 +148,15 @@ public class ViewPagerActivity extends AppCompatActivity {
     public void btnGoLeft(){
         btnGoLeft.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         btnGoRight.setBackground(getResources().getDrawable(R.drawable.flat_box_gray));
-        viewpager.setCurrentItem(0);
-
-        ArrayAdapter<CharSequence> placeAdapter = ArrayAdapter.createFromResource(this,
-                R.array.petGeneral, android.R.layout.simple_spinner_item);
-
-        placeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerPlace.setAdapter(placeAdapter);
+        viewpager.setCurrentItem(STATE_LEFT);
+        vpPosLeftDropDownSet(); //spinner 변경
     }
     @OnClick (R.id.btnGoRight)   // ViewPager 우측이동
     public void setBtnGoRight(){
         btnGoLeft.setBackground(getResources().getDrawable(R.drawable.flat_box_gray));
         btnGoRight.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        viewpager.setCurrentItem(1);
-
-
-        ArrayAdapter placeAdapter = ArrayAdapter.createFromResource(this, R.array.petSpecial, android.R.layout.simple_spinner_item);
-        placeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerPlace.setAdapter(placeAdapter);
+        viewpager.setCurrentItem(STATE_RIGHT);
+        vpPosRightDropDownSet(); //spinner 변경
     }
     @OnClick(R.id.btnSrchText)  // SearchKeywordActivity ( 검색어로 찾기 ) 로 이동
     public void btnSrchText(){
@@ -199,34 +194,42 @@ public class ViewPagerActivity extends AppCompatActivity {
     }
 
     // Spinner setting
-    public void DropDownSetting() {
+    public void basicDropDownSet(){
         ArrayAdapter addressAdapter = ArrayAdapter.createFromResource(this, R.array.address1, android.R.layout.simple_spinner_item);
         addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerLocate.setAdapter(addressAdapter);
         ArrayAdapter dogsizeAdapter = ArrayAdapter.createFromResource(this, R.array.dogSize, android.R.layout.simple_spinner_item);
         dogsizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSize.setAdapter(dogsizeAdapter);
-
-        ArrayAdapter placeAdapter = ArrayAdapter.createFromResource(this, R.array.petGeneral, android.R.layout.simple_spinner_item);
+    }
+    public void vpPosLeftDropDownSet(){
+        ArrayAdapter placeAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, CATEGORY_GENERAL);
+        placeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerPlace.setAdapter(placeAdapter);
+    }
+    public void vpPosRightDropDownSet(){
+        ArrayAdapter placeAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, CATEGORY_SPECIAL);
         placeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPlace.setAdapter(placeAdapter);
     }
 
+    // Spinner Arr Setting
+    public void dropDownCategoryArrSet(){
+        //Spinner ( 드롭다운 메뉴 ) 에 사용될 카테고리의 Arr 설정
 
-    public void spinnerItemClick() {
+        int tmpLength = Global.CATEGORY_GENERAL_STR_ARR.length;
+        System.arraycopy( Global.CATEGORY_GENERAL_STR_ARR, 0, CATEGORY_GENERAL, 1, tmpLength );
+        CATEGORY_GENERAL[0] = "전체";
+
+        tmpLength = Global.CATEGORY_SPECIAL_STR_ARR.length;
+        System.arraycopy( Global.CATEGORY_SPECIAL_STR_ARR, 0, CATEGORY_SPECIAL, 1, tmpLength );
+        CATEGORY_SPECIAL[0] = "전체";
+    }
+
+    // Spinner OnItemClick
+    public void spinnerSetOnItemClick() {
         //지역 선택시
         spinnerLocate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        //장소 선택시
-        spinnerPlace.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
@@ -241,6 +244,24 @@ public class ViewPagerActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        //장소 선택시
+        spinnerPlace.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //position 으로 선택 아이템 알 수 있음
+                if(viewpager.getCurrentItem() == STATE_LEFT){
+
+                } else if (viewpager.getCurrentItem() == STATE_RIGHT){
+
+                } else {
+                    Log.d("카테고리","에러");
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
