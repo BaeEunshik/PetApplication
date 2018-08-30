@@ -17,7 +17,6 @@
 
         <ImageView
             android:id="@+id/btnBookmark"
-            android:background="#000"
             android:layout_alignParentRight="true"
             android:layout_marginTop="10dp"
             android:layout_marginRight="15dp"

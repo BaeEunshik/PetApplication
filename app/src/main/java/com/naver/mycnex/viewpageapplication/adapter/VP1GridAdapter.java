@@ -115,7 +115,7 @@ public class VP1GridAdapter extends BaseAdapter{
 
         // 북마크 여부 표시 ( TODO : 북마크 여부에 따라 다른 이미지 적용 )
         GlideApp.with(context)
-                .load( R.drawable.ic_add )
+                .load( R.drawable.star_on )
                 .fitCenter()
                 .into( holder.btnBookmark );
 
@@ -126,7 +126,7 @@ public class VP1GridAdapter extends BaseAdapter{
             public void onClick(View v) {
                 // TODO : 북마크에 저장, 북마크 여부에 따른  이미지 교체
                 GlideApp.with(parent.getContext())
-                        .load( R.drawable.addbtn )
+                        .load( R.drawable.star_off )
                         .fitCenter()
                         .into( onClickHolder.btnBookmark );
             }

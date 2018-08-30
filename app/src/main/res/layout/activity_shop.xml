@@ -341,6 +341,46 @@
                                 android:layout_height="wrap_content" />
                         </RelativeLayout>
                         <!--예약-->
+                        <!-- 선 -->
+                        <View
+                            android:layout_marginTop="3dp"
+                            android:layout_centerInParent="true"
+                            android:paddingLeft="5dp"
+                            android:background="@color/defaultBackground"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"/>
+                        <!-- 기타 상세 정보-->
+                        <LinearLayout
+                            android:paddingTop="7dp"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <!-- 아이콘 -->
+                            <ImageView
+                                android:src="@drawable/info"
+                                android:scaleType="fitCenter"
+                                android:layout_width="16dp"
+                                android:layout_height="14dp" />
+                            <!-- 아이콘 -->
+                            <!-- 텍스트 영역 -->
+                            <RelativeLayout
+                                android:paddingLeft="5dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:layout_gravity="center_horizontal"
+                                    android:textSize="10dp"
+                                    android:maxHeight="50dp"
+                                    android:textColor="@color/defaultText"
+                                    android:lineSpacingMultiplier="1.2"
+                                    android:includeFontPadding="false"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+                            </RelativeLayout>
+                            <!-- 텍스트 영역 -->
+                        </LinearLayout>
+
+                        <!-- 기타 상세 정보 -->
                     </LinearLayout>
                     <!--content-->
                 </LinearLayout>
@@ -415,11 +455,9 @@
                         android:layout_height="match_parent" />
                 </RelativeLayout>
                 <!-- 리뷰 작성하기 버튼 -->
-
                 <!-- 리뷰 -->
 
                    <!-- TODO : gridView ?? -->
-
 
                 <!-- 리뷰 -->
                 <!--__________ 리뷰영역 __________-->
@@ -429,5 +467,4 @@
         <!-- Content 스크롤뷰  -->
     </LinearLayout>
     <!-- Wrap -->
-
 </LinearLayout>
