@@ -145,12 +145,23 @@ public class ViewPagerActivity extends AppCompatActivity {
         btnGoLeft.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         btnGoRight.setBackground(getResources().getDrawable(R.drawable.flat_box_gray));
         viewpager.setCurrentItem(0);
+
+        ArrayAdapter<CharSequence> placeAdapter = ArrayAdapter.createFromResource(this,
+                R.array.petGeneral, android.R.layout.simple_spinner_item);
+
+        placeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerPlace.setAdapter(placeAdapter);
     }
     @OnClick (R.id.btnGoRight)   // ViewPager 우측이동
     public void setBtnGoRight(){
         btnGoLeft.setBackground(getResources().getDrawable(R.drawable.flat_box_gray));
         btnGoRight.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         viewpager.setCurrentItem(1);
+
+
+        ArrayAdapter placeAdapter = ArrayAdapter.createFromResource(this, R.array.petSpecial, android.R.layout.simple_spinner_item);
+        placeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerPlace.setAdapter(placeAdapter);
     }
     @OnClick(R.id.btnSrchText)  // SearchKeywordActivity ( 검색어로 찾기 ) 로 이동
     public void btnSrchText(){
@@ -195,9 +206,47 @@ public class ViewPagerActivity extends AppCompatActivity {
         ArrayAdapter dogsizeAdapter = ArrayAdapter.createFromResource(this, R.array.dogSize, android.R.layout.simple_spinner_item);
         dogsizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSize.setAdapter(dogsizeAdapter);
-        ArrayAdapter placeAdapter = ArrayAdapter.createFromResource(this, R.array.place, android.R.layout.simple_spinner_item);
+
+        ArrayAdapter placeAdapter = ArrayAdapter.createFromResource(this, R.array.petGeneral, android.R.layout.simple_spinner_item);
         placeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPlace.setAdapter(placeAdapter);
+    }
+
+
+    public void spinnerItemClick() {
+        //지역 선택시
+        spinnerLocate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        //장소 선택시
+        spinnerPlace.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        //반려견 크기 선택시
+        spinnerSize.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
 }

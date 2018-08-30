@@ -41,12 +41,6 @@ import retrofit2.Response;
 
 // TODO :
 
-// 1) 이미지 클릭 ( 상단 )
-//  - 스택 방식의 이미지 스크롤 ( 리사이클러 뷰 ) 구현 ( o )
-//  - PhotosActivity / Adapter 생성 및 스크롤 내부 버튼 onclick 연결 ( o )
-//      - PhotosActivity 스크롤 내부 사진 onclick 연결 ( o )
-//  - PhotoActivity 생성 및 사진 onclick 연결 ( o )
-
 // 3) 리뷰 작업
 //  - ReviewWriteActivity 생성 및 onclick 연결
 //  - 리뷰아이템 ( 미화님 작업 ) 수정 및 재사용
@@ -58,7 +52,7 @@ public class ShopActivity extends AppCompatActivity
         implements OnMapReadyCallback {
 
     //전화번호
-    private String PHONE_NUMBER = "";
+    //private String PHONE_NUMBER = "";
     private GoogleMap mMap;
 
     //버터나이프
@@ -112,8 +106,8 @@ public class ShopActivity extends AppCompatActivity
     @OnClick(R.id.btnCall)// 전화하기
     public void btnCall() {
         // 전화번호
-        PHONE_NUMBER = store.getContact();
-        CallPermission();
+        String phoneNum = store.getContact();
+        CallPermission(phoneNum);
     }
     @OnClick(R.id.btnGoReviewWrite)// 리뷰작성 하러 가기
     public void btnGoReviewWrite(){
@@ -162,7 +156,7 @@ public class ShopActivity extends AppCompatActivity
     }
 
     public void initWhenCreated() {
-        getIddata();
+        getIdData();
         recycleViewSet();
         // 리사이클뷰 임시 데이터 삽입 ***
         // TODO :
@@ -177,7 +171,7 @@ public class ShopActivity extends AppCompatActivity
 
     }
 
-    public void CallPermission() {
+    public void CallPermission(final String phoneNum) {
         // 권한
         PermissionListener permissionlistener = new PermissionListener() {
             @Override
@@ -187,7 +181,7 @@ public class ShopActivity extends AppCompatActivity
                     return;
                 }
                 // 전화
-                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + PHONE_NUMBER));
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNum));
                 startActivity(intent);
             }
             @Override
@@ -209,7 +203,7 @@ public class ShopActivity extends AppCompatActivity
         mapFragment.getMapAsync(this);
     }
 
-    public void getIddata() {
+    public void getIdData() {
 
         Intent intent = getIntent();
         Long id = intent.getLongExtra("id",-1);

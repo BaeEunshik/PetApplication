@@ -47,4 +47,5 @@ public interface RetrofitRequest {
     @GET("detail_json.do")
     Call<MemoFiles> getMemoFileList(@Query("id") Long id);
     */
+
 }

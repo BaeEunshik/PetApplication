@@ -23,7 +23,7 @@
         <item>무관</item>
         <item>전체</item>
     </string-array>
-
+<!--
     <string-array name="place">
         <item>전체</item>
         <item>애견미용</item>
@@ -32,14 +32,17 @@
         <item>애견숙박</item>
         <item>애견장묘</item>
         <item>애견놀이터</item>
-    </string-array>
+    </string-array>-->
 
     <string-array name="purpose">
         <item>애견동반</item>
         <item>애견전문</item>
     </string-array>
 
-    <!-- 등록시 -->
+    <string-array name="all">
+        <item>전체</item>
+    </string-array>
+
     <string-array name="petGeneral">
         <item>일반카페</item>
         <item>일반식당</item>

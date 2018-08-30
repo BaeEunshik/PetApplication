@@ -3,18 +3,15 @@ package com.naver.mycnex.viewpageapplication;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
-import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Geocoder;
 import android.net.Uri;
-import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -30,16 +27,13 @@ import android.widget.Toast;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.naver.mycnex.viewpageapplication.address.Address;
-import com.naver.mycnex.viewpageapplication.data.Store;
 import com.naver.mycnex.viewpageapplication.global.Global;
-import com.naver.mycnex.viewpageapplication.retrofit.RetrofitRequest;
 import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 
 import gun0912.tedbottompicker.TedBottomPicker;
 import retrofit2.Call;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +48,7 @@ public class RegisterShopActivity extends AppCompatActivity {
 
     private final int ADDRESS_SUBMIT = 11;
     //전역변수
-    private String PHONE_NUMBER = "";
+    private String PHONE_FRONT_NUM = "";
     private Integer RESERVATION = Global.RESERVATION_ABLE;
     private Integer PETSIZE_PERMISSION = Global.PETSIZE_SMALL;
     private Integer PARKING = Global.PARKING_UNABLE;
@@ -281,7 +275,7 @@ public class RegisterShopActivity extends AppCompatActivity {
         String endTime = endTime_btn.getText().toString();
         String operation_time = startTime + "~" + endTime;
 
-        String phone = PHONE_NUMBER + "-" + middlePhone_edit.getText().toString() + "-" + lastPhone_edit.getText().toString();
+        String phone = PHONE_FRONT_NUM + "-" + middlePhone_edit.getText().toString() + "-" + lastPhone_edit.getText().toString();
 
         String oper_date = "";
         for (int i = 0; i < bool_date.length; i++) {
@@ -360,7 +354,7 @@ public class RegisterShopActivity extends AppCompatActivity {
         spinnerPhoneGetData();
         getLastPhoneNumberFocus();
         Parking();
-        setOnClickimage();
+        setOnClickImage();
 
     }
 
@@ -637,7 +631,7 @@ public class RegisterShopActivity extends AppCompatActivity {
         spinnerPhone.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                PHONE_NUMBER = String.valueOf(parent.getItemAtPosition(position));
+                PHONE_FRONT_NUM = String.valueOf(parent.getItemAtPosition(position));
             }
 
             @Override
@@ -661,7 +655,7 @@ public class RegisterShopActivity extends AppCompatActivity {
         }
     }
 
-    public void setOnClickimage() {
+    public void setOnClickImage() {
         images[0] = image1;
         images[1] = image2;
         images[2] = image3;

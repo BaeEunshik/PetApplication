@@ -141,7 +141,7 @@ public class SearchMapActivity extends AppCompatActivity
         ArrayAdapter dogsizeAdapter = ArrayAdapter.createFromResource(this, R.array.purpose, android.R.layout.simple_spinner_item);
         dogsizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPurpose.setAdapter(dogsizeAdapter);
-        ArrayAdapter placeAdapter = ArrayAdapter.createFromResource(this, R.array.place, android.R.layout.simple_spinner_item);
+        ArrayAdapter placeAdapter = ArrayAdapter.createFromResource(this, R.array.petGeneral, android.R.layout.simple_spinner_item);
         placeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPlace.setAdapter(placeAdapter);
     }
