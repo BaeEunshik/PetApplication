@@ -47,4 +47,8 @@ public class Global {
     public static Integer[] CATEGORY_SPECIAL_ID_ARR = {CATEGORY_SPECIAL_CAFE,CATEGORY_SPECIAL_PETSHOP,CATEGORY_SPECIAL_BEAUTY,CATEGORY_SPECIAL_HOSPITAL,CATEGORY_SPECIAL_ADOPT,
                                                   CATEGORY_SPECIAL_EDUCATION,CATEGORY_SPECIAL_ACCOMMODATION,CATEGORY_SPECIAL_LEISURE,CATEGORY_SPECIAL_FUNERAL,CATEGORY_SPECIAL_PLAYGROUND,
                                                 CATEGORY_SPECIAL_STUDIO};
+
+    public static String BASE_URL = "http://192.168.0.61:8090/petApplication/";
+    public static String BASE_IMAGE_URL = BASE_URL+"resources/upload/";
+
 }

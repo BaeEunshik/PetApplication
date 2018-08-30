@@ -21,7 +21,8 @@ public class PhotoActivity extends AppCompatActivity {
         unbinder = ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        Integer imgData = intent.getIntExtra("imgData",0);
+        Integer imgData = intent.getIntExtra("imgData",-1);
+        // 이미지 아이디 데이터베이스에서 받아오기 ㅏㄴ머아ㅣ먼아ㅣ먼애ㅏㅣ머놔이ㅓㅁ자ㅣㅓ이마ㅓㄴ아ㅣ
         img.setImageResource(imgData);
 
     }

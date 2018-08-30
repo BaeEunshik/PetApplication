@@ -7,7 +7,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.naver.mycnex.viewpageapplication.adapter.PhotosActGridAdapter;
-import com.naver.mycnex.viewpageapplication.data.TESTImage;
+import com.naver.mycnex.viewpageapplication.data.ImageFile;
 
 import java.util.ArrayList;
 
@@ -25,7 +25,7 @@ public class PhotosActivity extends AppCompatActivity {
     @BindView(R.id.btnGoBack) ImageButton btnGoBack;
 
 
-    ArrayList<TESTImage> testImages = new ArrayList<>();
+    ArrayList<ImageFile> testImages;
     PhotosActGridAdapter photosActGridAdapter;
 
     @Override
@@ -37,17 +37,15 @@ public class PhotosActivity extends AppCompatActivity {
         // 그리드뷰 임시 데이터 삽입 ***
         // TODO :
         // 바꿔야 함
-        TESTImage imgObj = new TESTImage(R.drawable.dog1);
-        testImages.add(imgObj);
-        testImages.add(imgObj);
-        testImages.add(imgObj);
-        testImages.add(imgObj);
-        testImages.add(imgObj);
+
+        // 서버에서 데이터 가져오기
 
         // 가게 ( 장소 ) 이름 set
         title.setText("가게이름(객체연동필요)");
 
         // 어댑터 set
+
+        testImages = new ArrayList<>();
         photosActGridAdapter = new PhotosActGridAdapter(testImages);
         gridView.setAdapter(photosActGridAdapter);
     }

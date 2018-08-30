@@ -23,17 +23,20 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.naver.mycnex.viewpageapplication.adapter.ShopActRecyclerAdapter;
+import com.naver.mycnex.viewpageapplication.data.ImageFile;
 import com.naver.mycnex.viewpageapplication.data.Store;
-import com.naver.mycnex.viewpageapplication.data.TESTImage;
+import com.naver.mycnex.viewpageapplication.data.StoreImage;
 import com.naver.mycnex.viewpageapplication.global.Global;
 import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -71,9 +74,10 @@ public class ShopActivity extends AppCompatActivity
 
     //리사이클뷰
     ShopActRecyclerAdapter shopActRecyclerAdapter;
-    ArrayList<TESTImage> testImages = new ArrayList<>();
 
+    StoreImage storeImage;
     Store store;
+    ArrayList<ImageFile> images;
 
     /** OnCreate **/
     @Override
@@ -156,18 +160,6 @@ public class ShopActivity extends AppCompatActivity
 
     public void initWhenCreated() {
         getIdData();
-        recycleViewSet();
-        // 리사이클뷰 임시 데이터 삽입 ***
-        // TODO :
-        // 바꿔야 함
-        TESTImage imgObj = new TESTImage(R.drawable.dog1);
-        testImages.add(imgObj);
-        testImages.add(imgObj);
-        testImages.add(imgObj);
-        testImages.add(imgObj);
-        testImages.add(imgObj);
-
-
     }
 
     public void CallPermission(final String phoneNum) {
@@ -207,24 +199,30 @@ public class ShopActivity extends AppCompatActivity
         Intent intent = getIntent();
         Long id = intent.getLongExtra("id",-1);
 
-        Call<Store> getStoreData = RetrofitService.getInstance().getRetrofitRequest().storeDetail(id);
-        getStoreData.enqueue(new Callback<Store>() {
+        Call<StoreImage> getStoreData = RetrofitService.getInstance().getRetrofitRequest().storeDetail(id);
+        getStoreData.enqueue(new Callback<StoreImage>() {
             @Override
-            public void onResponse(Call<Store> call, Response<Store> response) {
+            public void onResponse(Call<StoreImage> call, Response<StoreImage> response) {
                 if (response.isSuccessful()) {
-                    store = response.body();
+                    storeImage = response.body();
                     getDataFromId();
                 }
             }
 
             @Override
-            public void onFailure(Call<Store> call, Throwable t) {
-                t.printStackTrace();
+            public void onFailure(Call<StoreImage> call, Throwable t) {
+
             }
         });
     }
 
     public void getDataFromId() {
+
+        images = storeImage.getImage();
+        store = storeImage.getStore();
+
+        recycleViewSet();
+
         googleMapComponent();
         storeName_txt.setText(store.getName());
         textAddress.setText(store.getAddress());
@@ -257,7 +255,7 @@ public class ShopActivity extends AppCompatActivity
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
 
         horizonRecyclerView.setLayoutManager(layoutManager);
-        shopActRecyclerAdapter = new ShopActRecyclerAdapter(testImages, getApplicationContext());
+        shopActRecyclerAdapter = new ShopActRecyclerAdapter(images, getApplicationContext());
         horizonRecyclerView.setAdapter(shopActRecyclerAdapter);
     }
 }

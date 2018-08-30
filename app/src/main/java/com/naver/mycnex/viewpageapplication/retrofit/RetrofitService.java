@@ -1,5 +1,7 @@
 package com.naver.mycnex.viewpageapplication.retrofit;
 
+import com.naver.mycnex.viewpageapplication.global.Global;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -25,7 +27,7 @@ public class RetrofitService {
 
     public RetrofitRequest init() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.61:8090/petApplication/")
+                .baseUrl(Global.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

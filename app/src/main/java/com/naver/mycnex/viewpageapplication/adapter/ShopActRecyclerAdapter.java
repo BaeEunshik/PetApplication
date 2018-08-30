@@ -14,20 +14,20 @@ import android.widget.ImageView;
 import com.naver.mycnex.viewpageapplication.PhotoActivity;
 import com.naver.mycnex.viewpageapplication.PhotosActivity;
 import com.naver.mycnex.viewpageapplication.R;
-import com.naver.mycnex.viewpageapplication.data.TESTImage;
+import com.naver.mycnex.viewpageapplication.data.ImageFile;
 import com.naver.mycnex.viewpageapplication.glide.GlideApp;
+import com.naver.mycnex.viewpageapplication.global.Global;
 
 import java.util.ArrayList;
 
 public class ShopActRecyclerAdapter extends RecyclerView.Adapter<ShopActRecyclerAdapter.Holder>{
 
-    // 데이터 ( 테스트 )
-    ArrayList<TESTImage> testImages;
+    ArrayList<ImageFile> testImages;
     // Context
     private Context context;
 
     // 생성자 함수
-    public ShopActRecyclerAdapter(ArrayList<TESTImage> testImages,Context context){
+    public ShopActRecyclerAdapter(ArrayList<ImageFile> testImages,Context context){
         this.testImages = testImages;
         this.context = context;
     }
@@ -52,9 +52,8 @@ public class ShopActRecyclerAdapter extends RecyclerView.Adapter<ShopActRecycler
             // 버튼 삭제
             holder.btnMore.setVisibility(View.GONE);
             // 글라이드 이미지 적용
-            TESTImage imageObj = testImages.get(position);
             GlideApp.with(context)
-                    .load(imageObj.getImg())
+                    .load(Global.BASE_IMAGE_URL + testImages.get(position).getSavedName())
                     .centerCrop()
                     .into(holder.img);
         }
@@ -76,7 +75,7 @@ public class ShopActRecyclerAdapter extends RecyclerView.Adapter<ShopActRecycler
                 //TODO :
                 // 현재는 임시 객체의 getter() 사용 - 객체 변경
                 Intent intent = new Intent(context, PhotoActivity.class);
-                intent.putExtra("imgData",testImages.get(position).getImg());
+                intent.putExtra("imgData",testImages.get(position).getId());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
@@ -85,7 +84,7 @@ public class ShopActRecyclerAdapter extends RecyclerView.Adapter<ShopActRecycler
     @Override
     public int getItemCount() {
         // 버튼 생성을 위해 item 을 한번 더 사용함
-        return testImages.size() + 1;
+        return testImages.size()+1;
     }
 
     /******************** HOLDER ********************/

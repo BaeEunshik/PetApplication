@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import com.naver.mycnex.viewpageapplication.PhotoActivity;
 import com.naver.mycnex.viewpageapplication.R;
-import com.naver.mycnex.viewpageapplication.data.TESTImage;
+import com.naver.mycnex.viewpageapplication.data.ImageFile;
 import com.naver.mycnex.viewpageapplication.glide.GlideApp;
 
 import java.util.ArrayList;
@@ -18,11 +18,11 @@ import java.util.ArrayList;
 public class PhotosActGridAdapter extends BaseAdapter {
 
     // 데이터 ( 테스트 )
-    ArrayList<TESTImage> testImages;
+    ArrayList<ImageFile> testImages;
     // Context
     Context context;
     // 생성자
-    public PhotosActGridAdapter(ArrayList<TESTImage> testImages){
+    public PhotosActGridAdapter(ArrayList<ImageFile> testImages){
         this.context = context;
         this.testImages = testImages;
     }
@@ -55,9 +55,9 @@ public class PhotosActGridAdapter extends BaseAdapter {
         }
 
         // 글라이드
-        TESTImage imageObj = testImages.get(position);
+        ImageFile imageObj = testImages.get(position);
         GlideApp.with(parent.getContext())
-                .load(imageObj.getImg())
+                .load(imageObj)
                 .centerCrop()
                 .into(holder.img);
 
@@ -68,9 +68,9 @@ public class PhotosActGridAdapter extends BaseAdapter {
                 // TODO :
                 // 현재 사용하는 데이터 객체는 임시용 - 바꿔야함
                 Context context = parent.getContext();  // Context
-                TESTImage imageObj = testImages.get(position);  // 이미지 데이터 객체 생성
+                ImageFile imageObj = testImages.get(position);  // 이미지 데이터 객체 생성
                 Intent intent = new Intent(context, PhotoActivity.class);
-                intent.putExtra("imgData",imageObj.getImg());   // 이미지 전달
+                intent.putExtra("imgData",testImages.get(position).getId());   // 이미지 전달
                 context.startActivity(intent);  //실행
             }
         });

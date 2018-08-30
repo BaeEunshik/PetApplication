@@ -60,9 +60,7 @@ public class ViewP1Fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_vp1, container, false);
         bus.register(this);
         unbinder = ButterKnife.bind(this,view);
-
         InitWhenCreated();
-
         return view;
     }
 
@@ -97,7 +95,7 @@ public class ViewP1Fragment extends Fragment {
     }
 
     public void getDataFromServer() {
-        Call<ArrayList<Store>> getStoreData = RetrofitService.getInstance().getRetrofitRequest().getStoreData();
+        Call<ArrayList<Store>> getStoreData = RetrofitService.getInstance().getRetrofitRequest().getStoreGeneral();
         getStoreData.enqueue(new Callback<ArrayList<Store>>() {
             @Override
             public void onResponse(Call<ArrayList<Store>> call, Response<ArrayList<Store>> response) {

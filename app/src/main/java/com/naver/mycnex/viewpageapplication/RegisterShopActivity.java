@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
@@ -12,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -31,8 +33,13 @@ import com.naver.mycnex.viewpageapplication.global.Global;
 import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 
 import gun0912.tedbottompicker.TedBottomPicker;
+import gun0912.tedbottompicker.util.RealPathUtil;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +63,7 @@ public class RegisterShopActivity extends AppCompatActivity {
     Integer selectedCategory = 0;
     double lat = 0;
     double lng = 0;
+    Uri[] imgUri = null;
 
     boolean[] bool_date;
     String[] str_date = {"월","화","수","목","금","토","일"};
@@ -264,8 +272,15 @@ public class RegisterShopActivity extends AppCompatActivity {
         String address = btn_shop_address.getText().toString();
         String[] str = address.split(" ");
 
-        String sigungu = str[2];
-        String dong = str[3];
+        String sigungu = "";
+        String dong = "";
+
+        if (str[2] != null || !str[2].equals("")) {
+            sigungu = str[2];
+        }
+        if (str[3] != null || !str[3].equals("")) {
+            dong = str[3];
+        }
 
         getLatLng();
 
@@ -291,7 +306,7 @@ public class RegisterShopActivity extends AppCompatActivity {
             return;
         }
 
-        if (address == null || address.equals("")) {
+        if (address == null || address.equals("") || sigungu.equals("") || dong.equals("")) {
             Toast.makeText(RegisterShopActivity.this, "주소를 입력하세요", Toast.LENGTH_SHORT).show();
             btn_shop_address.requestFocus();
             btn_shop_address.setFocusableInTouchMode(true);
@@ -321,7 +336,16 @@ public class RegisterShopActivity extends AppCompatActivity {
             return;
         }
 
-         Call<Long> submitStore = RetrofitService.getInstance().getRetrofitRequest().submitStore(name,phone,PETSIZE_PERMISSION,store_info,oper_date,operation_time,
+        final ArrayList<MultipartBody.Part> filePart = new ArrayList<>();
+        for (int i = 0; i < imgUri.length; i++) {
+            File file = new File(RealPathUtil.getRealPath(RegisterShopActivity.this,imgUri[i]));
+
+            filePart.add(MultipartBody.Part.createFormData("file"+i,
+                    file.getName(),
+                    RequestBody.create(MediaType.parse("image/*"), file)));
+        }
+
+         Call<Long> submitStore = RetrofitService.getInstance().getRetrofitRequest().submitStore(filePart,name,phone,PETSIZE_PERMISSION,store_info,oper_date,operation_time,
                  PARKING,RESERVATION,address,sigungu,dong,lat,lng,selectedCategory);
          submitStore.enqueue(new Callback<Long>() {
              @Override
@@ -496,13 +520,16 @@ public class RegisterShopActivity extends AppCompatActivity {
                     @Override
                     public void onImagesSelected(ArrayList<Uri> uriList) {
                         // uriList 활용
+                        imgUri = new Uri[uriList.size()];
                         if (uriList != null) {
                             InitImage();
                             select_photo_btn.setVisibility(View.GONE);
                             for (int i = 0; i < uriList.size(); i++) {
                                 Uri uriOne = uriList.get(i);
+                                imgUri[i] = uriList.get(i);
                                 images[i].setImageURI(uriOne);
                                 images[i].setVisibility(View.VISIBLE);
+                                Log.d("asd", "Picker : "+String.valueOf(uriList.get(i)));
                             }
 
                         }
