@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -40,8 +41,8 @@ public class ViewPagerActivity extends AppCompatActivity {
     @BindView(R.id.spinnerLocate) Spinner spinnerLocate;
     @BindView(R.id.spinnerSize) Spinner spinnerSize;
     @BindView(R.id.spinnerPlace) Spinner spinnerPlace;
-    @BindView(R.id.btnGoLeft) Button btnGoLeft;
-    @BindView(R.id.btnGoRight) Button btnGoRight;
+    @BindView(R.id.btnGoLeft) RelativeLayout btnGoLeft;
+    @BindView(R.id.btnGoRight) RelativeLayout btnGoRight;
     @BindView(R.id.btn_openDrawer) Button btn_openDrawer;//메뉴버튼
     @BindView(R.id.btnSrchText)ImageButton btnSrchText;//키워드 검색버튼
     @BindView(R.id.btnSrchMap) ImageButton btnSrchMap;//맵 검색버튼
@@ -62,8 +63,6 @@ public class ViewPagerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_pager);
-
-        Log.d("은식","뷰페이저 onCreate");
 
         //버터나이프
         unbinder = ButterKnife.bind(this);
@@ -91,12 +90,6 @@ public class ViewPagerActivity extends AppCompatActivity {
             }
             @Override
             public void onPageSelected(int position) {
-
-                if ( position == 0 ){
-                    Log.d("은식","0번째");
-                } else if( position == 1 ){
-                    Log.d("은식","1번째");
-                }
 
             }
             @Override
@@ -149,10 +142,14 @@ public class ViewPagerActivity extends AppCompatActivity {
     }
     @OnClick (R.id.btnGoLeft)   // ViewPager 좌측이동
     public void btnGoLeft(){
+        btnGoLeft.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        btnGoRight.setBackground(getResources().getDrawable(R.drawable.flat_box_gray));
         viewpager.setCurrentItem(0);
     }
     @OnClick (R.id.btnGoRight)   // ViewPager 우측이동
     public void setBtnGoRight(){
+        btnGoLeft.setBackground(getResources().getDrawable(R.drawable.flat_box_gray));
+        btnGoRight.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         viewpager.setCurrentItem(1);
     }
     @OnClick(R.id.btnSrchText)  // SearchKeywordActivity ( 검색어로 찾기 ) 로 이동

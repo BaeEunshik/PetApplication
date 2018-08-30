@@ -63,10 +63,10 @@ public class VP1GridAdapter extends BaseAdapter{
             // ( 7. 리뷰수 ??? )
             holder.itemImg = convertView.findViewById(R.id.itemImg);
             holder.btnBookmark = convertView.findViewById(R.id.btnBookmark);
-            holder.TextName = convertView.findViewById(R.id.textName);
+            holder.textName = convertView.findViewById(R.id.textName);
             holder.textPlace = convertView.findViewById(R.id.textPlace);
-            holder.TextDistance = convertView.findViewById(R.id.TextDistance);
-            holder.TextPoint = convertView.findViewById(R.id.TextPoint);
+            holder.textDistance = convertView.findViewById(R.id.TextDistance);
+            holder.textPoint = convertView.findViewById(R.id.TextPoint);
 
             convertView.setTag(holder);
         } else {
@@ -81,18 +81,19 @@ public class VP1GridAdapter extends BaseAdapter{
         /** setText **/
 
         //장소이름
-        holder.TextName.setText(store.getName());
+        holder.textName.setText(store.getName());
+
         //현재위치로부터의 거리
-        holder.TextDistance.setText("00km"); // TODO : ( 구현? 삭제? )
+        holder.textDistance.setText("00km"); // TODO : ( 구현? 삭제? )
+
         //카테고리 ( 장소구분 )
-        String[] categoies = context.getResources().getStringArray(R.array.petGeneral);
+        // DB 필드값 : Global 클래스의 CATEGORY_GENERAL_ARR 배열에서 인덱스 값으로 사용할 수 있도록 설계
+        if(store.getCategory() >= 100) {
+            holder.textPlace.setText(Global.CATEGORY_SPECIAL_STR_ARR[ store.getCategory() ]);
+        } else {
+            holder.textPlace.setText(Global.CATEGORY_GENERAL_STR_ARR[ store.getCategory() ]);
+        }
 
-
-
-
-
-
-        store.getCategory();
 
         // TODO :
         // 평점 계산 로직)
@@ -100,7 +101,7 @@ public class VP1GridAdapter extends BaseAdapter{
         // 해당 Store 에 달린 리뷰의 점수를 모두 더하여
         // 리뷰의 갯수만큼 나눈 다음에
         // - 객체 배열에 넣어서 사용
-        holder.TextPoint.setText("5.0");    // 점수
+        holder.textPoint.setText("5.0");    // 점수
 
         /** setIMG **/
 
@@ -136,9 +137,9 @@ public class VP1GridAdapter extends BaseAdapter{
     public class Holder {
         SquareImageView itemImg;
         ImageView btnBookmark;
-        TextView TextName;
-        TextView TextDistance;
+        TextView textName;
+        TextView textDistance;
         TextView textPlace;
-        TextView TextPoint;
+        TextView textPoint;
     }
 }
