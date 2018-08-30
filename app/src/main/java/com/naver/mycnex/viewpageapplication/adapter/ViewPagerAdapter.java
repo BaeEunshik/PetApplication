@@ -5,8 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.ViewGroup;
 
-import com.naver.mycnex.viewpageapplication.fragment.ViewP1Fragment;
-import com.naver.mycnex.viewpageapplication.fragment.ViewP2Fragment;
+import com.naver.mycnex.viewpageapplication.fragment.VP1Fragment;
+import com.naver.mycnex.viewpageapplication.fragment.VP2Fragment;
 
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter{
@@ -17,9 +17,9 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter{
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new ViewP1Fragment();//ViewP1Fragment.getInstance();
+            return new VP1Fragment();//ViewP1Fragment.getInstance();
         } else if (position == 1){
-            return new ViewP2Fragment();//ViewP2Fragment.getInstance();
+            return new VP2Fragment();//ViewP2Fragment.getInstance();
         }
         return null;
     }

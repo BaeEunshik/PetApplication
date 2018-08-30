@@ -345,7 +345,8 @@ public class RegisterShopActivity extends AppCompatActivity {
                     RequestBody.create(MediaType.parse("image/*"), file)));
         }
 
-         Call<Long> submitStore = RetrofitService.getInstance().getRetrofitRequest().submitStore(filePart,name,phone,PETSIZE_PERMISSION,store_info,oper_date,operation_time,
+         Call<Long> submitStore = RetrofitService.getInstance().getRetrofitRequest()
+                 .submitStore(filePart,name,phone,PETSIZE_PERMISSION,store_info,oper_date,operation_time,
                  PARKING,RESERVATION,address,sigungu,dong,lat,lng,selectedCategory);
          submitStore.enqueue(new Callback<Long>() {
              @Override

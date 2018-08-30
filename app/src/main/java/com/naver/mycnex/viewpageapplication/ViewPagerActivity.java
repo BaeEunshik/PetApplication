@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.naver.mycnex.viewpageapplication.BackPress.BackPressCloseHandler;
 import com.naver.mycnex.viewpageapplication.bus.BusProvider;
 import com.naver.mycnex.viewpageapplication.adapter.ViewPagerAdapter;
+import com.naver.mycnex.viewpageapplication.event.VPSpinnerItemSelected;
 import com.naver.mycnex.viewpageapplication.global.Global;
 import com.naver.mycnex.viewpageapplication.login.LoginService;
 import com.squareup.otto.Bus;
@@ -44,9 +45,15 @@ public class ViewPagerActivity extends AppCompatActivity {
     private static int STATE_LEFT = 0;
     private static int STATE_RIGHT = 1;
 
-    // 카테고리 Spinner 에 사용할 배열 변수
-    private String[] CATEGORY_GENERAL = new String[Global.CATEGORY_GENERAL_STR_ARR.length + 1];
-    private String[] CATEGORY_SPECIAL = new String[Global.CATEGORY_SPECIAL_STR_ARR.length + 1];
+    // Fragment 에 전달해 gridView 에서 사용할 Spinner 의 index
+    public static int LOCATION_IDX;
+    public static int SIZE_IDX;
+    public static int CATEGORY_IDX;
+
+    // 카테고리 Spinner 생성에 사용할 배열 변수
+    private static int CATEGORY_ADD_SPINNER_ITEM_iDX = 1;
+    private String[] CATEGORY_GENERAL = new String[Global.CATEGORY_GENERAL_STR_ARR.length + CATEGORY_ADD_SPINNER_ITEM_iDX];
+    private String[] CATEGORY_SPECIAL = new String[Global.CATEGORY_SPECIAL_STR_ARR.length + CATEGORY_ADD_SPINNER_ITEM_iDX];
 
     @BindView(R.id.viewpager) ViewPager viewpager;
     @BindView(R.id.spinnerLocate) Spinner spinnerLocate;
@@ -198,9 +205,9 @@ public class ViewPagerActivity extends AppCompatActivity {
         ArrayAdapter addressAdapter = ArrayAdapter.createFromResource(this, R.array.address1, android.R.layout.simple_spinner_item);
         addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerLocate.setAdapter(addressAdapter);
-        ArrayAdapter dogsizeAdapter = ArrayAdapter.createFromResource(this, R.array.dogSize, android.R.layout.simple_spinner_item);
-        dogsizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerSize.setAdapter(dogsizeAdapter);
+        ArrayAdapter dogSizeAdapter = ArrayAdapter.createFromResource(this, R.array.dogSize, android.R.layout.simple_spinner_item);
+        dogSizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSize.setAdapter(dogSizeAdapter);
     }
     public void vpPosLeftDropDownSet(){
         ArrayAdapter placeAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, CATEGORY_GENERAL);
@@ -215,24 +222,23 @@ public class ViewPagerActivity extends AppCompatActivity {
 
     // Spinner Arr Setting
     public void dropDownCategoryArrSet(){
-        //Spinner ( 드롭다운 메뉴 ) 에 사용될 카테고리의 Arr 설정
-
-        int tmpLength = Global.CATEGORY_GENERAL_STR_ARR.length;
-        System.arraycopy( Global.CATEGORY_GENERAL_STR_ARR, 0, CATEGORY_GENERAL, 1, tmpLength );
-        CATEGORY_GENERAL[0] = "전체";
-
-        tmpLength = Global.CATEGORY_SPECIAL_STR_ARR.length;
-        System.arraycopy( Global.CATEGORY_SPECIAL_STR_ARR, 0, CATEGORY_SPECIAL, 1, tmpLength );
-        CATEGORY_SPECIAL[0] = "전체";
+        // Spinner ( 드롭다운 메뉴 ) 에 사용될 카테고리의 Arr 설정
+        // 배열 복사
+        System.arraycopy( Global.CATEGORY_GENERAL_STR_ARR, 0, CATEGORY_GENERAL, 0, Global.CATEGORY_GENERAL_STR_ARR.length );
+        System.arraycopy( Global.CATEGORY_SPECIAL_STR_ARR, 0, CATEGORY_SPECIAL, 0, Global.CATEGORY_SPECIAL_STR_ARR.length );
+        // Spinner Item Add
+        CATEGORY_GENERAL[CATEGORY_GENERAL.length-1] = "전체";
+        CATEGORY_SPECIAL[CATEGORY_SPECIAL.length-1] = "전체";
     }
 
-    // Spinner OnItemClick
+    // Spinner OnItemClick  ( position 으로 선택 아이템 알 수 있다. )
     public void spinnerSetOnItemClick() {
         //지역 선택시
         spinnerLocate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                LOCATION_IDX = position;
+                bus.post(new VPSpinnerItemSelected());
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -243,7 +249,7 @@ public class ViewPagerActivity extends AppCompatActivity {
         spinnerSize.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                SIZE_IDX = position;
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -254,14 +260,7 @@ public class ViewPagerActivity extends AppCompatActivity {
         spinnerPlace.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //position 으로 선택 아이템 알 수 있음
-                if(viewpager.getCurrentItem() == STATE_LEFT){
-
-                } else if (viewpager.getCurrentItem() == STATE_RIGHT){
-
-                } else {
-                    Log.d("카테고리","에러");
-                }
+                CATEGORY_IDX = position;
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
