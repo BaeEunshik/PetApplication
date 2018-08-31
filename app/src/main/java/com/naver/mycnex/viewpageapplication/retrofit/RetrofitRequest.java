@@ -1,5 +1,6 @@
 package com.naver.mycnex.viewpageapplication.retrofit;
 
+import com.naver.mycnex.viewpageapplication.data.Mark;
 import com.naver.mycnex.viewpageapplication.data.Store;
 import com.naver.mycnex.viewpageapplication.data.StoreImage;
 
@@ -15,6 +16,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 /**
  * Created by Administrator on 2018-01-29.
@@ -32,9 +34,9 @@ public interface RetrofitRequest {
 
     @Multipart
     @POST("submitStore.do")
-    Call<Long> submitStore(@Part ArrayList<MultipartBody.Part> storeImage, @Part("name")String name, @Part("contact") String contact, @Part("dog_size") Integer dog_size, @Part("store_information")String info,
-                           @Part("operation_day")String operation_day, @Part("operation_time") String operation_time, @Part("parking") Integer parking, @Part("reservation") Integer reservation,
-                           @Part("address")String address, @Part("sigungu")String sigungu, @Part("dong") String dong, @Part("lat") double lat, @Part("lng") double lng, @Part("category") Integer category);
+    Call<Long> submitStore(@Part ArrayList<MultipartBody.Part> storeImage, @Part MultipartBody.Part name, @Part MultipartBody.Part contact, @Part MultipartBody.Part dog_size, @Part MultipartBody.Part info,
+                           @Part MultipartBody.Part operation_day, @Part MultipartBody.Part operation_time, @Part MultipartBody.Part parking, @Part MultipartBody.Part reservation,
+                           @Part MultipartBody.Part address, @Part MultipartBody.Part sigungu, @Part MultipartBody.Part lat, @Part MultipartBody.Part lng, @Part MultipartBody.Part category);
 
     @FormUrlEncoded
     @POST("storeDetail.do")
@@ -46,15 +48,7 @@ public interface RetrofitRequest {
     @GET("getStoreSpecial.do")
     Call<ArrayList<Store>> getStoreSpecial();
 
-    /* 파일 업로드
-    @Multipart
-    @POST("write_json_ok.do")
-    Call<Void> writeMemo(@Part("content") RequestBody content, @Part MultipartBody.Part photo);
-    */
-
-    /* GET 형식
-    @GET("detail_json.do")
-    Call<MemoFiles> getMemoFileList(@Query("id") Long id);
-    */
+    @GET("getStoreForMap.do")
+    Call<ArrayList<Store>> getStoreForMap();
 
 }
