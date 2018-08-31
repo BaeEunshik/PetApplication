@@ -19,7 +19,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,16 +31,25 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+import com.naver.mycnex.viewpageapplication.data.Mark;
+import com.naver.mycnex.viewpageapplication.data.Store;
+import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class SearchMapActivity extends AppCompatActivity
@@ -47,6 +59,8 @@ public class SearchMapActivity extends AppCompatActivity
 
     //구글맵
     private GoogleMap mMap;
+    ArrayList<Store> allStore;
+
     //버터나이프
     Unbinder unbinder;
     @BindView(R.id.btnSrchText) ImageButton btnSrchText;
@@ -54,6 +68,12 @@ public class SearchMapActivity extends AppCompatActivity
     @BindView(R.id.spinnerLocate) Spinner spinnerLocate;
     @BindView(R.id.spinnerPurpose) Spinner spinnerPurpose;
     @BindView(R.id.spinnerPlace) Spinner spinnerPlace;
+    @BindView(R.id.storeContainer) RelativeLayout storeContainer;
+    @BindView(R.id.storeimage) ImageView storeimage;
+    @BindView(R.id.storeName_txt) TextView storeName_txt;
+    @BindView(R.id.storeCategory_txt) TextView storeCategory_txt;
+    @BindView(R.id.storeLocation_txt) TextView storeLocation_txt;
+    @BindView(R.id.dog_size_txt) TextView dog_size_txt;
 
     /** onCreate **/
     @Override
@@ -62,8 +82,6 @@ public class SearchMapActivity extends AppCompatActivity
         setContentView(R.layout.activity_search_map);
         //버터나이프
         unbinder = ButterKnife.bind(this);
-
-        InitWhenCreated();
 
     }
     /** onDestroy **/
@@ -110,7 +128,7 @@ public class SearchMapActivity extends AppCompatActivity
             //권한 획득시
             @Override
             public void onPermissionGranted() {
-                getCurrentLocationAndCircle();
+                InitWhenCreated();
             }
             //권한 거부시
             @Override
@@ -130,6 +148,7 @@ public class SearchMapActivity extends AppCompatActivity
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        getMarkFromServer();
         InitSpinner();
     }
 
@@ -170,13 +189,53 @@ public class SearchMapActivity extends AppCompatActivity
                 .strokeWidth(0f)  //선너비 0f : 선없음
                 .fillColor(Color.parseColor("#880000ff")); //배경색
 
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,16));
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+
+        for (int i = 0; i < allStore.size(); i++) {
+
+            LatLng CurrentLocation = new LatLng(allStore.get(i).getLatitude(), allStore.get(i).getLongitude());
+            mMap.addMarker(new MarkerOptions().position(CurrentLocation).title(allStore.get(i).getName()));
+
+            Marker marker = mMap.addMarker(new MarkerOptions().position(CurrentLocation));
+            marker.setTag(i);
+
+
+        }
+
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                int position = (int)(marker.getTag());
+
+                storeName_txt.setText(allStore.get(position).getName());
+
+                return false;
+            }
+        });
+
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
         mMap.addCircle(circle1KM);
     }
 
-    public void setOnClickCurrentLocation() {
+    public void getMarkFromServer() {
 
+       Call<ArrayList<Store>> getstore = RetrofitService.getInstance().getRetrofitRequest().getStoreForMap();
+        getstore.enqueue(new Callback<ArrayList<Store>>() {
+           @Override
+           public void onResponse(Call<ArrayList<Store>> call, Response<ArrayList<Store>> response) {
+               if (response.isSuccessful()) {
+                   allStore = response.body();
+                   getCurrentLocationAndCircle();
+               }
+           }
 
+           @Override
+           public void onFailure(Call<ArrayList<Store>> call, Throwable t) {
+
+           }
+       });
 
     }
 

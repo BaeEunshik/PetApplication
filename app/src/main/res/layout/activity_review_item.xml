@@ -66,19 +66,21 @@
                         <RelativeLayout
                             android:layout_width="60dp"
                             android:layout_height="match_parent">
+
                             <ImageView
-                                android:layout_centerInParent="true"
                                 android:layout_width="46dp"
                                 android:layout_height="46dp"
+                                android:layout_centerInParent="true"
                                 android:background="@drawable/chracter" />
                         </RelativeLayout>
                         <!-- 이미지 ( 프로필 사진 ) -->
                         <!-- 닉네임 / 날짜 -->
                         <LinearLayout
-                            android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
+                            android:layout_weight="1"
                             android:orientation="vertical">
+
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="35dp">
@@ -94,17 +96,19 @@
                                     android:textSize="18dp"
                                     android:textStyle="bold" />
                             </RelativeLayout>
+
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent">
+
                                 <TextView
-                                    android:id="@+id/txt_date"
-                                    android:text="2018-08-00"
-                                    android:textSize="14dp"
-                                    android:textColor="@color/defaultText"
+                                    android:id="@+id/txt_review_date"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"/>
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:text="2018-08-00"
+                                    android:textColor="@color/defaultText"
+                                    android:textSize="14dp" />
                             </RelativeLayout>
                         </LinearLayout>
                         <!-- 닉네임 / 날짜 -->
@@ -113,11 +117,12 @@
                             android:layout_width="70dp"
                             android:layout_height="match_parent"
                             android:orientation="horizontal">
+
                             <TextView
-                                android:id="@+id/txt_point"
-                                android:layout_centerInParent="true"
+                                android:id="@+id/TextPoint"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
                                 android:text="4.0"
                                 android:textColor="@color/colorAccent1"
                                 android:textSize="20dp" />
@@ -128,9 +133,10 @@
 
                     <!-- 리뷰 텍스트 -->
                     <LinearLayout
-                        android:padding="10dp"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:baselineAligned="false"
+                        android:padding="10dp">
                         <!--<EditText
                             android:id="@+id/txt_content"
                             android:gravity="top"
@@ -142,12 +148,12 @@
                             android:layout_height="100dp"/>-->
                         <TextView
                             android:id="@+id/txt_content"
-                            android:padding="5dp"
-                            android:text="리뷰입력란"
-                            android:textColor="@color/defaultText"
-                            android:textSize="13dp"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="100dp"
+                            android:padding="5dp"
+                            android:text="리뷰내용"
+                            android:textColor="@color/defaultText"
+                            android:textSize="13dp" />
                     </LinearLayout>
                     <!-- 리뷰 텍스트 -->
 
@@ -167,7 +173,7 @@
                             android:id="@+id/txt_ComCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="댓글2개"/>
+                            android:text="댓글2개" />
                     </LinearLayout>
 
                     <!--댓글리스트뷰보기-->
@@ -176,18 +182,18 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:orientation="horizontal">
-                        <ImageButton
-                            android:id="@+id/ibtn_review"
+
+                        <ImageView
                             android:layout_width="25dp"
                             android:layout_height="25dp"
-                            android:background="@drawable/ic_review"/>
+                            android:background="@drawable/ic_review" />
 
                         <ImageButton
                             android:id="@+id/ibtn_dialog1"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
-                            android:layout_marginLeft="320dp"
-                            android:background="@drawable/ic_dialog1"/>
+                            android:layout_marginLeft="280dp"
+                            android:background="@drawable/ic_dialog1" />
                     </LinearLayout>
 
                     <ListView
@@ -196,8 +202,6 @@
                         android:layout_height="500dp" />
                 </LinearLayout>
             </ScrollView>
-
-
 
             <!--댓글작성-->
             <LinearLayout
@@ -213,7 +217,7 @@
                     android:background="@drawable/edittext"
                     android:textSize="10dp" />
                 <Button
-                    android:id="@+id/btn_comment_save"
+                    android:id="@+id/btn_input_comment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="댓글저장"

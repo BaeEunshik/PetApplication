@@ -18,8 +18,7 @@ public class Store {
     private Integer parking;
     private Integer reservation;
     private String address;
-    private String sigungu;
-    private String dong;
+    private Integer sigungu;
     private double latitude;
     private double longitude;
     private Integer category;
@@ -27,7 +26,7 @@ public class Store {
     private Integer score_sum;
     private Integer score_count;
 
-    public Store(String name, String contact, Integer dog_size, String store_information, String operation_day, String operation_time, Integer parking, Integer reservation, String address, String sigungu, String dong, double latitude, double longitude, Integer category, Integer hit, Integer score_sum, Integer score_count) {
+    public Store(String name, String contact, Integer dog_size, String store_information, String operation_day, String operation_time, Integer parking, Integer reservation, String address, Integer sigungu, double latitude, double longitude, Integer category, Integer hit, Integer score_sum, Integer score_count) {
         this.name = name;
         this.contact = contact;
         this.dog_size = dog_size;
@@ -38,7 +37,6 @@ public class Store {
         this.reservation = reservation;
         this.address = address;
         this.sigungu = sigungu;
-        this.dong = dong;
         this.latitude = latitude;
         this.longitude = longitude;
         this.category = category;

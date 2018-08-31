@@ -132,6 +132,8 @@ public class RegisterShopActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 String address = data.getStringExtra("address");
                 btn_shop_address.setText(address);
+                getLatLng();
+                Log.d("asd", String.valueOf(lat) + " " + String.valueOf(lng));
             }
         }
     }
@@ -272,17 +274,13 @@ public class RegisterShopActivity extends AppCompatActivity {
         String address = btn_shop_address.getText().toString();
         String[] str = address.split(" ");
 
-        String sigungu = "";
-        String dong = "";
+        Integer sigungu = 0;
 
-        if (str[2] != null || !str[2].equals("")) {
-            sigungu = str[2];
+        for (int i = 0; i < getResources().getStringArray(R.array.address1).length; i++) {
+            if (str[2].equals(getResources().getStringArray(R.array.address1)[i])) {
+                sigungu = i;
+            }
         }
-        if (str[3] != null || !str[3].equals("")) {
-            dong = str[3];
-        }
-
-        getLatLng();
 
         String store_info = shop_detail_edit.getText().toString();
 
@@ -306,7 +304,7 @@ public class RegisterShopActivity extends AppCompatActivity {
             return;
         }
 
-        if (address == null || address.equals("") || sigungu.equals("") || dong.equals("")) {
+        if (address == null || address.equals("")) {
             Toast.makeText(RegisterShopActivity.this, "주소를 입력하세요", Toast.LENGTH_SHORT).show();
             btn_shop_address.requestFocus();
             btn_shop_address.setFocusableInTouchMode(true);
@@ -336,18 +334,33 @@ public class RegisterShopActivity extends AppCompatActivity {
             return;
         }
 
-        final ArrayList<MultipartBody.Part> filePart = new ArrayList<>();
-        for (int i = 0; i < imgUri.length; i++) {
-            File file = new File(RealPathUtil.getRealPath(RegisterShopActivity.this,imgUri[i]));
+        MultipartBody.Part M_name = MultipartBody.Part.createFormData("name",name);
+        MultipartBody.Part M_phone = MultipartBody.Part.createFormData("contact",phone);
+        MultipartBody.Part M_petsize = MultipartBody.Part.createFormData("dog_size",String.valueOf(PETSIZE_PERMISSION));
+        MultipartBody.Part M_store_info = MultipartBody.Part.createFormData("store_information",store_info);
+        MultipartBody.Part M_oper_date = MultipartBody.Part.createFormData("operation_day",oper_date);
+        MultipartBody.Part M_operation_time = MultipartBody.Part.createFormData("operation_time",operation_time);
+        MultipartBody.Part M_parking = MultipartBody.Part.createFormData("parking",String.valueOf(PARKING));
+        MultipartBody.Part M_reservation = MultipartBody.Part.createFormData("reservation",String.valueOf(RESERVATION));
+        MultipartBody.Part M_address = MultipartBody.Part.createFormData("address",address);
+        MultipartBody.Part M_sigungu = MultipartBody.Part.createFormData("sigungu",String.valueOf(sigungu));
+        MultipartBody.Part M_lat = MultipartBody.Part.createFormData("lat",String.valueOf(lat));
+        MultipartBody.Part M_lng = MultipartBody.Part.createFormData("lng",String.valueOf(lng));
+        MultipartBody.Part M_selectedCategory = MultipartBody.Part.createFormData("category",String.valueOf(selectedCategory));
 
-            filePart.add(MultipartBody.Part.createFormData("file"+i,
-                    file.getName(),
-                    RequestBody.create(MediaType.parse("image/*"), file)));
+        final ArrayList<MultipartBody.Part> filePart = new ArrayList<>();
+        if (imgUri != null) {
+            for (int i = 0; i < imgUri.length; i++) {
+                File file = new File(RealPathUtil.getRealPath(RegisterShopActivity.this,imgUri[i]));
+
+                filePart.add(MultipartBody.Part.createFormData("file"+i,
+                        file.getName(),
+                        RequestBody.create(MediaType.parse("image/*"), file)));
+            }
         }
 
-         Call<Long> submitStore = RetrofitService.getInstance().getRetrofitRequest()
-                 .submitStore(filePart,name,phone,PETSIZE_PERMISSION,store_info,oper_date,operation_time,
-                 PARKING,RESERVATION,address,sigungu,dong,lat,lng,selectedCategory);
+         Call<Long> submitStore = RetrofitService.getInstance().getRetrofitRequest().submitStore(filePart,M_name,M_phone,M_petsize,M_store_info,M_oper_date,M_operation_time,
+                 M_parking,M_reservation,M_address,M_sigungu,M_lat,M_lng,M_selectedCategory);
          submitStore.enqueue(new Callback<Long>() {
              @Override
              public void onResponse(Call<Long> call, Response<Long> response) {
@@ -530,7 +543,6 @@ public class RegisterShopActivity extends AppCompatActivity {
                                 imgUri[i] = uriList.get(i);
                                 images[i].setImageURI(uriOne);
                                 images[i].setVisibility(View.VISIBLE);
-                                Log.d("asd", "Picker : "+String.valueOf(uriList.get(i)));
                             }
 
                         }

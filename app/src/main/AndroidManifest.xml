@@ -44,6 +44,7 @@
         <activity android:name=".ShopActivity" />
         <activity android:name=".ViewPagerActivity"/>
             <activity android:name=".IntroActivity" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -55,12 +56,12 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".address.Address" />
         <activity android:name=".ShopOnMapActivity" />
-        <activity android:name=".ReviewItemActivity" >
-
+        <activity android:name=".ReviewItemActivity" />
+            <activity android:name=".ReviewWriteActivity">
         </activity>
         <activity android:name=".PhotosActivity" />
         <activity android:name=".PhotoActivity" />
-        <activity android:name=".ReviewWriteActivity"></activity>
+
     </application>
 
 </manifest>
