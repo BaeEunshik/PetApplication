@@ -1,6 +1,5 @@
 package com.naver.mycnex.viewpageapplication;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
@@ -10,13 +9,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.naver.mycnex.viewpageapplication.adapter.CommentListAdapter;
 import com.naver.mycnex.viewpageapplication.adapter.ReviewListAdapter;
-import com.naver.mycnex.viewpageapplication.data.Comment;
 import com.naver.mycnex.viewpageapplication.data.Review;
-
 import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -26,27 +21,19 @@ public class ReviewWriteActivity extends AppCompatActivity {
 
     private Unbinder unbinder;
     ArrayList<Review>items = new ArrayList<>();
-    ReviewListAdapter reviewListAdapter;//
+    ReviewListAdapter reviewListAdapter;
     @BindView(R.id.btnGoBack)ImageButton btnGoBack;
-    @BindView(R.id.txt_rating)TextView txt_rating;
+    @BindView(R.id.TextPoint)TextView TextPoint=null ;//별점포인트
     @BindView(R.id.ratingBar)RatingBar ratingBar;
-    @BindView(R.id.edit_write)EditText edit_write;
-    @BindView(R.id.btnAdd)Button btnAdd;//리뷰추가시 저장되었습니다!
+    @BindView(R.id.et_input_content)EditText et_input_content;//리뷰쓰기
+    @BindView(R.id.btn_add_content)Button btn_add_content;//리뷰추가
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_write);
         unbinder = ButterKnife.bind(this);
-
-//TEST
-
-       // Review review = new Review(0l,"이 가게 정말 좋아요!!",1);
-        //items.add(review);
-
-
-        reviewListAdapter = new ReviewListAdapter(items);
-       // review.setText(reviewListAdapter);
 
 
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -57,7 +44,7 @@ public class ReviewWriteActivity extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(), totalStars + "\n" + rating, Toast.LENGTH_LONG).show();
 
-            txt_rating.setText("" +rating);
+           TextPoint.setText("" +rating);
 
             }
         });
@@ -65,5 +52,13 @@ public class ReviewWriteActivity extends AppCompatActivity {
     @OnClick(R.id.btnGoBack)
     public void btnGoBack(){        // 뒤로가기
         finish();
+    }
+
+    @OnClick(R.id.btn_add_content)
+    public  void setBtn_input_content(){
+        String content = et_input_content.getText().toString();
+
+
+
     }
 }
