@@ -40,16 +40,21 @@ public class ViewPagerActivity extends AppCompatActivity {
     Bus bus = BusProvider.getInstance().getBus();
     Unbinder unbinder;
 
-    // 뷰페이저 위치
+    // 뷰페이저 ( Fragment ) 위치
     private static int STATE_LEFT = 0;
     private static int STATE_RIGHT = 1;
 
-    // Fragment 에 전달해 gridView 에서 사용할 Spinner 의 index
-    int defaultNum = -1;
-    public int LOCATION_IDX = defaultNum;
-    public int SIZE_IDX = defaultNum;
-    public int GENERAL_IDX = defaultNum;
-    public int SPECIAL_IDX = defaultNum;
+    // Fragment 로 BUS 전달해 gridView 에서 사용할 Spinner 의 index
+    public boolean LOCATION_FLAG = false;
+    public boolean SIZE_FLAG = false;
+    public boolean GENERAL_FLAG = false;
+    public boolean SPECIAL_FLAG = true;
+
+    // OnCreate ( 최초실행 ) 시 중복 BUS 실행 차단 위한 Flag
+    public int LOCATION_IDX;
+    public int SIZE_IDX;
+    public int GENERAL_IDX;
+    public int SPECIAL_IDX;
 
     // 카테고리 Spinner 생성에 사용할 배열 변수
     private static int CATEGORY_ADD_ITEM_NUM = 1;
@@ -104,13 +109,12 @@ public class ViewPagerActivity extends AppCompatActivity {
         drawerListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, drawerStrArr));
         drawerListView.setOnItemClickListener(new DrawerItemClickListener());
 
-        // 뒤로가기 두 번할 경우 앱 종료
+        // 뒤로가기 두 번할 경우 앱 종료 기능
         backPressCloseHandler = new BackPressCloseHandler(this);
 
 
 
-        // GONE 되어있어도 ItemSelected 뜨는지 확인
-        // 카테고리 "전체" 에 set 해줘야 함
+
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -249,8 +253,13 @@ public class ViewPagerActivity extends AppCompatActivity {
         spinnerLocate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                LOCATION_IDX = position;
-                bus.post(new VPSpinnerItemSelected(LOCATION_IDX, SIZE_IDX, GENERAL_IDX, SPECIAL_IDX));
+                if( LOCATION_FLAG ){
+                    LOCATION_IDX = position;
+                    bus.post(new VPSpinnerItemSelected( LOCATION_IDX, SIZE_IDX, GENERAL_IDX, SPECIAL_IDX ));
+                } else {
+                    LOCATION_FLAG = true;
+                }
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -260,8 +269,12 @@ public class ViewPagerActivity extends AppCompatActivity {
         spinnerSize.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                SIZE_IDX = position;
-                bus.post(new VPSpinnerItemSelected(LOCATION_IDX, SIZE_IDX, GENERAL_IDX, SPECIAL_IDX));
+                if( SIZE_FLAG ){
+                    SIZE_IDX = position;
+                    bus.post(new VPSpinnerItemSelected( LOCATION_IDX, SIZE_IDX, GENERAL_IDX, SPECIAL_IDX ));
+                } else {
+                    SIZE_FLAG = true;
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -271,8 +284,12 @@ public class ViewPagerActivity extends AppCompatActivity {
         spinnerPlaceGeneral.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                GENERAL_IDX = position;
-                bus.post(new VPSpinnerItemSelected(LOCATION_IDX, SIZE_IDX, GENERAL_IDX, SPECIAL_IDX));
+                if( GENERAL_FLAG ){
+                    GENERAL_IDX = position;
+                    bus.post(new VPSpinnerItemSelected( LOCATION_IDX, SIZE_IDX, GENERAL_IDX, SPECIAL_IDX ));
+                } else {
+                    GENERAL_FLAG = true;
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -282,8 +299,12 @@ public class ViewPagerActivity extends AppCompatActivity {
         spinnerPlaceSpecial.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                SPECIAL_IDX = position;
-                bus.post(new VPSpinnerItemSelected(LOCATION_IDX, SIZE_IDX, GENERAL_IDX, SPECIAL_IDX));
+                if( SPECIAL_FLAG ){
+                    SPECIAL_IDX = position;
+                    bus.post(new VPSpinnerItemSelected( LOCATION_IDX, SIZE_IDX, GENERAL_IDX, SPECIAL_IDX ));
+                } else {
+                    SPECIAL_FLAG = true;
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
