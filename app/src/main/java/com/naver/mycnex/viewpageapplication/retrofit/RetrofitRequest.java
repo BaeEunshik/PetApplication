@@ -15,6 +15,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 /**
  * Created by Administrator on 2018-01-29.
@@ -40,21 +41,12 @@ public interface RetrofitRequest {
     @POST("storeDetail.do")
     Call<StoreImage> storeDetail(@Field("id")long id);
 
-    @GET("getStoreGeneral.do")
-    Call<ArrayList<Store>> getStoreGeneral();
+    @FormUrlEncoded
+    @POST("getStoreGeneral.do")
+    Call<ArrayList<Store>> getStoreGeneral(@Field("sigungu") Integer sigungu, @Field("dog_size") Integer dog_size, @Field("category") Integer category);
 
-    @GET("getStoreSpecial.do")
-    Call<ArrayList<Store>> getStoreSpecial();
-
-    /* 파일 업로드
-    @Multipart
-    @POST("write_json_ok.do")
-    Call<Void> writeMemo(@Part("content") RequestBody content, @Part MultipartBody.Part photo);
-    */
-
-    /* GET 형식
-    @GET("detail_json.do")
-    Call<MemoFiles> getMemoFileList(@Query("id") Long id);
-    */
+    @FormUrlEncoded
+    @POST("getStoreSpecial.do")
+    Call<ArrayList<Store>> getStoreSpecial(@Field("sigungu") Integer sigungu, @Field("dog_size") Integer dog_size, @Field("category") Integer category);
 
 }

@@ -17,9 +17,9 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter{
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new VP1Fragment();//ViewP1Fragment.getInstance();
+            return new VP1Fragment();
         } else if (position == 1){
-            return new VP2Fragment();//ViewP2Fragment.getInstance();
+            return new VP2Fragment();
         }
         return null;
     }

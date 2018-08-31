@@ -12,4 +12,5 @@ public class VPSpinnerItemSelected {
     private int size_idx;
     private int general_idx;
     private int special_idx;
+    private int viewPager_state = 0;
 }

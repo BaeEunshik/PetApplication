@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.naver.mycnex.viewpageapplication.ViewPagerActivity;
+import com.naver.mycnex.viewpageapplication.adapter.ViewPagerAdapter;
 import com.naver.mycnex.viewpageapplication.bus.BusProvider;
 import com.naver.mycnex.viewpageapplication.R;
 import com.naver.mycnex.viewpageapplication.ShopActivity;
@@ -55,15 +56,14 @@ public class VP1Fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_vp1, container, false);
         bus.register(this);
         unbinder = ButterKnife.bind(this,view);
-        InitWhenCreated();
+
         return view;
     }
-
     /** onResume **/
     @Override
     public void onResume() {
         super.onResume();
-        InitWhenCreated();
+        initWhenCreated();
     }
     /** onDestroy **/
     @Override
@@ -73,8 +73,8 @@ public class VP1Fragment extends Fragment {
         unbinder.unbind();
     }
     /******************** METHOD ********************/
-    public void InitWhenCreated() {
-        getDataFromServer();
+    public void initWhenCreated() {
+        getDataFromServerWithId(0,3,0);
         GridViewOnItemClick();
     }
     public void GridViewOnItemClick() {
@@ -87,8 +87,8 @@ public class VP1Fragment extends Fragment {
             }
         });
     }
-    public void getDataFromServer() {
-        Call<ArrayList<Store>> getStoreData = RetrofitService.getInstance().getRetrofitRequest().getStoreGeneral();
+    public void getDataFromServerWithId(Integer sigungu, Integer dog_size, Integer category ) {
+        Call<ArrayList<Store>> getStoreData = RetrofitService.getInstance().getRetrofitRequest().getStoreGeneral( sigungu, dog_size, category );
         getStoreData.enqueue(new Callback<ArrayList<Store>>() {
             @Override
             public void onResponse(Call<ArrayList<Store>> call, Response<ArrayList<Store>> response) {
@@ -111,10 +111,20 @@ public class VP1Fragment extends Fragment {
     /******************** EVENT BUS ********************/
     @Subscribe
     public void vPSpinnerItemSelected(VPSpinnerItemSelected evt){
-        Log.d("버스확인1",Integer.toString(evt.getLocation_idx()));
-        Log.d("버스확인2",Integer.toString(evt.getSize_idx()));
-        Log.d("버스확인3",Integer.toString(evt.getGeneral_idx()));
-        Log.d("버스확인4",Integer.toString(evt.getSpecial_idx()));
+
+        // 부모 액티비티에서 현재 화면이 LEFT or RIGHT 에 따라 다른 값을 넣어 프래그먼트마다 구분
+        if(evt.getViewPager_state() == ViewPagerActivity.VP_POS_LEFT){
+
+            int sigungu = evt.getLocation_idx();
+            int dog_size = evt.getSize_idx();
+            int category = evt.getGeneral_idx();
+
+            getDataFromServerWithId( sigungu, dog_size, category );
+            Log.d("VP2_BUS_LOCATION",Integer.toString(evt.getLocation_idx()));
+            Log.d("VP2_BUS_SIZE",Integer.toString(evt.getSize_idx()));
+            Log.d("VP2_BUS_GENERAL",Integer.toString(evt.getGeneral_idx()));
+        }
+
     }
 
 }

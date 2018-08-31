@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +13,15 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.naver.mycnex.viewpageapplication.ShopActivity;
+import com.naver.mycnex.viewpageapplication.ViewPagerActivity;
 import com.naver.mycnex.viewpageapplication.adapter.VP1GridAdapter;
 import com.naver.mycnex.viewpageapplication.bus.BusProvider;
 import com.naver.mycnex.viewpageapplication.R;
 import com.naver.mycnex.viewpageapplication.data.Store;
+import com.naver.mycnex.viewpageapplication.event.VPSpinnerItemSelected;
 import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 
@@ -63,7 +67,7 @@ public class VP2Fragment extends Fragment {
     }
 
     public void InitWhenCreated() {
-        getDataFromServer();
+        getDataFromServerWithId(0,3,0);
         GridViewOnItemClick();
     }
 
@@ -77,9 +81,8 @@ public class VP2Fragment extends Fragment {
             }
         });
     }
-
-    public void getDataFromServer() {
-        Call<ArrayList<Store>> getStoreData = RetrofitService.getInstance().getRetrofitRequest().getStoreSpecial();
+    public void getDataFromServerWithId(Integer sigungu, Integer dog_size, Integer category ) {
+        Call<ArrayList<Store>> getStoreData = RetrofitService.getInstance().getRetrofitRequest().getStoreSpecial( sigungu, dog_size, category );
         getStoreData.enqueue(new Callback<ArrayList<Store>>() {
             @Override
             public void onResponse(Call<ArrayList<Store>> call, Response<ArrayList<Store>> response) {
@@ -88,17 +91,35 @@ public class VP2Fragment extends Fragment {
                     initAdapter();
                 }
             }
-
             @Override
             public void onFailure(Call<ArrayList<Store>> call, Throwable t) {
 
             }
         });
     }
-
     public void initAdapter() {
         vp1GridAdapter = new VP1GridAdapter(stores);
         gridView.setAdapter(vp1GridAdapter);
+    }
+
+    /******************** EVENT BUS ********************/
+    @Subscribe
+    public void vPSpinnerItemSelected(VPSpinnerItemSelected evt){
+
+        // 부모 액티비티에서 현재 화면이 LEFT or RIGHT 에 따라 다른 값을 넣어 프래그먼트마다 구분
+        if(evt.getViewPager_state() == ViewPagerActivity.VP_POS_RIGHT){
+
+            int sigungu = evt.getLocation_idx();
+            int dog_size = evt.getSize_idx();
+            int category = evt.getGeneral_idx();
+
+            getDataFromServerWithId( sigungu, dog_size, category );
+
+            Log.d("VP2_BUS_LOCATION",Integer.toString(evt.getLocation_idx()));
+            Log.d("VP2_BUS_SIZE",Integer.toString(evt.getSize_idx()));
+            Log.d("VP2_BUS_SPECIAL",Integer.toString(evt.getSpecial_idx()));
+        }
+
     }
 
 }
