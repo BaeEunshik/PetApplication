@@ -131,14 +131,14 @@
                 android:layout_height="80dp">
                 <!-- 정보 박스 -->
                 <RelativeLayout
-                    android:id="@+id/informContainer"
+                    android:id="@+id/storeContainer"
                     android:orientation="horizontal"
                     android:background="@color/colorWhite"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <!-- 이미지 ( 좌측 )-->
                     <ImageView
-                        android:id="@+id/btnImg"
+                        android:id="@+id/storeimage"
                         android:src="@drawable/dog1"
                         android:scaleType="centerCrop"
                         android:layout_width="80dp"
@@ -146,7 +146,7 @@
                     <!-- 이미지 ( 좌측 )-->
                     <!-- 정보 ( 중앙 )-->
                     <LinearLayout
-                        android:layout_toRightOf="@+id/btnImg"
+                        android:layout_toRightOf="@+id/storeimage"
                         android:layout_toLeftOf="@+id/informBoxRight"
                         android:paddingLeft="10dp"
                         android:orientation="vertical"
@@ -157,7 +157,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="30dp">
                             <TextView
-                                android:id="@+id/TextName"
+                                android:id="@+id/storeName_txt"
                                 android:layout_centerVertical="true"
                                 android:text="가게이름"
                                 android:textSize="20dp"
@@ -172,7 +172,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="20dp">
                             <TextView
-                                android:id="@+id/TextLocation"
+                                android:id="@+id/storeLocation_txt"
                                 android:layout_centerVertical="true"
                                 android:text="지역"
                                 android:textSize="12dp"
@@ -192,7 +192,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
                                 <TextView
-                                    android:id="@+id/TextCategory"
+                                    android:id="@+id/storeCategory_txt"
                                     android:text="어떤카페"
                                     android:textSize="12dp"
                                     android:textColor="@color/defaultText"
@@ -213,7 +213,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
                                 <TextView
-                                    android:id="@+id/TextSize"
+                                    android:id="@+id/dog_size_txt"
                                     android:text="~견 입장 가능"
                                     android:textSize="12dp"
                                     android:textColor="@color/defaultText"
