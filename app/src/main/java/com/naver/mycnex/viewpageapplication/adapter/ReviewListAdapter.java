@@ -5,15 +5,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.naver.mycnex.viewpageapplication.R;
 import com.naver.mycnex.viewpageapplication.data.Review;
-
 import java.util.ArrayList;
 
 public class ReviewListAdapter extends BaseAdapter {
-    ArrayList<Review> items;
-
+    ArrayList<Review> items ;
 
     public ReviewListAdapter(ArrayList<Review> items) {
         this.items = items;
@@ -31,29 +28,33 @@ public class ReviewListAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return 0;
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        Holder holder = new Holder();
+
+       ReviewListAdapter.Holder holder = new ReviewListAdapter.Holder();
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_review_write, parent, false);
-            holder.txt_review = convertView.findViewById(R.id.edit_write);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_review_list, parent, false);
+            holder.txt_review_content = convertView.findViewById(R.id.txt_review_content);
 
             convertView.setTag(holder);
         } else {
-            holder = (Holder) convertView.getTag();
+            holder = (ReviewListAdapter.Holder)convertView.getTag();
         }
-        Review item = (Review) getItem(position);
+      Review item = (Review)getItem(position);
 
-        holder.txt_review.setText(item.getReview());
+        holder.txt_review_content.setText(item.getContent());
 
         return convertView;
     }
 
     public class Holder {
-        TextView txt_review;
+        TextView txt_review_content;
     }
 }
+
+
+
