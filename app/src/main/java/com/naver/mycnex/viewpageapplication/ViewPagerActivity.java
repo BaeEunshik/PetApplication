@@ -1,6 +1,7 @@
 package com.naver.mycnex.viewpageapplication;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -109,6 +110,9 @@ public class ViewPagerActivity extends AppCompatActivity {
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewpager.setAdapter(viewPagerAdapter);
 
+        // ViewPage 화면 변경 리스너
+        addOnPageChangeListener();
+
         // Drawer Layout Adapter 설정
         String[] drawerStrArr = getResources().getStringArray(R.array.DrawerNav);
         drawerListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, drawerStrArr));
@@ -163,19 +167,11 @@ public class ViewPagerActivity extends AppCompatActivity {
     }
     @OnClick (R.id.btnGoLeft)   // ViewPager 좌측이동
     public void btnGoLeft(){
-        btnGoLeft.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        btnGoRight.setBackground(getResources().getDrawable(R.drawable.flat_box_gray));
         viewpager.setCurrentItem(VP_POS_LEFT);
-        spinnerPlaceGeneral.setVisibility(View.VISIBLE);
-        spinnerPlaceSpecial.setVisibility(View.GONE);
     }
     @OnClick (R.id.btnGoRight)   // ViewPager 우측이동
     public void setBtnGoRight(){
-        btnGoLeft.setBackground(getResources().getDrawable(R.drawable.flat_box_gray));
-        btnGoRight.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         viewpager.setCurrentItem(VP_POS_RIGHT);
-        spinnerPlaceSpecial.setVisibility(View.VISIBLE);
-        spinnerPlaceGeneral.setVisibility(View.GONE);
     }
     @OnClick(R.id.btnSrchText)  // SearchKeywordActivity ( 검색어로 찾기 ) 로 이동
     public void btnSrchText(){
@@ -318,4 +314,31 @@ public class ViewPagerActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void addOnPageChangeListener(){
+        viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+            @Override
+            public void onPageSelected(int position) {
+                if(position == VP_POS_LEFT){
+                    btnGoLeft.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    btnGoRight.setBackground(getResources().getDrawable(R.drawable.flat_box_gray));
+                    spinnerPlaceGeneral.setVisibility(View.VISIBLE);
+                    spinnerPlaceSpecial.setVisibility(View.GONE);
+                }else if (position == VP_POS_RIGHT){
+                    btnGoLeft.setBackground(getResources().getDrawable(R.drawable.flat_box_gray));
+                    btnGoRight.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    spinnerPlaceSpecial.setVisibility(View.VISIBLE);
+                    spinnerPlaceGeneral.setVisibility(View.GONE);
+                }
+            }
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+    }
+
+
 }
