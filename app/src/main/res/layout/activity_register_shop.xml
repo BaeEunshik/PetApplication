@@ -40,13 +40,15 @@
     <ScrollView
         android:id="@+id/scrollView"
         android:paddingTop="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_gravity="center_horizontal"
             android:orientation="vertical"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent">
             <!-- 가게이름 -->
             <TextView
@@ -195,8 +197,9 @@
                 android:inputType="textNoSuggestions">
                 <!-- 요일버튼 박스 -->
                 <LinearLayout
+                    android:padding="5dp"
                     android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <Button
                         android:id="@+id/btnMonday"
@@ -358,62 +361,71 @@
                 android:layout_height="wrap_content"
                 android:text="전화번호"/>
             <LinearLayout
-                android:weightSum="7"
                 android:orientation="horizontal"
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:padding="5dp"
                 android:background="@drawable/edittext"
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
                 android:inputType="textNoSuggestions">
-                <!-- 02 / 010 -->
-                <Spinner
-                    android:id="@+id/spinnerPhone"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:layout_marginLeft="10dp"/>
-                <RelativeLayout
-                    android:layout_width="10dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                    <TextView
-                        android:text="-"
-                        android:layout_centerInParent="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="20dp"/>
-                </RelativeLayout>
-                <EditText
-                    android:id="@+id/middlePhone_edit"
-                    android:paddingLeft="10dp"
-                    android:background="@drawable/edittext"
-                    android:layout_weight="3"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:inputType="number"
-                    android:maxLength="4"/>
+                    <!-- 02 / 010 -->
+                    <Spinner
+                        android:id="@+id/spinnerPhone"
+                        android:layout_marginStart="0dp"
+                        android:background="@drawable/edittext"
+                        android:layout_weight="3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"/>
+                    <RelativeLayout
+                        android:layout_width="10dp"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:text="-"
+                            android:textStyle="bold"
+                            android:includeFontPadding="false"
+                            android:layout_centerInParent="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20dp"/>
+                    </RelativeLayout>
+                    <EditText
+                        android:id="@+id/middlePhone_edit"
+                        android:paddingLeft="10dp"
+                        android:background="@drawable/edittext"
+                        android:layout_weight="3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:inputType="number"
+                        android:maxLength="4"/>
 
-                <RelativeLayout
-                    android:layout_width="10dp"
-                    android:layout_height="match_parent">
-                    <TextView
-                        android:text="-"
-                        android:layout_centerInParent="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="20dp"/>
-                </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="10dp"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:text="-"
+                            android:textStyle="bold"
+                            android:includeFontPadding="false"
+                            android:layout_centerInParent="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20dp"/>
+                    </RelativeLayout>
 
-                <EditText
-                    android:id="@+id/lastPhone_edit"
-                    android:paddingLeft="10dp"
-                    android:background="@drawable/edittext"
-                    android:layout_weight="3"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:inputType="number"
-                    android:maxLength="4"/>
+                    <EditText
+                        android:id="@+id/lastPhone_edit"
+                        android:paddingLeft="10dp"
+                        android:background="@drawable/edittext"
+                        android:layout_weight="3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:inputType="number"
+                        android:maxLength="4"/>
+                </LinearLayout>
 
             </LinearLayout>
             <!-- 전화번호 -->
