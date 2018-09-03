@@ -52,7 +52,7 @@ public class ViewPagerActivity extends AppCompatActivity {
 
     // Fragment 로 BUS 전달해 gridView 에서 사용할 Spinner 의 index
     private int LOCATION_IDX = 0;   // [ 전체 ]
-    private int SIZE_IDX = 3 ;       // [ 대형견 ]
+    private int SIZE_IDX = 1;       // [ 소형견 ]
     private int GENERAL_IDX = 0;    // [ 전체 ]
     private int SPECIAL_IDX = 0;    // [ 전체 ]
 
@@ -271,8 +271,7 @@ public class ViewPagerActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if( SIZE_FLAG ){
-                    // 인덱스 역전시켜 보내야 함
-                    SIZE_IDX = SIZE_ARR.length - 1 - position;
+                    SIZE_IDX = position+1;
 
                     bus.post(new VPSpinnerItemSelected( LOCATION_IDX, SIZE_IDX, GENERAL_IDX, SPECIAL_IDX, viewpager.getCurrentItem() ));
                 } else {

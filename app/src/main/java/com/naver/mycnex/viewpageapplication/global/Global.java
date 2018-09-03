@@ -10,6 +10,7 @@ public class Global {
     public final static Integer PETSIZE_SMALL = 1;
     public final static Integer PETSIZE_MIDIUM = 2;
     public final static Integer PETSIZE_LARGE = 3;
+    public final static String[] PETSIZE_ARR = {"소형견","중형견","대형견"};
 
     /**********     주차     **********/
     public final static Integer PARKING_ABLE = 1;

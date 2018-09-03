@@ -138,7 +138,7 @@
                     android:layout_height="match_parent">
                     <!-- 이미지 ( 좌측 )-->
                     <ImageView
-                        android:id="@+id/storeimage"
+                        android:id="@+id/storeimage_img"
                         android:src="@drawable/dog1"
                         android:scaleType="centerCrop"
                         android:layout_width="80dp"
@@ -146,7 +146,7 @@
                     <!-- 이미지 ( 좌측 )-->
                     <!-- 정보 ( 중앙 )-->
                     <LinearLayout
-                        android:layout_toRightOf="@+id/storeimage"
+                        android:layout_toRightOf="@+id/storeimage_img"
                         android:layout_toLeftOf="@+id/informBoxRight"
                         android:paddingLeft="10dp"
                         android:orientation="vertical"

@@ -1,9 +1,12 @@
 package com.naver.mycnex.viewpageapplication;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
@@ -35,10 +38,17 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+import com.naver.mycnex.viewpageapplication.data.ImageFile;
 import com.naver.mycnex.viewpageapplication.data.Mark;
 import com.naver.mycnex.viewpageapplication.data.Store;
+import com.naver.mycnex.viewpageapplication.data.StoreImage;
+import com.naver.mycnex.viewpageapplication.global.Global;
 import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -47,6 +57,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import lombok.ToString;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -55,11 +66,14 @@ import retrofit2.Response;
 public class SearchMapActivity extends AppCompatActivity
         implements GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener,
-        OnMapReadyCallback {
+        OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     //구글맵
     private GoogleMap mMap;
-    ArrayList<Store> allStore;
+    ArrayList<StoreImage> storeImages;
+    ArrayList<Store> stores;
+    ArrayList<ImageFile> images;
+    private ArrayList<Marker> markers;
 
     //버터나이프
     Unbinder unbinder;
@@ -69,7 +83,7 @@ public class SearchMapActivity extends AppCompatActivity
     @BindView(R.id.spinnerPurpose) Spinner spinnerPurpose;
     @BindView(R.id.spinnerPlace) Spinner spinnerPlace;
     @BindView(R.id.storeContainer) RelativeLayout storeContainer;
-    @BindView(R.id.storeimage) ImageView storeimage;
+    @BindView(R.id.storeimage_img) ImageView storeimage_img;
     @BindView(R.id.storeName_txt) TextView storeName_txt;
     @BindView(R.id.storeCategory_txt) TextView storeCategory_txt;
     @BindView(R.id.storeLocation_txt) TextView storeLocation_txt;
@@ -82,7 +96,7 @@ public class SearchMapActivity extends AppCompatActivity
         setContentView(R.layout.activity_search_map);
         //버터나이프
         unbinder = ButterKnife.bind(this);
-
+        InitWhenCreated();
     }
     /** onDestroy **/
     @Override
@@ -107,6 +121,7 @@ public class SearchMapActivity extends AppCompatActivity
     //OnMapReady
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        //맵 화면 컴포넌트
         mMap = googleMap;
         Permission();
     }
@@ -118,7 +133,54 @@ public class SearchMapActivity extends AppCompatActivity
     //onMyLocationButtonClick
     @Override
     public boolean onMyLocationButtonClick() {
+        return false;
+    }
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Integer clickCount = (Integer) marker.getTag();
+
+        if (clickCount != null) {
+
+            storeName_txt.setText(stores.get((Integer)marker.getTag()).getName());
+
+            storeLocation_txt.setText(stores.get((Integer)marker.getTag()).getSigungu().toString());
+            dog_size_txt.setText(Global.PETSIZE_ARR[stores.get((Integer)marker.getTag()).getDog_size()-1]);
+
+            if (stores.get((Integer)marker.getTag()).getCategory() < Global.CATEGORY_DIVISION_NUM) { // general 일 때
+                storeCategory_txt.setText(Global.CATEGORY_GENERAL_STR_ARR[stores.get((Integer)marker.getTag()).getCategory()]);
+            } else {
+                storeCategory_txt.setText(Global.CATEGORY_SPECIAL_STR_ARR[stores.get((Integer)marker.getTag()).getCategory()-Global.CATEGORY_DIVISION_NUM]);
+            }
+
+            for (int i = 0; i < images.size(); i++) {
+                if (images.get(i).getStore_id() == stores.get((Integer)marker.getTag()).getId()) {
+
+                    final int finalI = i;
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Bitmap image = null;
+                            try {
+                                image = getBitmap(Global.BASE_IMAGE_URL+images.get(finalI).getSavedName());
+                            }catch(Exception e) {
+
+                            }finally {
+                                if(image!=null) {
+                                    final Bitmap finalImage = image;
+                                    runOnUiThread(new Runnable() {
+                                        @SuppressLint("NewApi")
+                                        public void run() {
+                                            storeimage_img.setImageBitmap(finalImage);
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }).start();
+                }
+            }
+        }
         return false;
     }
 
@@ -128,7 +190,7 @@ public class SearchMapActivity extends AppCompatActivity
             //권한 획득시
             @Override
             public void onPermissionGranted() {
-                InitWhenCreated();
+                getMarkFromServer();
             }
             //권한 거부시
             @Override
@@ -144,12 +206,35 @@ public class SearchMapActivity extends AppCompatActivity
     }
     /************************* Oncreated *************************/
     public void InitWhenCreated() {
-        //맵 화면 컴포넌트
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        getMarkFromServer();
         InitSpinner();
+    }
+
+    private Bitmap getBitmap(String url) {
+        URL imgUrl = null;
+        HttpURLConnection connection = null;
+        InputStream is = null;
+
+        Bitmap retBitmap = null;
+
+        try{
+            imgUrl = new URL(url);
+            connection = (HttpURLConnection) imgUrl.openConnection();
+            connection.setDoInput(true); //url로 input받는 flag 허용
+            connection.connect(); //연결
+            is = connection.getInputStream(); // get inputstream
+            retBitmap = BitmapFactory.decodeStream(is);
+        }catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }finally {
+            if(connection!=null) {
+                connection.disconnect();
+            }
+            return retBitmap;
+        }
     }
 
     public void InitSpinner() {
@@ -187,55 +272,60 @@ public class SearchMapActivity extends AppCompatActivity
         CircleOptions circle1KM = new CircleOptions().center(currentLocation) //원점
                 .radius(1000)      //반지름 단위 : m
                 .strokeWidth(0f)  //선너비 0f : 선없음
-                .fillColor(Color.parseColor("#880000ff")); //배경색
+                .fillColor(Color.parseColor("#95FADB9B")); //배경색
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,16));
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
-        for (int i = 0; i < allStore.size(); i++) {
+        markers = new ArrayList<>();
 
-            LatLng CurrentLocation = new LatLng(allStore.get(i).getLatitude(), allStore.get(i).getLongitude());
-            mMap.addMarker(new MarkerOptions().position(CurrentLocation).title(allStore.get(i).getName()));
+        for (int i = 0; i < stores.size(); i++) {
 
-            Marker marker = mMap.addMarker(new MarkerOptions().position(CurrentLocation));
+            LatLng CurrentLocation = new LatLng(stores.get(i).getLatitude(), stores.get(i).getLongitude());
+            Marker marker = mMap.addMarker(new MarkerOptions().position(CurrentLocation).title(stores.get(i).getName()));
             marker.setTag(i);
-
+            markers.add(marker);
 
         }
 
-
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                int position = (int)(marker.getTag());
-
-                storeName_txt.setText(allStore.get(position).getName());
-
-                return false;
-            }
-        });
-
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
         mMap.addCircle(circle1KM);
+
+        mMap.setOnMarkerClickListener(this);
     }
 
     public void getMarkFromServer() {
 
-       Call<ArrayList<Store>> getstore = RetrofitService.getInstance().getRetrofitRequest().getStoreForMap();
-        getstore.enqueue(new Callback<ArrayList<Store>>() {
-           @Override
-           public void onResponse(Call<ArrayList<Store>> call, Response<ArrayList<Store>> response) {
-               if (response.isSuccessful()) {
-                   allStore = response.body();
-                   getCurrentLocationAndCircle();
-               }
-           }
+       Call<ArrayList<StoreImage>> getstore = RetrofitService.getInstance().getRetrofitRequest().getStoreForMap();
+        getstore.enqueue(new Callback<ArrayList<StoreImage>>() {
+            @Override
+            public void onResponse(Call<ArrayList<StoreImage>> call, Response<ArrayList<StoreImage>> response) {
+                if (response.isSuccessful()) {
+                    storeImages = response.body();
 
-           @Override
-           public void onFailure(Call<ArrayList<Store>> call, Throwable t) {
+                    getStoreData();
+                    getCurrentLocationAndCircle();
+                }
+            }
 
-           }
-       });
+            @Override
+            public void onFailure(Call<ArrayList<StoreImage>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getStoreData() {
+
+        stores = new ArrayList<>();
+        images = new ArrayList<>();
+
+        for (int i = 0; i < storeImages.size(); i++) {
+            stores.add(storeImages.get(i).getStore());
+            for (int j = 0; j < storeImages.get(i).getImage().size(); j++) {
+                images.add(storeImages.get(i).getImage().get(j));
+            }
+        }
 
     }
 

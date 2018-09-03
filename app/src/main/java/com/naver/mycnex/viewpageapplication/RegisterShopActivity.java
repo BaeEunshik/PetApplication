@@ -605,6 +605,8 @@ public class RegisterShopActivity extends AppCompatActivity {
 
     public void setselect_general_special() {
 
+
+
         ArrayAdapter addressAdapter = ArrayAdapter.createFromResource(this, R.array.purpose, android.R.layout.simple_spinner_item);
         addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         select_general_special.setAdapter(addressAdapter);
