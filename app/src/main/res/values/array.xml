@@ -50,7 +50,7 @@
     <!-- 장소구분 -->
     <string-array name="purpose">
         <item>애견동반</item>
-        <item>애견전문</item>
+        <item>애견전용</item>
     </string-array>
     <!-- 장소구분 -->
 
@@ -60,14 +60,5 @@
         <item>02</item>
     </string-array>
     <!-- 전화번호 앞자리 -->
-
-    <!-- 임시 -->
-    <string-array name="petGeneral">
-        <item>임시</item>
-    </string-array>
-    <string-array name="petSpecial">
-        <item>임시</item>
-    </string-array>
-    <!-- 임시 -->
 
 </resources>

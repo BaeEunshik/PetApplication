@@ -30,7 +30,7 @@
                     android:textSize="10dp"/>
                 <Spinner
                     android:id="@+id/spinnerLocate"
-                    android:layout_width="100dp"
+                    android:layout_width="120dp"
                     android:layout_height="35dp"/>
             </LinearLayout>
 
