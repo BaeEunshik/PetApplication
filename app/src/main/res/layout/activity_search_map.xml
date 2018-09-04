@@ -68,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorDarkHeader">
-            <!-- 견사이즈 -->
+            <!-- 애견동반, 애견전용 -->
             <RelativeLayout
                 android:padding="10dp"
                 android:layout_weight="1"
@@ -86,6 +86,7 @@
                         android:layout_height="35dp"/>
                 </LinearLayout>
             </RelativeLayout>
+            <!-- 애견동반, 애견전용 -->
             <!-- 장소구분 -->
             <RelativeLayout
                 android:padding="10dp"
@@ -98,12 +99,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <Spinner
-                        android:id="@+id/spinnerPlace"
+                        android:id="@+id/spinnerPlaceGeneral"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="35dp"/>
+                    <Spinner
+                        android:id="@+id/spinnerPlaceSpecial"
+                        android:visibility="gone"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="35dp"/>
                 </LinearLayout>
             </RelativeLayout>
+            <!-- 장소구분 -->
         </LinearLayout>
         <!-- 헤더 ( 하단 )  -->
 

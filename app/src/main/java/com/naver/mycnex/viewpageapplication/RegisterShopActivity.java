@@ -107,6 +107,12 @@ public class RegisterShopActivity extends AppCompatActivity {
     @BindView(R.id.image5) ImageView image5;
     @BindView(R.id.image6) ImageView image6;
 
+
+    // 카테고리 Spinner 생성에 사용할 배열 변수
+    private String[] CATEGORY_GENERAL_ARR = new String[Global.CATEGORY_GENERAL_LENGTH];
+    private String[] CATEGORY_SPECIAL_ARR = new String[Global.CATEGORY_SPECIAL_LENGTH];
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -384,7 +390,7 @@ public class RegisterShopActivity extends AppCompatActivity {
 
     // Oncreated시 초기화(initiation)
     public void InitWhenCreated() {
-
+        dropDownCategoryArrSet();
         spinnerPhoneInit();
         InitOperation_Day();
         setselect_general_special();
@@ -604,21 +610,19 @@ public class RegisterShopActivity extends AppCompatActivity {
     }
 
     public void setselect_general_special() {
+        ArrayAdapter addressAdapter = ArrayAdapter.createFromResource(this, R.array.purpose, android.R.layout.simple_spinner_item); // purpose array 의 어댑터
+        addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);  //스피너 아이템 적용
+        select_general_special.setAdapter(addressAdapter);  //setAdapter
 
-
-
-        ArrayAdapter addressAdapter = ArrayAdapter.createFromResource(this, R.array.purpose, android.R.layout.simple_spinner_item);
-        addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        select_general_special.setAdapter(addressAdapter);
-
-        select_general_special.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        select_general_special.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {   // OnItemSelect 리스너
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == Global.CATEGORY_GENERAL) {
+                if (position == Global.CATEGORY_GENERAL) {  // "애견동반" 을 선택한 경우
 
-                    ArrayAdapter addressAdapter = ArrayAdapter.createFromResource(RegisterShopActivity.this, R.array.petGeneral, android.R.layout.simple_spinner_item);
-                    addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    select_category.setAdapter(addressAdapter);
+
+                    ArrayAdapter placeAdapter = new ArrayAdapter(RegisterShopActivity.this, android.R.layout.simple_spinner_item, CATEGORY_GENERAL_ARR);
+                    placeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    select_category.setAdapter(placeAdapter);
 
                     select_category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
@@ -629,44 +633,44 @@ public class RegisterShopActivity extends AppCompatActivity {
                                 }
                             }
                         }
-
                         @Override
                         public void onNothingSelected(AdapterView<?> parent) {
 
                         }
                     });
-
                 } else if (position == Global.CATEGORY_SPECIAL) {
 
-                    ArrayAdapter addressAdapter = ArrayAdapter.createFromResource(RegisterShopActivity.this, R.array.petSpecial, android.R.layout.simple_spinner_item);
-                    addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    select_category.setAdapter(addressAdapter);
+                    ArrayAdapter placeAdapter = new ArrayAdapter(RegisterShopActivity.this, android.R.layout.simple_spinner_item, CATEGORY_SPECIAL_ARR);
+                    placeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    select_category.setAdapter(placeAdapter);
 
                     select_category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             for (int i = 0; i < Global.CATEGORY_SPECIAL_LENGTH; i++) {
                                 if (position == i) {
-                                    selectedCategory = position + Global.CATEGORY_SPECIAL_CAFE;
+                                    selectedCategory = position + Global.CATEGORY_SPECIAL_CAFE + Global.CATEGORY_DIVISION_NUM;
                                 }
                             }
                         }
-
                         @Override
                         public void onNothingSelected(AdapterView<?> parent) {
-
                         }
                     });
-
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
+    }
 
+    // Spinner Arr Setting
+    public void dropDownCategoryArrSet(){
+        // Spinner ( 드롭다운 메뉴 ) 에 사용될 카테고리의 배열값 할당
+        // Static 배열 복사
+        System.arraycopy( Global.CATEGORY_GENERAL_STR_ARR, 0, CATEGORY_GENERAL_ARR, 0, Global.CATEGORY_GENERAL_LENGTH );
+        System.arraycopy( Global.CATEGORY_SPECIAL_STR_ARR, 0, CATEGORY_SPECIAL_ARR, 0, Global.CATEGORY_SPECIAL_LENGTH );
     }
 
     public void spinnerPhoneGetData() {
@@ -675,10 +679,8 @@ public class RegisterShopActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 PHONE_FRONT_NUM = String.valueOf(parent.getItemAtPosition(position));
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
     }
