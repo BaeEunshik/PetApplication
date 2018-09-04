@@ -56,9 +56,8 @@ public class ViewPagerActivity extends AppCompatActivity {
     private int GENERAL_IDX = 0;    // [ 전체 ]
     private int SPECIAL_IDX = 0;    // [ 전체 ]
 
-    private static int DEFAULT_ITEM_IDX = 1; // "전체" 는 DB에 없기 때문에 index 에서 빼줘야 한다.
-
     // 카테고리 Spinner 생성에 사용할 배열 변수
+    private static int DEFAULT_ITEM_IDX = 1; // "전체" 는 DB에 없기 때문에 index 에서 빼줘야 한다.
     private String[] CATEGORY_GENERAL_ARR = new String[Global.CATEGORY_GENERAL_LENGTH + DEFAULT_ITEM_IDX];
     private String[] CATEGORY_SPECIAL_ARR = new String[Global.CATEGORY_SPECIAL_LENGTH + DEFAULT_ITEM_IDX];
 
