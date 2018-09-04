@@ -39,7 +39,6 @@ import com.gun0912.tedpermission.TedPermission;
 import com.naver.mycnex.viewpageapplication.data.ImageFile;
 import com.naver.mycnex.viewpageapplication.data.Store;
 import com.naver.mycnex.viewpageapplication.data.StoreImage;
-import com.naver.mycnex.viewpageapplication.event.VPSpinnerItemSelected;
 import com.naver.mycnex.viewpageapplication.global.Global;
 import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 
@@ -56,6 +55,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
+// ** 최초실행시 **
+// 1. 모든 StoreImage 가져오기 ( 바꿀 예정 )
+// 2. 내 위치로 camera 이동
+//
+// ** Spinner Select 시 **
+//  1) 지역, 카테고리( 장소들 ) index 로 데이터 가져오기
+//
 
 public class SearchMapActivity extends AppCompatActivity
         implements GoogleMap.OnMyLocationButtonClickListener,
@@ -76,8 +83,7 @@ public class SearchMapActivity extends AppCompatActivity
     @BindView(R.id.btnGoBack) ImageButton btnGoBack;
     @BindView(R.id.spinnerLocate) Spinner spinnerLocate;
     @BindView(R.id.spinnerPurpose) Spinner spinnerPurpose;
-    @BindView(R.id.spinnerPlaceGeneral) Spinner spinnerPlaceGeneral;
-    @BindView(R.id.spinnerPlaceSpecial) Spinner spinnerPlaceSpecial;
+    @BindView(R.id.spinnerPlace) Spinner spinnerPlace;
     @BindView(R.id.storeContainer) RelativeLayout storeContainer;
     @BindView(R.id.storeimage_img) ImageView storeimage_img;
     @BindView(R.id.storeName_txt) TextView storeName_txt;
@@ -85,10 +91,18 @@ public class SearchMapActivity extends AppCompatActivity
     @BindView(R.id.storeLocation_txt) TextView storeLocation_txt;
     @BindView(R.id.dog_size_txt) TextView dog_size_txt;
 
+    // 1. true * 3 되면
+    // 2. SQL 보내어 데이터 뿌려줌
+    //
+    // ....
+
+    // OnCreate ( 최초실행 ) 시 중복 BUS 실행 차단 위한 Flag
+    private boolean LOCATION_FLAG = false;
+    private boolean CATEGORY_FLAG = false;
     // SQL 보낼 Spinner 의 index
     private int LOCATION_IDX = 0;   // [ 전체 ]
-    private int GENERAL_IDX = 0;    // [ 전체 ]
-    private int SPECIAL_IDX = 0;    // [ 전체 ]
+    private int PURPOSE_IDX = 0;
+    private int CATEGORY_IDX = 0;    // [ 전체 ]
 
     // 카테고리 Spinner 생성에 사용할 배열 변수
     private static int DEFAULT_ITEM_IDX = 1; // "전체" 는 DB에 없기 때문에 index 에서 빼줘야 한다.
@@ -223,7 +237,7 @@ public class SearchMapActivity extends AppCompatActivity
         mapFragment.getMapAsync(this);
         // init Spinner
         dropDownCategoryArrSet();
-        dropDownMenuSet();
+        dropDownMenuDefaultSet();
         spinnerSetOnItemSelect();
     }
 
@@ -252,7 +266,7 @@ public class SearchMapActivity extends AppCompatActivity
         }
     }
 
-    public void dropDownMenuSet() {
+    public void dropDownMenuDefaultSet() {
         //Spinner ( 드롭다운 메뉴 ) 관련설정
         ArrayAdapter addressAdapter = ArrayAdapter.createFromResource(this, R.array.address1, android.R.layout.simple_spinner_item);
         addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -261,14 +275,6 @@ public class SearchMapActivity extends AppCompatActivity
         ArrayAdapter dogsizeAdapter = ArrayAdapter.createFromResource(this, R.array.purpose, android.R.layout.simple_spinner_item);
         dogsizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPurpose.setAdapter(dogsizeAdapter);
-
-        ArrayAdapter generalAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, CATEGORY_GENERAL_ARR);
-        generalAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerPlaceGeneral.setAdapter(generalAdapter);
-
-        ArrayAdapter specialAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, CATEGORY_SPECIAL_ARR);
-        specialAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerPlaceSpecial.setAdapter(specialAdapter);
     }
     // Spinner Arr Setting
     public void dropDownCategoryArrSet(){
@@ -276,24 +282,22 @@ public class SearchMapActivity extends AppCompatActivity
         // Static 배열 복사
         System.arraycopy( Global.CATEGORY_GENERAL_STR_ARR, 0, CATEGORY_GENERAL_ARR, 1, Global.CATEGORY_GENERAL_LENGTH );
         System.arraycopy( Global.CATEGORY_SPECIAL_STR_ARR, 0, CATEGORY_SPECIAL_ARR, 1, Global.CATEGORY_SPECIAL_LENGTH );
-
         // "전체" 항목 추가
         CATEGORY_GENERAL_ARR[0] = "전체";
         CATEGORY_SPECIAL_ARR[0] = "전체";
     }
-    //
+    // Spinner OnItemSelect
     public void spinnerSetOnItemSelect() {
         // 지역 선택시
         spinnerLocate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                /*if( LOCATION_FLAG ){
+                if( LOCATION_FLAG ){
                     LOCATION_IDX = position;
-                    //bus.post(new VPSpinnerItemSelected( LOCATION_IDX, SIZE_IDX, GENERAL_IDX, SPECIAL_IDX, viewpager.getCurrentItem() ));
-                    Log.d("은식_MAP_ACT","");
+                    Log.d("SearchMapAct_배은식","지역선택 - SQL 보내기");
                 } else {
                     LOCATION_FLAG = true;
-                }*/
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -303,19 +307,44 @@ public class SearchMapActivity extends AppCompatActivity
         spinnerPurpose.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position == 0){
-                    spinnerPlaceGeneral.setVisibility(View.VISIBLE);
-                    spinnerPlaceSpecial.setVisibility(View.GONE);
-                }else if (position == 1){
-                    spinnerPlaceSpecial.setVisibility(View.VISIBLE);
-                    spinnerPlaceGeneral.setVisibility(View.GONE);
+                // 애견동반, 애견전용 Spinner 는 SQL 요청과 무관하다. - 그 뒤의 장소 Spinner 의 IDX 로 받아오면 된다.
+                switchPlaceSpinner(position);   // 애견동반 or 애견전용 선택에 따른 spinnerPlace 의 아이템 변경 함수
+                PURPOSE_IDX = position;
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        spinnerPlace.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(CATEGORY_FLAG){
+                    if(PURPOSE_IDX == 0){
+                        CATEGORY_IDX = position;
+                    } else if (PURPOSE_IDX == 1){
+                        CATEGORY_IDX = position + Global.CATEGORY_DIVISION_NUM;
+                    }
+                    Log.d("SearchMapAct_배은식","장소선택 - SQL 보내기");
+                    Log.d("value",Integer.toString(LOCATION_IDX)+","+Integer.toString(CATEGORY_IDX));
+                }else{
+                    CATEGORY_FLAG = true;
                 }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
+    }
+    public void switchPlaceSpinner(int index){
+        if (index == 0){ // 애견동반
+            ArrayAdapter generalAdapter = new ArrayAdapter(SearchMapActivity.this, android.R.layout.simple_spinner_item, CATEGORY_GENERAL_ARR);
+            generalAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerPlace.setAdapter(generalAdapter);
+        } else if (index == 1){ //애견전용
+            ArrayAdapter generalAdapter = new ArrayAdapter(SearchMapActivity.this, android.R.layout.simple_spinner_item, CATEGORY_SPECIAL_ARR);
+            generalAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerPlace.setAdapter(generalAdapter);
+        }
     }
 
     public void getCurrentLocationAndCircle() {
