@@ -1,7 +1,6 @@
 package com.naver.mycnex.viewpageapplication;
 
 import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -103,7 +102,7 @@ public class ViewPagerActivity extends AppCompatActivity {
         dropDownMenuSet();
 
         // Spinner 아이템 클릭 리스너 등록
-        spinnerSetOnItemClick();
+        spinnerSetOnItemSelect();
 
         // ViewPager Adapter 설정
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -248,7 +247,7 @@ public class ViewPagerActivity extends AppCompatActivity {
     }
 
     // Spinner OnItemClick  ( position 으로 선택 아이템 알 수 있다. )
-    public void spinnerSetOnItemClick() {
+    public void spinnerSetOnItemSelect() {
         // 지역 선택시
         spinnerLocate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
