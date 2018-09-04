@@ -10,8 +10,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -74,6 +76,7 @@ public class SearchMapActivity extends AppCompatActivity
     ArrayList<Store> stores;
     ArrayList<ImageFile> images;
     private ArrayList<Marker> markers;
+    boolean check;
 
     //버터나이프
     Unbinder unbinder;
@@ -153,7 +156,11 @@ public class SearchMapActivity extends AppCompatActivity
                 storeCategory_txt.setText(Global.CATEGORY_SPECIAL_STR_ARR[stores.get((Integer)marker.getTag()).getCategory()-Global.CATEGORY_DIVISION_NUM]);
             }
 
+            check = false;
             for (int i = 0; i < images.size(); i++) {
+                if (check) {
+                    break;
+                }
                 if (images.get(i).getStore_id() == stores.get((Integer)marker.getTag()).getId()) {
 
                     final int finalI = i;
@@ -163,6 +170,7 @@ public class SearchMapActivity extends AppCompatActivity
                             Bitmap image = null;
                             try {
                                 image = getBitmap(Global.BASE_IMAGE_URL+images.get(finalI).getSavedName());
+                                check = true;
                             }catch(Exception e) {
 
                             }finally {
@@ -256,6 +264,7 @@ public class SearchMapActivity extends AppCompatActivity
             mMap.setMyLocationEnabled(true);
         } else {
             // Show rationale and request permission.
+            return;
         }
         mMap.setOnMyLocationButtonClickListener(SearchMapActivity.this);
         mMap.setOnMyLocationClickListener(SearchMapActivity.this);
@@ -265,8 +274,15 @@ public class SearchMapActivity extends AppCompatActivity
         String provider = locationManager.getBestProvider(criteria, false);
         Location location = locationManager.getLastKnownLocation(provider);
 
-        double lat =  location.getLatitude();
-        double lng = location.getLongitude();
+        double lat = 0;
+        double lng = 0;
+        if (location != null) {
+            lat = location.getLatitude();
+            lng = location.getLongitude();
+        } else {
+            Toast.makeText(this,"location == null",Toast.LENGTH_SHORT).show();
+        }
+
         LatLng currentLocation = new LatLng(lat, lng);
 
         CircleOptions circle1KM = new CircleOptions().center(currentLocation) //원점
@@ -274,7 +290,7 @@ public class SearchMapActivity extends AppCompatActivity
                 .strokeWidth(0f)  //선너비 0f : 선없음
                 .fillColor(Color.parseColor("#95FADB9B")); //배경색
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,16));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,16));
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
         markers = new ArrayList<>();

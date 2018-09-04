@@ -32,9 +32,9 @@
 
     <!-- 반려견 크기 -->
     <string-array name="dogSize">
-        <item>소형견</item>
-        <item>중형견</item>
         <item>대형견</item>
+        <item>중형견</item>
+        <item>소형견</item>
     </string-array>
     <!-- 반려견 크기 -->
 
