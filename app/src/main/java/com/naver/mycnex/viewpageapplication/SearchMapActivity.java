@@ -69,13 +69,14 @@ public class SearchMapActivity extends AppCompatActivity
         GoogleMap.OnMyLocationClickListener,
         OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
+    private int DISTANCE_BOUNDDARY = 1000;
+
     //구글맵
     private GoogleMap mMap;
     ArrayList<StoreImage> storeImages;
     ArrayList<Store> stores;
     ArrayList<ImageFile> images;
     private ArrayList<Marker> markers;
-    boolean check;
 
     //버터나이프
     Unbinder unbinder;
@@ -148,7 +149,7 @@ public class SearchMapActivity extends AppCompatActivity
     //onMyLocationClick
     @Override
     public void onMyLocationClick(@NonNull Location location) {
-        Toast.makeText(this, "Current location:\n" + location, Toast.LENGTH_LONG).show();
+
     }
     //onMyLocationButtonClick
     @Override
@@ -168,16 +169,13 @@ public class SearchMapActivity extends AppCompatActivity
             dog_size_txt.setText(Global.PETSIZE_ARR[stores.get((Integer)marker.getTag()).getDog_size()-1]);
 
             if (stores.get((Integer)marker.getTag()).getCategory() < Global.CATEGORY_DIVISION_NUM) { // general 일 때
-                storeCategory_txt.setText(Global.CATEGORY_GENERAL_STR_ARR[stores.get((Integer)marker.getTag()).getCategory()]);
+                storeCategory_txt.setText(Global.CATEGORY_GENERAL_STR_ARR[stores.get((Integer)marker.getTag()).getCategory()-1]);
             } else {
-                storeCategory_txt.setText(Global.CATEGORY_SPECIAL_STR_ARR[stores.get((Integer)marker.getTag()).getCategory()-Global.CATEGORY_DIVISION_NUM]);
+                storeCategory_txt.setText(Global.CATEGORY_SPECIAL_STR_ARR[stores.get((Integer)marker.getTag()).getCategory()-Global.CATEGORY_DIVISION_NUM-1]);
             }
 
-            check = false;
             for (int i = 0; i < images.size(); i++) {
-                if (check) {
-                    break;
-                }
+
                 if (images.get(i).getStore_id() == stores.get((Integer)marker.getTag()).getId()) {
 
                     final int finalI = i;
@@ -187,7 +185,6 @@ public class SearchMapActivity extends AppCompatActivity
                             Bitmap image = null;
                             try {
                                 image = getBitmap(Global.BASE_IMAGE_URL+images.get(finalI).getSavedName());
-                                check = true;
                             }catch(Exception e) {
 
                             }finally {
@@ -375,7 +372,7 @@ public class SearchMapActivity extends AppCompatActivity
         LatLng currentLocation = new LatLng(lat, lng);
 
         CircleOptions circle1KM = new CircleOptions().center(currentLocation) //원점
-                .radius(1000)      //반지름 단위 : m
+                .radius(DISTANCE_BOUNDDARY)      //반지름 단위 : m
                 .strokeWidth(0f)  //선너비 0f : 선없음
                 .fillColor(Color.parseColor("#95FADB9B")); //배경색
 
@@ -419,15 +416,28 @@ public class SearchMapActivity extends AppCompatActivity
     }
 
     public void getStoreData() {
+
         stores = new ArrayList<>();
         images = new ArrayList<>();
+
+        Location location1 = new Location("location1");
+        location1.setLatitude(37.5028);
+        location1.setLongitude(127.025);
+
         for (int i = 0; i < storeImages.size(); i++) {
-            stores.add(storeImages.get(i).getStore());
-            for (int j = 0; j < storeImages.get(i).getImage().size(); j++) {
-                images.add(storeImages.get(i).getImage().get(j));
+            // 여기서 거리를 처리하고 값을 가져올 수 있을 것 같은데?
+
+            Location location2 = new Location("location2");
+
+            location2.setLatitude(storeImages.get(i).getStore().getLatitude());
+            location2.setLongitude(storeImages.get(i).getStore().getLongitude());
+
+            double distance = location1.distanceTo(location2);
+            if (distance <= DISTANCE_BOUNDDARY) {
+                stores.add(storeImages.get(i).getStore());
+                images.add(storeImages.get(i).getImage().get(0));
             }
         }
-
     }
 
 }

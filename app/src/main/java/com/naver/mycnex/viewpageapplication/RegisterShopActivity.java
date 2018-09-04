@@ -280,29 +280,6 @@ public class RegisterShopActivity extends AppCompatActivity {
         String address = btn_shop_address.getText().toString();
         String[] str = address.split(" ");
 
-        Integer sigungu = 0;
-
-        for (int i = 0; i < getResources().getStringArray(R.array.address1).length; i++) {
-            if (str[2].equals(getResources().getStringArray(R.array.address1)[i])) {
-                sigungu = i;
-            }
-        }
-
-        String store_info = shop_detail_edit.getText().toString();
-
-        String startTime = startTime_btn.getText().toString();
-        String endTime = endTime_btn.getText().toString();
-        String operation_time = startTime + "~" + endTime;
-
-        String phone = PHONE_FRONT_NUM + "-" + middlePhone_edit.getText().toString() + "-" + lastPhone_edit.getText().toString();
-
-        String oper_date = "";
-        for (int i = 0; i < bool_date.length; i++) {
-            if (bool_date[i] == false) {
-                oper_date += str_date[i];
-            }
-        }
-
         if (name == null || name.equals("")) {
             Toast.makeText(RegisterShopActivity.this, "가게명을 입력하세요", Toast.LENGTH_SHORT).show();
             shop_name.requestFocus();
@@ -325,6 +302,29 @@ public class RegisterShopActivity extends AppCompatActivity {
             return;
         }
         */
+
+        Integer sigungu = 0;
+
+        for (int i = 0; i < getResources().getStringArray(R.array.address1).length; i++) {
+            if (str[2].equals(getResources().getStringArray(R.array.address1)[i])) {
+                sigungu = i;
+            }
+        }
+
+        String store_info = shop_detail_edit.getText().toString();
+
+        String startTime = startTime_btn.getText().toString();
+        String endTime = endTime_btn.getText().toString();
+        String operation_time = startTime + "~" + endTime;
+
+        String phone = PHONE_FRONT_NUM + "-" + middlePhone_edit.getText().toString() + "-" + lastPhone_edit.getText().toString();
+
+        String oper_date = "";
+        for (int i = 0; i < bool_date.length; i++) {
+            if (bool_date[i] == false) {
+                oper_date += str_date[i];
+            }
+        }
 
         if (oper_date == "") {
             Toast.makeText(RegisterShopActivity.this, "영업시간을 선택하세요", Toast.LENGTH_SHORT).show();
@@ -630,6 +630,7 @@ public class RegisterShopActivity extends AppCompatActivity {
                             for (int i = 0; i < Global.CATEGORY_GENERAL_LENGTH; i++) {
                                 if (position == i) {
                                     selectedCategory = position + Global.CATEGORY_GENERAL_CAFE;
+                                    Log.d("asd", "Category : " + selectedCategory.toString());
                                 }
                             }
                         }
@@ -649,7 +650,8 @@ public class RegisterShopActivity extends AppCompatActivity {
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             for (int i = 0; i < Global.CATEGORY_SPECIAL_LENGTH; i++) {
                                 if (position == i) {
-                                    selectedCategory = position + Global.CATEGORY_SPECIAL_CAFE + Global.CATEGORY_DIVISION_NUM;
+                                    selectedCategory = position + Global.CATEGORY_SPECIAL_CAFE;
+                                    Log.d("asd", "Category : " + selectedCategory.toString());
                                 }
                             }
                         }
