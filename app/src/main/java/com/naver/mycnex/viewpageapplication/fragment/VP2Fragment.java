@@ -14,10 +14,12 @@ import android.widget.GridView;
 
 import com.naver.mycnex.viewpageapplication.ShopActivity;
 import com.naver.mycnex.viewpageapplication.ViewPagerActivity;
-import com.naver.mycnex.viewpageapplication.adapter.VP1GridAdapter;
+import com.naver.mycnex.viewpageapplication.adapter.VP2GridAdapter;
 import com.naver.mycnex.viewpageapplication.bus.BusProvider;
 import com.naver.mycnex.viewpageapplication.R;
+import com.naver.mycnex.viewpageapplication.data.ImageFile;
 import com.naver.mycnex.viewpageapplication.data.Store;
+import com.naver.mycnex.viewpageapplication.data.StoreImage;
 import com.naver.mycnex.viewpageapplication.event.VPSpinnerItemSelected;
 import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 import com.squareup.otto.Bus;
@@ -37,7 +39,9 @@ import retrofit2.Response;
 public class VP2Fragment extends Fragment {
 
     ArrayList<Store> stores;
-    VP1GridAdapter vp1GridAdapter;
+    ArrayList<ImageFile> images;
+    ArrayList<StoreImage> storeimages;
+    VP2GridAdapter vp2GridAdapter;
 
     // 이벤트 버스
     Bus bus = BusProvider.getInstance().getBus();
@@ -88,6 +92,7 @@ public class VP2Fragment extends Fragment {
             public void onResponse(Call<ArrayList<Store>> call, Response<ArrayList<Store>> response) {
                 if (response.isSuccessful()) {
                     stores = response.body();
+                    getData();
                     initAdapter();
                 }
             }
@@ -98,8 +103,19 @@ public class VP2Fragment extends Fragment {
         });
     }
     public void initAdapter() {
-       /** vp1GridAdapter = new VP1GridAdapter(stores);
-        gridView.setAdapter(vp1GridAdapter); **/
+        vp2GridAdapter = new VP2GridAdapter(stores,images);
+        gridView.setAdapter(vp2GridAdapter);
+    }
+
+    public void getData() {
+
+        stores = new ArrayList<>();
+        images = new ArrayList<>();
+
+        for (int i = 0; i < storeimages.size(); i++) {
+            stores.add(storeimages.get(i).getStore());
+            images.add(storeimages.get(i).getImage().get(0));
+        }
     }
 
     /******************** EVENT BUS ********************/
