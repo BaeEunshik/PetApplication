@@ -98,8 +98,8 @@ public class VP2Fragment extends Fragment {
         });
     }
     public void initAdapter() {
-        vp1GridAdapter = new VP1GridAdapter(stores);
-        gridView.setAdapter(vp1GridAdapter);
+       /** vp1GridAdapter = new VP1GridAdapter(stores);
+        gridView.setAdapter(vp1GridAdapter); **/
     }
 
     /******************** EVENT BUS ********************/

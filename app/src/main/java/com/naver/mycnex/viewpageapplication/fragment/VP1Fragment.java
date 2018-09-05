@@ -18,7 +18,9 @@ import com.naver.mycnex.viewpageapplication.bus.BusProvider;
 import com.naver.mycnex.viewpageapplication.R;
 import com.naver.mycnex.viewpageapplication.ShopActivity;
 import com.naver.mycnex.viewpageapplication.adapter.VP1GridAdapter;
+import com.naver.mycnex.viewpageapplication.data.ImageFile;
 import com.naver.mycnex.viewpageapplication.data.Store;
+import com.naver.mycnex.viewpageapplication.data.StoreImage;
 import com.naver.mycnex.viewpageapplication.event.VPSpinnerItemSelected;
 import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 import com.squareup.otto.Bus;
@@ -40,6 +42,8 @@ public class VP1Fragment extends Fragment {
 
     //그리드뷰
     ArrayList<Store> stores;
+    ArrayList<ImageFile> images;
+    ArrayList<StoreImage> storeimages;
     VP1GridAdapter vp1GridAdapter;
 
     //버터나이프
@@ -88,24 +92,38 @@ public class VP1Fragment extends Fragment {
         });
     }
     public void getDataFromServerWithId(Integer sigungu, Integer dog_size, Integer category ) {
-        Call<ArrayList<Store>> getStoreData = RetrofitService.getInstance().getRetrofitRequest().getStoreGeneral( sigungu, dog_size, category );
-        getStoreData.enqueue(new Callback<ArrayList<Store>>() {
+        Call<ArrayList<StoreImage>> getStoreData = RetrofitService.getInstance().getRetrofitRequest().getStoreGeneral( sigungu, dog_size, category );
+        getStoreData.enqueue(new Callback<ArrayList<StoreImage>>() {
             @Override
-            public void onResponse(Call<ArrayList<Store>> call, Response<ArrayList<Store>> response) {
+            public void onResponse(Call<ArrayList<StoreImage>> call, Response<ArrayList<StoreImage>> response) {
                 if (response.isSuccessful()) {
-                    stores = response.body();
+                    storeimages = response.body();
+                    getData();
                     initAdapter();
                 }
             }
+
             @Override
-            public void onFailure(Call<ArrayList<Store>> call, Throwable t) {
+            public void onFailure(Call<ArrayList<StoreImage>> call, Throwable t) {
 
             }
         });
     }
+
     public void initAdapter() {
-        vp1GridAdapter = new VP1GridAdapter(stores);
+        vp1GridAdapter = new VP1GridAdapter(stores,images);
         gridView.setAdapter(vp1GridAdapter);
+    }
+
+    public void getData() {
+
+        stores = new ArrayList<>();
+        images = new ArrayList<>();
+
+        for (int i = 0; i < storeimages.size(); i++) {
+            stores.add(storeimages.get(i).getStore());
+            images.add(storeimages.get(i).getImage().get(0));
+        }
     }
 
     /******************** EVENT BUS ********************/

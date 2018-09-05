@@ -15,6 +15,7 @@ import com.naver.mycnex.viewpageapplication.R;
 import com.naver.mycnex.viewpageapplication.RegisterShopActivity;
 import com.naver.mycnex.viewpageapplication.ShopActivity;
 import com.naver.mycnex.viewpageapplication.custom.SquareImageView;
+import com.naver.mycnex.viewpageapplication.data.ImageFile;
 import com.naver.mycnex.viewpageapplication.data.Store;
 import com.naver.mycnex.viewpageapplication.glide.GlideApp;
 import com.naver.mycnex.viewpageapplication.global.Global;
@@ -34,6 +35,7 @@ public class VP1GridAdapter extends BaseAdapter{
     // TODO :
     // 이미지 객체와 합친 arrList 로 만들어야함
     ArrayList<Store> stores;
+    ArrayList<ImageFile> images;
 
     @Override
     public int getCount() {
@@ -109,7 +111,7 @@ public class VP1GridAdapter extends BaseAdapter{
 
         // 그리드 이미지
         GlideApp.with(context)
-                .load( R.drawable.dog1 )
+                .load(Global.BASE_IMAGE_URL+images.get(position).getSavedName())
                 .centerCrop()
                 .into( holder.itemImg );
 
