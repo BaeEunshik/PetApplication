@@ -5,7 +5,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -187,7 +186,6 @@ public class ViewPagerActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        Log.d("은식-뷰페이저","onResume");
         // 로그인 여부에 따라 Drawer Layout 내용 설정
         LoginService loginService = LoginService.getInstance();
 
@@ -269,8 +267,7 @@ public class ViewPagerActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if( SIZE_FLAG ){
-                    SIZE_IDX = position+1;
-
+                    SIZE_IDX = Global.PETSIZE_ID_ARR[position];
                     bus.post(new VPSpinnerItemSelected( LOCATION_IDX, SIZE_IDX, GENERAL_IDX, SPECIAL_IDX, viewpager.getCurrentItem() ));
                 } else {
                     SIZE_FLAG = true;

@@ -165,7 +165,7 @@ public class SearchMapActivity extends AppCompatActivity
             storeName_txt.setText(stores.get((Integer)marker.getTag()).getName());
 
             storeLocation_txt.setText(stores.get((Integer)marker.getTag()).getSigungu().toString());
-            dog_size_txt.setText(Global.PETSIZE_ARR[stores.get((Integer)marker.getTag()).getDog_size()-1]);
+            dog_size_txt.setText(Global.PETSIZE_STR_ARR[stores.get((Integer)marker.getTag()).getDog_size()-1]);
 
             if (stores.get((Integer)marker.getTag()).getCategory() < Global.CATEGORY_DIVISION_NUM) { // general 일 때
                 storeCategory_txt.setText(Global.CATEGORY_GENERAL_STR_ARR[stores.get((Integer)marker.getTag()).getCategory()]);
@@ -307,7 +307,7 @@ public class SearchMapActivity extends AppCompatActivity
         spinnerPurpose.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // 애견동반, 애견전용 Spinner 는 SQL 요청과 무관하다. - 그 뒤의 장소 Spinner 의 IDX 로 받아오면 된다.
+                // 애견동반, 애견전용 Spinner 는 SQL 요청과 무관하다. - 그 뒤에 붙은 spinnerPlace 의 index 를 사용하면 된다.
                 switchPlaceSpinner(position);   // 애견동반 or 애견전용 선택에 따른 spinnerPlace 의 아이템 변경 함수
                 PURPOSE_IDX = position;
             }
@@ -319,10 +319,10 @@ public class SearchMapActivity extends AppCompatActivity
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(CATEGORY_FLAG){
-                    if(PURPOSE_IDX == 0){
-                        CATEGORY_IDX = position;
-                    } else if (PURPOSE_IDX == 1){
-                        CATEGORY_IDX = position + Global.CATEGORY_DIVISION_NUM;
+                    if(PURPOSE_IDX == Global.CATEGORY_GENERAL){
+                        CATEGORY_IDX = position;                                // default : 0
+                    } else if (PURPOSE_IDX == Global.CATEGORY_SPECIAL){
+                        CATEGORY_IDX = position + Global.CATEGORY_DIVISION_NUM; // default : 100
                     }
                     Log.d("SearchMapAct_배은식","장소선택 - SQL 보내기");
                     Log.d("value",Integer.toString(LOCATION_IDX)+","+Integer.toString(CATEGORY_IDX));

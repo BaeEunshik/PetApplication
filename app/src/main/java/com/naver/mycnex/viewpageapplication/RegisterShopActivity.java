@@ -619,7 +619,6 @@ public class RegisterShopActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == Global.CATEGORY_GENERAL) {  // "애견동반" 을 선택한 경우
 
-
                     ArrayAdapter placeAdapter = new ArrayAdapter(RegisterShopActivity.this, android.R.layout.simple_spinner_item, CATEGORY_GENERAL_ARR);
                     placeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     select_category.setAdapter(placeAdapter);
@@ -627,15 +626,10 @@ public class RegisterShopActivity extends AppCompatActivity {
                     select_category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            for (int i = 0; i < Global.CATEGORY_GENERAL_LENGTH; i++) {
-                                if (position == i) {
-                                    selectedCategory = position + Global.CATEGORY_GENERAL_CAFE;
-                                }
-                            }
+                            selectedCategory = Global.CATEGORY_GENENRAL_ID_ARR[position];
                         }
                         @Override
                         public void onNothingSelected(AdapterView<?> parent) {
-
                         }
                     });
                 } else if (position == Global.CATEGORY_SPECIAL) {
@@ -647,11 +641,7 @@ public class RegisterShopActivity extends AppCompatActivity {
                     select_category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            for (int i = 0; i < Global.CATEGORY_SPECIAL_LENGTH; i++) {
-                                if (position == i) {
-                                    selectedCategory = position + Global.CATEGORY_SPECIAL_CAFE + Global.CATEGORY_DIVISION_NUM;
-                                }
-                            }
+                            selectedCategory = Global.CATEGORY_SPECIAL_ID_ARR[position];
                         }
                         @Override
                         public void onNothingSelected(AdapterView<?> parent) {
