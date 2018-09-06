@@ -2,6 +2,7 @@ package com.naver.mycnex.viewpageapplication;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,7 +11,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +29,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -40,6 +44,7 @@ import com.naver.mycnex.viewpageapplication.data.ImageFile;
 import com.naver.mycnex.viewpageapplication.data.Store;
 import com.naver.mycnex.viewpageapplication.data.StoreImage;
 import com.naver.mycnex.viewpageapplication.global.Global;
+import com.naver.mycnex.viewpageapplication.gps.GpsInfo;
 import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 
 import java.io.InputStream;
@@ -47,10 +52,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import lombok.ToString;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,16 +70,22 @@ import retrofit2.Response;
 // ** Spinner Select 시 **
 //  1) 지역, 카테고리( 장소들 ) index 로 데이터 가져오기
 //
-
+@ToString
 public class SearchMapActivity extends AppCompatActivity
         implements GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener,
         OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
-    private int DISTANCE_BOUNDDARY = 1000;
+    private int DISTANCE_BOUNDARY = 1000;
+    private double distance_min = DISTANCE_BOUNDARY;
 
     //구글맵
     private GoogleMap mMap;
+    double lat;  //위도
+    double lng; //경도
+    boolean circle = true;
+
+    //store 정보
     ArrayList<StoreImage> storeImages;
     ArrayList<Store> stores;
     ArrayList<ImageFile> images;
@@ -118,6 +131,7 @@ public class SearchMapActivity extends AppCompatActivity
         //버터나이프
         unbinder = ButterKnife.bind(this);
         InitWhenCreated();
+
     }
     /** onDestroy **/
     @Override
@@ -144,12 +158,11 @@ public class SearchMapActivity extends AppCompatActivity
     public void onMapReady(GoogleMap googleMap) {
         //맵 화면 컴포넌트
         mMap = googleMap;
-        Permission();
+        enableMyLocation();
     }
     //onMyLocationClick
     @Override
     public void onMyLocationClick(@NonNull Location location) {
-
     }
     //onMyLocationButtonClick
     @Override
@@ -159,13 +172,18 @@ public class SearchMapActivity extends AppCompatActivity
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+        getMarkerInfo(marker);
+        return false;
+    }
+
+    public void getMarkerInfo(Marker marker) {
         Integer clickCount = (Integer) marker.getTag();
 
         if (clickCount != null) {
 
             storeName_txt.setText(stores.get((Integer)marker.getTag()).getName());
 
-            storeLocation_txt.setText(stores.get((Integer)marker.getTag()).getSigungu().toString());
+            storeLocation_txt.setText(getResources().getStringArray(R.array.address1)[stores.get((Integer)marker.getTag()).getSigungu()]);
             dog_size_txt.setText(Global.PETSIZE_STR_ARR[stores.get((Integer)marker.getTag()).getDog_size()-1]);
 
             if (stores.get((Integer)marker.getTag()).getCategory() < Global.CATEGORY_DIVISION_NUM) { // general 일 때
@@ -203,7 +221,13 @@ public class SearchMapActivity extends AppCompatActivity
                 }
             }
         }
-        return false;
+    }
+
+    private void enableMyLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+        }
     }
 
     /********** 권한 관련 **********/
@@ -228,14 +252,14 @@ public class SearchMapActivity extends AppCompatActivity
     }
     /************************* Oncreated *************************/
     public void InitWhenCreated() {
-        // map
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        // init Spinner
+
         dropDownCategoryArrSet();
         dropDownMenuDefaultSet();
         spinnerSetOnItemSelect();
+        Permission();
     }
 
     private Bitmap getBitmap(String url) {
@@ -285,13 +309,17 @@ public class SearchMapActivity extends AppCompatActivity
     }
     // Spinner OnItemSelect
     public void spinnerSetOnItemSelect() {
+
+        Log.d("asd", "spinnerSetOnItemSelect");
+
         // 지역 선택시
         spinnerLocate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if( LOCATION_FLAG ){
                     LOCATION_IDX = position;
-                    Log.d("SearchMapAct_배은식","지역선택 - SQL 보내기");
+                    Log.d("asd", "CATEGORY_IDX : " + CATEGORY_IDX + " LOCATION_IDX : " + LOCATION_IDX);
+                    getMarkFromServer();
                 } else {
                     LOCATION_FLAG = true;
                 }
@@ -304,8 +332,7 @@ public class SearchMapActivity extends AppCompatActivity
         spinnerPurpose.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // 애견동반, 애견전용 Spinner 는 SQL 요청과 무관하다. - 그 뒤에 붙은 spinnerPlace 의 index 를 사용하면 된다.
-                switchPlaceSpinner(position);   // 애견동반 or 애견전용 선택에 따른 spinnerPlace 의 아이템 변경 함수
+                switchPlaceSpinner(position);
                 PURPOSE_IDX = position;
             }
             @Override
@@ -318,11 +345,13 @@ public class SearchMapActivity extends AppCompatActivity
                 if(CATEGORY_FLAG){
                     if(PURPOSE_IDX == Global.CATEGORY_GENERAL){
                         CATEGORY_IDX = position;                                // default : 0
+                        Log.d("asd", "CATEGORY_IDX : " + CATEGORY_IDX + " LOCATION_IDX : " + LOCATION_IDX);
+                        getMarkFromServer();
                     } else if (PURPOSE_IDX == Global.CATEGORY_SPECIAL){
                         CATEGORY_IDX = position + Global.CATEGORY_DIVISION_NUM; // default : 100
+                        Log.d("asd", "CATEGORY_IDX : " + CATEGORY_IDX + " LOCATION_IDX : " + LOCATION_IDX);
+                        getMarkFromServer();
                     }
-                    Log.d("SearchMapAct_배은식","장소선택 - SQL 보내기");
-                    Log.d("value",Integer.toString(LOCATION_IDX)+","+Integer.toString(CATEGORY_IDX));
                 }else{
                     CATEGORY_FLAG = true;
                 }
@@ -333,51 +362,109 @@ public class SearchMapActivity extends AppCompatActivity
         });
     }
     public void switchPlaceSpinner(int index){
-        if (index == 0){ // 애견동반
+        if (index == Global.CATEGORY_GENERAL){
             ArrayAdapter generalAdapter = new ArrayAdapter(SearchMapActivity.this, android.R.layout.simple_spinner_item, CATEGORY_GENERAL_ARR);
             generalAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinnerPlace.setAdapter(generalAdapter);
-        } else if (index == 1){ //애견전용
+        } else if (index == Global.CATEGORY_SPECIAL){
             ArrayAdapter generalAdapter = new ArrayAdapter(SearchMapActivity.this, android.R.layout.simple_spinner_item, CATEGORY_SPECIAL_ARR);
             generalAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinnerPlace.setAdapter(generalAdapter);
         }
     }
 
-    public void getCurrentLocationAndCircle() {
-        if (ContextCompat.checkSelfPermission(SearchMapActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
-        } else {
-            // Show rationale and request permission.
-            return;
-        }
-        mMap.setOnMyLocationButtonClickListener(SearchMapActivity.this);
-        mMap.setOnMyLocationClickListener(SearchMapActivity.this);
+    public void getMarker() {
 
-        Criteria criteria = new Criteria();
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        String provider = locationManager.getBestProvider(criteria, false);
-        Location location = locationManager.getLastKnownLocation(provider);
+        LatLng currentLocation = getCurrentLocationByGPS();
 
-        double lat = 0;
-        double lng = 0;
-        if (location != null) {
-            lat = location.getLatitude();
-            lng = location.getLongitude();
-        } else {
-            Toast.makeText(this,"location == null",Toast.LENGTH_SHORT).show();
-        }
-
-        LatLng currentLocation = new LatLng(lat, lng);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,15));
+        mMap.getUiSettings().setZoomControlsEnabled(true);
 
         CircleOptions circle1KM = new CircleOptions().center(currentLocation) //원점
-                .radius(DISTANCE_BOUNDDARY)      //반지름 단위 : m
+                .radius(DISTANCE_BOUNDARY)      //반지름 단위 : m
                 .strokeWidth(0f)  //선너비 0f : 선없음
                 .fillColor(Color.parseColor("#95FADB9B")); //배경색
 
-//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,16));
-        mMap.getUiSettings().setZoomControlsEnabled(true);
+        if (circle) {
+            mMap.addCircle(circle1KM);
+            circle = false;
+        }
+
+        SetOnClickMyLocationButton();
+    }
+
+    public void SetOnClickMyLocationButton() {
+
+        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                LatLng currentLocation = getCurrentLocationByGPS();
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,15));
+                return false;
+            }
+        });
+    }
+
+    public LatLng getCurrentLocationByGPS() {
+        GpsInfo gps = new GpsInfo(SearchMapActivity.this);
+
+        if (gps.isGetLocation()) {
+
+            lat = gps.getLatitude();
+            lng = gps.getLongitude();
+
+        }
+
+        LatLng currentLocation = new LatLng(lat, lng);
+        return currentLocation;
+    }
+
+    public void getMarkFromServer() {
+       Call<ArrayList<StoreImage>> getstore = RetrofitService.getInstance().getRetrofitRequest().getStoreForMap(LOCATION_IDX, CATEGORY_IDX);
+        getstore.enqueue(new Callback<ArrayList<StoreImage>>() {
+            @Override
+            public void onResponse(Call<ArrayList<StoreImage>> call, Response<ArrayList<StoreImage>> response) {
+                if (response.isSuccessful()) {
+                    storeImages = response.body();
+                    getStoreData();
+                    getMarker();
+                }
+            }
+            @Override
+            public void onFailure(Call<ArrayList<StoreImage>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getStoreData() {
+
+        Store store = new Store(); // 초기에 띄워줄 store 정보.
+        stores = new ArrayList<>();
+        images = new ArrayList<>();
+
+        Location location1 = new Location("location1");
+        location1.setLatitude(lat);
+        location1.setLongitude(lng);
+
+        for (int i = 0; i < storeImages.size(); i++) {
+
+            Location location2 = new Location("location2");
+
+            location2.setLatitude(storeImages.get(i).getStore().getLatitude());
+            location2.setLongitude(storeImages.get(i).getStore().getLongitude());
+
+            double distance = location1.distanceTo(location2);
+            if (distance <= DISTANCE_BOUNDARY) {
+                if (distance < distance_min) {
+                    distance_min = distance;
+                    store = storeImages.get(i).getStore();
+                }
+
+                stores.add(storeImages.get(i).getStore());
+                images.add(storeImages.get(i).getImage().get(0));
+            }
+        }
 
         markers = new ArrayList<>();
 
@@ -390,55 +477,25 @@ public class SearchMapActivity extends AppCompatActivity
 
         }
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
-        mMap.addCircle(circle1KM);
-
         mMap.setOnMarkerClickListener(this);
-    }
 
-    public void getMarkFromServer() {
-       Call<ArrayList<StoreImage>> getstore = RetrofitService.getInstance().getRetrofitRequest().getStoreForMap();
-        getstore.enqueue(new Callback<ArrayList<StoreImage>>() {
-            @Override
-            public void onResponse(Call<ArrayList<StoreImage>> call, Response<ArrayList<StoreImage>> response) {
-                if (response.isSuccessful()) {
-                    storeImages = response.body();
-
-                    getStoreData();
-                    getCurrentLocationAndCircle();
-                }
-            }
-            @Override
-            public void onFailure(Call<ArrayList<StoreImage>> call, Throwable t) {
-
-            }
-        });
-    }
-
-    public void getStoreData() {
-
-        stores = new ArrayList<>();
-        images = new ArrayList<>();
-
-        Location location1 = new Location("location1");
-        location1.setLatitude(37.5028);
-        location1.setLongitude(127.025);
-
-        for (int i = 0; i < storeImages.size(); i++) {
-            // 여기서 거리를 처리하고 값을 가져올 수 있을 것 같은데?
-
-            Location location2 = new Location("location2");
-
-            location2.setLatitude(storeImages.get(i).getStore().getLatitude());
-            location2.setLongitude(storeImages.get(i).getStore().getLongitude());
-
-            double distance = location1.distanceTo(location2);
-            if (distance <= DISTANCE_BOUNDDARY) {
-                stores.add(storeImages.get(i).getStore());
-                images.add(storeImages.get(i).getImage().get(0));
-            }
+        if (distance_min != DISTANCE_BOUNDARY) {
+            GetStoreDataWhenCreated(store);
         }
     }
 
+    public void GetStoreDataWhenCreated(Store store) {
+
+        storeName_txt.setText(store.getName());
+        storeLocation_txt.setText(getResources().getStringArray(R.array.address1)[store.getSigungu()]);
+        dog_size_txt.setText(Global.PETSIZE_STR_ARR[store.getDog_size() - 1]);
+
+        if (store.getCategory() < Global.CATEGORY_DIVISION_NUM) { // general 일 때
+            storeCategory_txt.setText(Global.CATEGORY_GENERAL_STR_ARR[store.getCategory() - 1]);
+        } else {
+            storeCategory_txt.setText(Global.CATEGORY_SPECIAL_STR_ARR[store.getCategory() - Global.CATEGORY_DIVISION_NUM - 1]);
+        }
+
+    }
 }
 

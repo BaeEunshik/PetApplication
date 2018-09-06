@@ -15,6 +15,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 /**
  * Created by Administrator on 2018-01-29.
@@ -49,6 +50,6 @@ public interface RetrofitRequest {
     Call<ArrayList<StoreImage>> getStoreSpecial(@Field("sigungu") Integer sigungu, @Field("dog_size") Integer dog_size, @Field("category") Integer category);
 
     @GET("getStoreForMap.do")
-    Call<ArrayList<StoreImage>> getStoreForMap();
+    Call<ArrayList<StoreImage>> getStoreForMap(@Query("sigungu") Integer sigungu, @Query("category") Integer category);
 
 }

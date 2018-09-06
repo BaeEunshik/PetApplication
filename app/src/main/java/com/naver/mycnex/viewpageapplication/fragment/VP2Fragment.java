@@ -129,9 +129,9 @@ public class VP2Fragment extends Fragment {
 
             int sigungu = evt.getLocation_idx();
             int dog_size = evt.getSize_idx();
-            int category = evt.getGeneral_idx();
+            int category = evt.getSpecial_idx();
 
-            Log.d("asd", "VP2 : " + dog_size);
+            Log.d("asd", "VP2 : " + category);
 
             getDataFromServerWithId( sigungu, dog_size, category );
 
