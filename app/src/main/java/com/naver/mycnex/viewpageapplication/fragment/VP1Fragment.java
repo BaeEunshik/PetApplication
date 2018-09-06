@@ -22,6 +22,7 @@ import com.naver.mycnex.viewpageapplication.data.ImageFile;
 import com.naver.mycnex.viewpageapplication.data.Store;
 import com.naver.mycnex.viewpageapplication.data.StoreImage;
 import com.naver.mycnex.viewpageapplication.event.VPSpinnerItemSelected;
+import com.naver.mycnex.viewpageapplication.global.Global;
 import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -78,7 +79,7 @@ public class VP1Fragment extends Fragment {
     }
     /******************** METHOD ********************/
     public void initWhenCreated() {
-        getDataFromServerWithId(0,3,0);
+        getDataFromServerWithId(0,Global.PETSIZE_SMALL,0);
         GridViewOnItemClick();
     }
     public void GridViewOnItemClick() {
@@ -136,6 +137,8 @@ public class VP1Fragment extends Fragment {
             int sigungu = evt.getLocation_idx();
             int dog_size = evt.getSize_idx();
             int category = evt.getGeneral_idx();
+
+            Log.d("asd", "VP1 : " + dog_size);
 
             getDataFromServerWithId( sigungu, dog_size, category );
             Log.d("VP2_BUS_LOCATION",Integer.toString(evt.getLocation_idx()));

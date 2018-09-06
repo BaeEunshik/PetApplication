@@ -46,7 +46,7 @@ public interface RetrofitRequest {
 
     @FormUrlEncoded
     @POST("getStoreSpecial.do")
-    Call<ArrayList<Store>> getStoreSpecial(@Field("sigungu") Integer sigungu, @Field("dog_size") Integer dog_size, @Field("category") Integer category);
+    Call<ArrayList<StoreImage>> getStoreSpecial(@Field("sigungu") Integer sigungu, @Field("dog_size") Integer dog_size, @Field("category") Integer category);
 
     @GET("getStoreForMap.do")
     Call<ArrayList<StoreImage>> getStoreForMap();

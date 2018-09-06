@@ -21,6 +21,7 @@ import com.naver.mycnex.viewpageapplication.data.ImageFile;
 import com.naver.mycnex.viewpageapplication.data.Store;
 import com.naver.mycnex.viewpageapplication.data.StoreImage;
 import com.naver.mycnex.viewpageapplication.event.VPSpinnerItemSelected;
+import com.naver.mycnex.viewpageapplication.global.Global;
 import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -71,7 +72,7 @@ public class VP2Fragment extends Fragment {
     }
 
     public void InitWhenCreated() {
-        getDataFromServerWithId(0,3,0);
+        getDataFromServerWithId(0,Global.PETSIZE_SMALL,0);
         GridViewOnItemClick();
     }
 
@@ -86,18 +87,19 @@ public class VP2Fragment extends Fragment {
         });
     }
     public void getDataFromServerWithId(Integer sigungu, Integer dog_size, Integer category ) {
-        Call<ArrayList<Store>> getStoreData = RetrofitService.getInstance().getRetrofitRequest().getStoreSpecial( sigungu, dog_size, category );
-        getStoreData.enqueue(new Callback<ArrayList<Store>>() {
+        Call<ArrayList<StoreImage>> getStoreData = RetrofitService.getInstance().getRetrofitRequest().getStoreSpecial( sigungu, dog_size, category );
+        getStoreData.enqueue(new Callback<ArrayList<StoreImage>>() {
             @Override
-            public void onResponse(Call<ArrayList<Store>> call, Response<ArrayList<Store>> response) {
+            public void onResponse(Call<ArrayList<StoreImage>> call, Response<ArrayList<StoreImage>> response) {
                 if (response.isSuccessful()) {
-                    stores = response.body();
+                    storeimages = response.body();
                     getData();
                     initAdapter();
                 }
             }
+
             @Override
-            public void onFailure(Call<ArrayList<Store>> call, Throwable t) {
+            public void onFailure(Call<ArrayList<StoreImage>> call, Throwable t) {
 
             }
         });
@@ -128,6 +130,8 @@ public class VP2Fragment extends Fragment {
             int sigungu = evt.getLocation_idx();
             int dog_size = evt.getSize_idx();
             int category = evt.getGeneral_idx();
+
+            Log.d("asd", "VP2 : " + dog_size);
 
             getDataFromServerWithId( sigungu, dog_size, category );
 

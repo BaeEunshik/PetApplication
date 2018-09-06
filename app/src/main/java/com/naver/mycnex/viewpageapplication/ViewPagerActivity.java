@@ -275,6 +275,7 @@ public class ViewPagerActivity extends AppCompatActivity {
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
         // 장소 ( 애견동반 ) 선택시
