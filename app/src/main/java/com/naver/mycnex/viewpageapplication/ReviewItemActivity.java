@@ -11,8 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.naver.mycnex.viewpageapplication.adapter.CommentListAdapter;
-import com.naver.mycnex.viewpageapplication.data.Comment;
+//import com.naver.mycnex.viewpageapplication.adapter.CommentListAdapter;
 import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,8 +20,8 @@ import butterknife.Unbinder;
 
 public class ReviewItemActivity extends AppCompatActivity {
     private Unbinder unbinder;
-    ArrayList<Comment> items = new ArrayList<>();
-    CommentListAdapter commentListAdapter;
+//    ArrayList<Comment> items = new ArrayList<>();
+//    CommentListAdapter commentListAdapter;
     int Comcount = 0;
 
 
@@ -47,8 +46,8 @@ public class ReviewItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_review_item);
         unbinder = ButterKnife.bind(this);
 
-        commentListAdapter = new CommentListAdapter(items);
-        lv_comment_list.setAdapter(commentListAdapter);
+//        commentListAdapter = new CommentListAdapter(items);
+//        lv_comment_list.setAdapter(commentListAdapter);
 
         Intent intent = getIntent();
         year = intent.getIntExtra("year",0);

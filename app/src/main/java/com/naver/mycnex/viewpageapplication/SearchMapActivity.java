@@ -420,7 +420,7 @@ public class SearchMapActivity extends AppCompatActivity
     }
 
     public void getMarkFromServer() {
-       Call<ArrayList<StoreImage>> getstore = RetrofitService.getInstance().getRetrofitRequest().getStoreForMap(LOCATION_IDX, CATEGORY_IDX);
+       Call<ArrayList<StoreImage>> getstore = RetrofitService.getInstance().getRetrofitRequest().getStoreForMap();
         getstore.enqueue(new Callback<ArrayList<StoreImage>>() {
             @Override
             public void onResponse(Call<ArrayList<StoreImage>> call, Response<ArrayList<StoreImage>> response) {
@@ -479,9 +479,6 @@ public class SearchMapActivity extends AppCompatActivity
 
         mMap.setOnMarkerClickListener(this);
 
-        if (distance_min != DISTANCE_BOUNDARY) {
-            GetStoreDataWhenCreated(store);
-        }
     }
 
     public void GetStoreDataWhenCreated(Store store) {

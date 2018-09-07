@@ -2,6 +2,7 @@ package com.naver.mycnex.viewpageapplication.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,14 +12,18 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.android.gms.maps.model.LatLng;
 import com.naver.mycnex.viewpageapplication.R;
 import com.naver.mycnex.viewpageapplication.RegisterShopActivity;
+import com.naver.mycnex.viewpageapplication.SearchMapActivity;
 import com.naver.mycnex.viewpageapplication.ShopActivity;
 import com.naver.mycnex.viewpageapplication.custom.SquareImageView;
 import com.naver.mycnex.viewpageapplication.data.ImageFile;
 import com.naver.mycnex.viewpageapplication.data.Store;
 import com.naver.mycnex.viewpageapplication.glide.GlideApp;
 import com.naver.mycnex.viewpageapplication.global.Global;
+import com.naver.mycnex.viewpageapplication.gps.GpsInfo;
 
 import java.util.ArrayList;
 
@@ -55,20 +60,13 @@ public class VP1GridAdapter extends BaseAdapter{
         Holder holder = new Holder();
         if( convertView == null ){
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_vp1_grid, parent, false);
-            // 0. 이미지
-            // 1. 북마크
-            // 2. 가게이름
-            // 3. 평점
-            // 4. 가게구분
-            // 5. 구 ( ex. 강남구 ) , 현재 위치로부터의 거리 km
-            // ( 6. 조회수 ??? )
-            // ( 7. 리뷰수 ??? )
             holder.itemImg = convertView.findViewById(R.id.itemImg);
             holder.btnBookmark = convertView.findViewById(R.id.btnBookmark);
             holder.textName = convertView.findViewById(R.id.textName);
             holder.textPlace = convertView.findViewById(R.id.textPlace);
             holder.textDistance = convertView.findViewById(R.id.TextDistance);
             holder.textPoint = convertView.findViewById(R.id.TextPoint);
+            holder.view_vp1_txt = convertView.findViewById(R.id.view_vp1_txt);
 
             convertView.setTag(holder);
         } else {
@@ -86,7 +84,7 @@ public class VP1GridAdapter extends BaseAdapter{
         holder.textName.setText(store.getName());
 
         //현재위치로부터의 거리
-        holder.textDistance.setText("00km"); // TODO : ( 구현? 삭제? )
+        holder.textDistance.setText(getDistance(context,position) + "m"); // TODO : ( 구현? 삭제? )
 
         //카테고리 ( 장소구분 )
         // DB 필드값 : Global 클래스의 CATEGORY_GENERAL_ARR 배열에서 인덱스 값으로 사용할 수 있도록 설계
@@ -106,6 +104,7 @@ public class VP1GridAdapter extends BaseAdapter{
          리뷰의 갯수만큼 나눈 다음에
          - 객체 배열에 넣어서 사용*/
         holder.textPoint.setText("5.0");    // 점수
+        holder.view_vp1_txt.setText(store.getHit().toString());
 
         /** setIMG **/
 
@@ -136,7 +135,39 @@ public class VP1GridAdapter extends BaseAdapter{
         return convertView;
     }
 
+    public int getDistance(Context context, int position) {
 
+        LatLng latLng = getCurrentLocationByGPS(context);
+
+        Location location1 = new Location("location1");
+        location1.setLatitude(latLng.latitude);
+        location1.setLongitude(latLng.longitude);
+
+        Location location2 = new Location("location2");
+        location2.setLatitude(stores.get(position).getLatitude());
+        location2.setLongitude(stores.get(position).getLongitude());
+
+        int distance = (int)location1.distanceTo(location2);
+
+        return distance;
+    }
+
+    public LatLng getCurrentLocationByGPS(Context context) {
+        GpsInfo gps = new GpsInfo(context);
+
+        double lat = 0;
+        double lng = 0;
+
+        if (gps.isGetLocation()) {
+
+             lat = gps.getLatitude();
+             lng = gps.getLongitude();
+
+        }
+
+        LatLng currentLocation = new LatLng(lat, lng);
+        return currentLocation;
+    }
 
     public class Holder {
         SquareImageView itemImg;
@@ -145,5 +176,6 @@ public class VP1GridAdapter extends BaseAdapter{
         TextView textDistance;
         TextView textPlace;
         TextView textPoint;
+        TextView view_vp1_txt;
     }
 }

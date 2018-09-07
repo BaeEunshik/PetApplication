@@ -1,5 +1,6 @@
 package com.naver.mycnex.viewpageapplication.retrofit;
 
+import com.naver.mycnex.viewpageapplication.data.Review;
 import com.naver.mycnex.viewpageapplication.data.Store;
 import com.naver.mycnex.viewpageapplication.data.StoreImage;
 
@@ -50,6 +51,13 @@ public interface RetrofitRequest {
     Call<ArrayList<StoreImage>> getStoreSpecial(@Field("sigungu") Integer sigungu, @Field("dog_size") Integer dog_size, @Field("category") Integer category);
 
     @GET("getStoreForMap.do")
-    Call<ArrayList<StoreImage>> getStoreForMap(@Query("sigungu") Integer sigungu, @Query("category") Integer category);
+    Call<ArrayList<StoreImage>> getStoreForMap();
+
+    @FormUrlEncoded
+    @POST("WriteReview.do")
+    Call<Void> WriteReview(@Field("content") String content, @Field("score") String score, @Field("store_id") long store_id, @Field("member_id") long member_id);
+
+    @GET("GetReview.do")
+    Call<ArrayList<Review>> getReview (@Query("store_id") long store_id);
 
 }

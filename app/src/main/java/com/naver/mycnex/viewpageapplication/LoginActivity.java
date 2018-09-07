@@ -82,9 +82,17 @@ public class LoginActivity extends AppCompatActivity {
 
                         loginService.setLoginMember(member);
 
-                        Intent intent = new Intent(LoginActivity.this, ViewPagerActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
+                        Intent intent = getIntent();
+                        if (intent.getIntExtra("review",-1) == 1) {
+                            setResult(RESULT_OK,intent);
+                            finish();
+                        } else {
+                            Intent intent1 = new Intent(LoginActivity.this, ViewPagerActivity.class);
+                            intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                            startActivity(intent1);
+                        }
+
                     } else {
                         Toast.makeText(LoginActivity.this, "아이디 혹은 비밀번호가 맞지 않습니다.",Toast.LENGTH_SHORT).show();
                         id_edit.requestFocus();

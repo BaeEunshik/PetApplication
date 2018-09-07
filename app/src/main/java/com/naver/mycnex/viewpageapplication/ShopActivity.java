@@ -13,6 +13,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,12 +25,15 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.naver.mycnex.viewpageapplication.adapter.ShopActRecyclerAdapter;
 import com.naver.mycnex.viewpageapplication.data.ImageFile;
+import com.naver.mycnex.viewpageapplication.data.Review;
 import com.naver.mycnex.viewpageapplication.data.Store;
 import com.naver.mycnex.viewpageapplication.data.StoreImage;
 import com.naver.mycnex.viewpageapplication.global.Global;
+import com.naver.mycnex.viewpageapplication.login.LoginService;
 import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -57,6 +61,9 @@ public class ShopActivity extends AppCompatActivity
     //전화번호
     private GoogleMap mMap;
 
+    private int LOGIN_SUCCESS = 1;
+    private int WRITE_FINISH = 2;
+
     //버터나이프
     Unbinder unbinder;
 
@@ -71,6 +78,7 @@ public class ShopActivity extends AppCompatActivity
     @BindView(R.id.btnCall)Button btnCall;
     @BindView(R.id.horizonRecyclerView)RecyclerView horizonRecyclerView;
     @BindView(R.id.storeName_txt) TextView storeName_txt;
+    @BindView(R.id.View_txt) TextView View_txt;
 
     //리사이클뷰
     ShopActRecyclerAdapter shopActRecyclerAdapter;
@@ -78,6 +86,7 @@ public class ShopActivity extends AppCompatActivity
     StoreImage storeImage;
     Store store;
     ArrayList<ImageFile> images;
+    ArrayList<Review> reviews;
 
     /** OnCreate **/
     @Override
@@ -114,10 +123,36 @@ public class ShopActivity extends AppCompatActivity
     }
     @OnClick(R.id.btnGoReviewWrite)// 리뷰작성 하러 가기
     public void btnGoReviewWrite(){
-        Intent intent = new Intent(ShopActivity.this,ReviewWriteActivity.class);
-        startActivity(intent);
+
+        LoginService loginService = LoginService.getInstance();
+
+        if (loginService.getLoginMember() == null) {
+            Toast.makeText(this,"로그인이 필요합니다",Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(ShopActivity.this,LoginActivity.class);
+            intent.putExtra("review",1);
+            startActivityForResult(intent,LOGIN_SUCCESS);
+        } else {
+            Intent intent = new Intent(ShopActivity.this,ReviewWriteActivity.class);
+            intent.putExtra("store_id",store.getId());
+            startActivityForResult(intent,WRITE_FINISH);
+        }
+
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == LOGIN_SUCCESS) {
+            if (resultCode == RESULT_OK) {
+                // review 데이터 뿌려주기
+            }
+        } else if (requestCode == WRITE_FINISH) {
+            if (resultCode == RESULT_OK) {
+                getReviewData();
+            }
+        }
+
+    }
 
     /******************** GoogleMap Fragment Interface Method ******************/
     @Override
@@ -247,6 +282,9 @@ public class ShopActivity extends AppCompatActivity
         } else if (store.getReservation() == Global.RESERVATION_UNABLE) {
             reservation_txt.setText("예약불가");
         }
+
+        View_txt.setText(store.getHit().toString());
+        getReviewData();
     }
 
     public void recycleViewSet() {
@@ -258,4 +296,31 @@ public class ShopActivity extends AppCompatActivity
         shopActRecyclerAdapter = new ShopActRecyclerAdapter(images, getApplicationContext());
         horizonRecyclerView.setAdapter(shopActRecyclerAdapter);
     }
+
+    public void getReviewData() {
+
+        Call<ArrayList<Review>> getReview = RetrofitService.getInstance().getRetrofitRequest().getReview(store.getId());
+        getReview.enqueue(new Callback<ArrayList<Review>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Review>> call, Response<ArrayList<Review>> response) {
+                if (response.isSuccessful()) {
+                    reviews = response.body();
+
+                    if (reviews != null) {
+                        for (int i = 0; i < reviews.size(); i++) {
+                            Log.d("asd", reviews.get(i).getContent());
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Review>> call, Throwable t) {
+
+            }
+        });
+
+    }
+
 }

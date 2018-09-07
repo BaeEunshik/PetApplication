@@ -119,7 +119,7 @@
                                     android:layout_height="match_parent" >
                                     <!-- 조회수 텍스트 -->
                                     <TextView
-                                        android:id="@+id/textViews"
+                                        android:id="@+id/View_txt"
                                         android:layout_centerInParent="true"
                                         android:text="00"
                                         android:textSize="15dp"
@@ -261,21 +261,23 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="22dp">
+
                             <TextView
-                                android:text="영업 요일"
-                                android:layout_centerVertical="true"
-                                android:textSize="12dp"
-                                android:textColor="@color/defaultText"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:text="영업 요일"
+                                android:textColor="@color/defaultText"
+                                android:textSize="12dp" />
+
                             <TextView
                                 android:id="@+id/operate_day_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                android:textSize="12dp"
                                 android:textColor="@color/defaultText"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+                                android:textSize="12dp" />
                         </RelativeLayout>
                         <!--휴일-->
                         <!--입장가능-->
