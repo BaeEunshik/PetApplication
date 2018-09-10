@@ -19,6 +19,7 @@ import com.naver.mycnex.viewpageapplication.bus.BusProvider;
 import com.naver.mycnex.viewpageapplication.R;
 import com.naver.mycnex.viewpageapplication.data.ImageFile;
 import com.naver.mycnex.viewpageapplication.data.Store;
+import com.naver.mycnex.viewpageapplication.data.StoreData;
 import com.naver.mycnex.viewpageapplication.data.StoreImage;
 import com.naver.mycnex.viewpageapplication.event.VPSpinnerItemSelected;
 import com.naver.mycnex.viewpageapplication.global.Global;
@@ -41,7 +42,8 @@ public class VP2Fragment extends Fragment {
 
     ArrayList<Store> stores;
     ArrayList<ImageFile> images;
-    ArrayList<StoreImage> storeimages;
+    ArrayList<StoreData> storeData;
+    Integer[] reviews;
     VP2GridAdapter vp2GridAdapter;
 
     // 이벤트 버스
@@ -58,7 +60,7 @@ public class VP2Fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_vp2, container, false);
         bus.register(this);
         unbinder = ButterKnife.bind(this,view);
-        InitWhenCreated();
+
         return view;
     }
     /** onDestroy **/
@@ -69,6 +71,12 @@ public class VP2Fragment extends Fragment {
         bus.unregister(this);
         // 버터나이프
         unbinder.unbind();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        InitWhenCreated();
     }
 
     public void InitWhenCreated() {
@@ -87,25 +95,25 @@ public class VP2Fragment extends Fragment {
         });
     }
     public void getDataFromServerWithId(Integer sigungu, Integer dog_size, Integer category ) {
-        Call<ArrayList<StoreImage>> getStoreData = RetrofitService.getInstance().getRetrofitRequest().getStoreSpecial( sigungu, dog_size, category );
-        getStoreData.enqueue(new Callback<ArrayList<StoreImage>>() {
+        Call<ArrayList<StoreData>> getStoreData = RetrofitService.getInstance().getRetrofitRequest().getStoreSpecial( sigungu, dog_size, category );
+        getStoreData.enqueue(new Callback<ArrayList<StoreData>>() {
             @Override
-            public void onResponse(Call<ArrayList<StoreImage>> call, Response<ArrayList<StoreImage>> response) {
+            public void onResponse(Call<ArrayList<StoreData>> call, Response<ArrayList<StoreData>> response) {
                 if (response.isSuccessful()) {
-                    storeimages = response.body();
+                    storeData = response.body();
                     getData();
                     initAdapter();
                 }
             }
 
             @Override
-            public void onFailure(Call<ArrayList<StoreImage>> call, Throwable t) {
+            public void onFailure(Call<ArrayList<StoreData>> call, Throwable t) {
 
             }
         });
     }
     public void initAdapter() {
-        vp2GridAdapter = new VP2GridAdapter(stores,images);
+        vp2GridAdapter = new VP2GridAdapter(stores,images,reviews);
         gridView.setAdapter(vp2GridAdapter);
     }
 
@@ -113,10 +121,12 @@ public class VP2Fragment extends Fragment {
 
         stores = new ArrayList<>();
         images = new ArrayList<>();
+        reviews = new Integer[storeData.size()];
 
-        for (int i = 0; i < storeimages.size(); i++) {
-            stores.add(storeimages.get(i).getStore());
-            images.add(storeimages.get(i).getImage().get(0));
+        for (int i = 0; i < storeData.size(); i++) {
+            stores.add(storeData.get(i).getStore());
+            images.add(storeData.get(i).getImages().get(0));
+            reviews[i] = storeData.get(i).getReviews().size();
         }
     }
 

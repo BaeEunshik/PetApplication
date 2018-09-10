@@ -111,38 +111,12 @@ public class ViewPagerActivity extends AppCompatActivity {
         // ViewPage 화면 변경 리스너
         addOnPageChangeListener();
 
-        // Drawer Layout Adapter 설정
-        String[] drawerStrArr = getResources().getStringArray(R.array.DrawerNav);
-        drawerListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, drawerStrArr));
-        drawerListView.setOnItemClickListener(new DrawerItemClickListener());
+        DrawerLayout();
 
         // 뒤로가기 두 번할 경우 앱 종료 기능
         backPressCloseHandler = new BackPressCloseHandler(this);
     }
 
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-            switch (position) {
-                case 0://북마크
-                    Intent intent = new Intent(ViewPagerActivity.this, BookmarksActivity.class);
-                    startActivity(intent);
-                    break;
-                case 1://설정
-                    intent = new Intent(ViewPagerActivity.this, SettingActivity.class);
-                    startActivity(intent);
-                    break;
-                case 2://내 가게
-                    intent = new Intent(ViewPagerActivity.this, ShopListActivity.class);
-                    startActivity(intent);
-                    break;
-                case 3://가게등록
-                    intent = new Intent(ViewPagerActivity.this, RegisterShopActivity.class);
-                    startActivity(intent);
-                    break;
-            }
-        }
-    }
     /** onBackPressed **/
     @Override
     public void onBackPressed() {   // 뒤로가기 두 번 - 앱 종료
@@ -323,11 +297,13 @@ public class ViewPagerActivity extends AppCompatActivity {
                     btnGoRight.setBackground(getResources().getDrawable(R.drawable.flat_box_gray));
                     spinnerPlaceGeneral.setVisibility(View.VISIBLE);
                     spinnerPlaceSpecial.setVisibility(View.GONE);
+                    bus.post(new VPSpinnerItemSelected( LOCATION_IDX, SIZE_IDX, GENERAL_IDX, SPECIAL_IDX, viewpager.getCurrentItem() ));
                 }else if (position == VP_POS_RIGHT){
                     btnGoLeft.setBackground(getResources().getDrawable(R.drawable.flat_box_gray));
                     btnGoRight.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                     spinnerPlaceSpecial.setVisibility(View.VISIBLE);
                     spinnerPlaceGeneral.setVisibility(View.GONE);
+                    bus.post(new VPSpinnerItemSelected( LOCATION_IDX, SIZE_IDX, GENERAL_IDX, SPECIAL_IDX, viewpager.getCurrentItem() ));
                 }
             }
             @Override
@@ -336,5 +312,57 @@ public class ViewPagerActivity extends AppCompatActivity {
         });
     }
 
+    public void DrawerLayout() {
+        // Drawer Layout Adapter 설정
+        LoginService loginService = LoginService.getInstance();
+
+        if (loginService.getLoginMember() == null) {
+            String[] drawerStrArr = getResources().getStringArray(R.array.DrawerWhenlogout);
+            drawerListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, drawerStrArr));
+            drawerListView.setOnItemClickListener(new DrawerItemWhenLogIn());
+        } else {
+            String[] drawerStrArr = getResources().getStringArray(R.array.DrawerWhenlogin);
+            drawerListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, drawerStrArr));
+            drawerListView.setOnItemClickListener(new DrawerItemWhenLogOut());
+        }
+
+    }
+
+    private class DrawerItemWhenLogIn implements ListView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            switch (position) {
+                case 0://설정
+                    Intent intent = new Intent(ViewPagerActivity.this, SettingActivity.class);
+                    startActivity(intent);
+                    break;
+            }
+        }
+    }
+
+    private class DrawerItemWhenLogOut implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+            switch (position) {
+                case 0://즐겨찾기
+                    Intent intent = new Intent(ViewPagerActivity.this, BookmarksActivity.class);
+                    startActivity(intent);
+                    break;
+                case 1://설정
+                    intent = new Intent(ViewPagerActivity.this, SettingActivity.class);
+                    startActivity(intent);
+                    break;
+                case 2://내 가게
+                    intent = new Intent(ViewPagerActivity.this, ShopListActivity.class);
+                    startActivity(intent);
+                    break;
+                case 3://가게등록
+                    intent = new Intent(ViewPagerActivity.this, RegisterShopActivity.class);
+                    startActivity(intent);
+                    break;
+            }
+        }
+    }
 
 }

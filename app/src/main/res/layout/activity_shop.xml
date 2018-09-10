@@ -139,7 +139,7 @@
                                     android:layout_height="match_parent" >
                                     <!-- 리뷰수 텍스트 -->
                                     <TextView
-                                        android:id="@+id/textReviews"
+                                        android:id="@+id/reviewSize_txt"
                                         android:layout_centerInParent="true"
                                         android:text="00"
                                         android:textSize="15dp"
@@ -158,7 +158,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent">
                         <TextView
-                            android:id="@+id/textPoints"
+                            android:id="@+id/storeScore_txt"
                             android:layout_centerHorizontal="true"
                             android:text="5.0"
                             android:textColor="@color/colorPrimary"
@@ -391,11 +391,7 @@
                 <!-- 전화하기 -->
                 <RelativeLayout
                     android:background="@color/colorWhite"
-                    android:layout_marginBottom="10dp"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
+                    android:padding="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="80dp">
                     <!-- 전화버튼 -->
@@ -416,7 +412,7 @@
                     android:paddingLeft="30dp"
                     android:paddingRight="30dp"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp">
+                    android:layout_height="50dp">
                     <!-- 선 -->
                     <View
                         android:layout_centerInParent="true"
@@ -425,17 +421,31 @@
                         android:layout_height="2dp"/>
                     <!-- 타이틀 -->
                     <TextView
+                        android:id="@+id/review_count_txt"
                         android:background="@color/defaultBackground"
                         android:layout_centerInParent="true"
-                        android:text="리뷰(0)"
                         android:textSize="15dp"
                         android:textColor="@color/defaultText"
                         android:textAlignment="center"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content" />
                     <!-- 타이틀 -->
+
                 </RelativeLayout>
                 <!-- Header -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ListView
+                        android:id="@+id/review_lv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorWhite">
+                    </ListView>
+
+                </LinearLayout>
 
                 <!-- 리뷰 작성하기 버튼 -->
                 <RelativeLayout

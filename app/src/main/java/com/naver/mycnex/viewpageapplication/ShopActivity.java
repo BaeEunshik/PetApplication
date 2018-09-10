@@ -10,8 +10,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,10 +27,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+import com.naver.mycnex.viewpageapplication.adapter.ReviewListAdapter;
 import com.naver.mycnex.viewpageapplication.adapter.ShopActRecyclerAdapter;
 import com.naver.mycnex.viewpageapplication.data.ImageFile;
+import com.naver.mycnex.viewpageapplication.data.Member;
 import com.naver.mycnex.viewpageapplication.data.Review;
+import com.naver.mycnex.viewpageapplication.data.ReviewMember;
 import com.naver.mycnex.viewpageapplication.data.Store;
+import com.naver.mycnex.viewpageapplication.data.StoreData;
 import com.naver.mycnex.viewpageapplication.data.StoreImage;
 import com.naver.mycnex.viewpageapplication.global.Global;
 import com.naver.mycnex.viewpageapplication.login.LoginService;
@@ -63,6 +71,7 @@ public class ShopActivity extends AppCompatActivity
 
     private int LOGIN_SUCCESS = 1;
     private int WRITE_FINISH = 2;
+    ReviewListAdapter reviewListAdapter;
 
     //버터나이프
     Unbinder unbinder;
@@ -79,14 +88,20 @@ public class ShopActivity extends AppCompatActivity
     @BindView(R.id.horizonRecyclerView)RecyclerView horizonRecyclerView;
     @BindView(R.id.storeName_txt) TextView storeName_txt;
     @BindView(R.id.View_txt) TextView View_txt;
+    @BindView(R.id.review_lv) ListView review_lv;
+    @BindView(R.id.storeScore_txt) TextView storeScore_txt;
+    @BindView(R.id.reviewSize_txt) TextView reviewSize_txt;
+    @BindView(R.id.review_count_txt) TextView review_count_txt;
 
     //리사이클뷰
     ShopActRecyclerAdapter shopActRecyclerAdapter;
 
-    StoreImage storeImage;
+    StoreData storeData;
     Store store;
     ArrayList<ImageFile> images;
     ArrayList<Review> reviews;
+    ArrayList<Member> members;
+    ArrayList<ReviewMember> reviewMembers;
 
     /** OnCreate **/
     @Override
@@ -148,7 +163,7 @@ public class ShopActivity extends AppCompatActivity
             }
         } else if (requestCode == WRITE_FINISH) {
             if (resultCode == RESULT_OK) {
-                getReviewData();
+                getIdData();
             }
         }
 
@@ -234,18 +249,18 @@ public class ShopActivity extends AppCompatActivity
         Intent intent = getIntent();
         Long id = intent.getLongExtra("id",-1);
 
-        Call<StoreImage> getStoreData = RetrofitService.getInstance().getRetrofitRequest().storeDetail(id);
-        getStoreData.enqueue(new Callback<StoreImage>() {
+        Call<StoreData> getStoreData = RetrofitService.getInstance().getRetrofitRequest().storeDetail(id);
+        getStoreData.enqueue(new Callback<StoreData>() {
             @Override
-            public void onResponse(Call<StoreImage> call, Response<StoreImage> response) {
+            public void onResponse(Call<StoreData> call, Response<StoreData> response) {
                 if (response.isSuccessful()) {
-                    storeImage = response.body();
+                    storeData = response.body();
                     getDataFromId();
                 }
             }
 
             @Override
-            public void onFailure(Call<StoreImage> call, Throwable t) {
+            public void onFailure(Call<StoreData> call, Throwable t) {
 
             }
         });
@@ -253,8 +268,8 @@ public class ShopActivity extends AppCompatActivity
 
     public void getDataFromId() {
 
-        images = storeImage.getImage();
-        store = storeImage.getStore();
+        images = storeData.getImages();
+        store = storeData.getStore();
 
         recycleViewSet();
 
@@ -283,8 +298,18 @@ public class ShopActivity extends AppCompatActivity
             reservation_txt.setText("예약불가");
         }
 
+        double result = ((double)store.getScore_sum())/((double)store.getScore_count());
+        double getPrimeNum = Math.ceil(result*10d) / 10d;
+
+        if (Double.isNaN(getPrimeNum)) {
+            storeScore_txt.setText("0.0");
+        } else {
+            storeScore_txt.setText(String.valueOf(getPrimeNum));
+        }
+
         View_txt.setText(store.getHit().toString());
-        getReviewData();
+        getReviewMemberData();
+        initReviewAdatper();
     }
 
     public void recycleViewSet() {
@@ -297,30 +322,45 @@ public class ShopActivity extends AppCompatActivity
         horizonRecyclerView.setAdapter(shopActRecyclerAdapter);
     }
 
-    public void getReviewData() {
+    public void getReviewMemberData() {
 
-        Call<ArrayList<Review>> getReview = RetrofitService.getInstance().getRetrofitRequest().getReview(store.getId());
-        getReview.enqueue(new Callback<ArrayList<Review>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Review>> call, Response<ArrayList<Review>> response) {
-                if (response.isSuccessful()) {
-                    reviews = response.body();
+        reviews = new ArrayList<>();
+        members = new ArrayList<>();
 
-                    if (reviews != null) {
-                        for (int i = 0; i < reviews.size(); i++) {
-                            Log.d("asd", reviews.get(i).getContent());
-                        }
-                    }
+        reviewSize_txt.setText(String.valueOf(storeData.getReviews().size()));
+        review_count_txt.setText("리뷰 (" + String.valueOf(storeData.getReviews().size()) + ")");
 
-                }
-            }
+        for (int i = 0; i < storeData.getReviews().size(); i++) {
+            reviews.add(storeData.getReviews().get(i));
+            members.add(storeData.getMembers().get(i));
+        }
+    }
 
-            @Override
-            public void onFailure(Call<ArrayList<Review>> call, Throwable t) {
+    public void initReviewAdatper() {
+        reviewListAdapter = new ReviewListAdapter(reviews,members);
+        review_lv.setAdapter(reviewListAdapter);
+        setListViewHeightBasedOnChildren(review_lv);
+    }
 
-            }
-        });
+    public void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null)
+            return;
 
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            view = listAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
     }
 
 }

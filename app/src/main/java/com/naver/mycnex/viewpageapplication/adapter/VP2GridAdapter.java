@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.naver.mycnex.viewpageapplication.R;
@@ -17,6 +18,7 @@ import com.naver.mycnex.viewpageapplication.data.Store;
 import com.naver.mycnex.viewpageapplication.glide.GlideApp;
 import com.naver.mycnex.viewpageapplication.global.Global;
 import com.naver.mycnex.viewpageapplication.gps.GpsInfo;
+import com.naver.mycnex.viewpageapplication.login.LoginService;
 
 import java.util.ArrayList;
 
@@ -25,12 +27,19 @@ import lombok.Data;
 import lombok.ToString;
 
 @Data
-@AllArgsConstructor
 @ToString
 public class VP2GridAdapter extends BaseAdapter{
 
     ArrayList<Store> stores;
     ArrayList<ImageFile> images;
+    Integer[] reviews;
+    boolean turnOn = true;
+
+    public VP2GridAdapter(ArrayList<Store> stores, ArrayList<ImageFile> images, Integer[] reviews) {
+        this.stores = stores;
+        this.images = images;
+        this.reviews = reviews;
+    }
 
     @Override
     public int getCount() {
@@ -58,6 +67,7 @@ public class VP2GridAdapter extends BaseAdapter{
             holder.textDistance = convertView.findViewById(R.id.TextDistance);
             holder.textPoint = convertView.findViewById(R.id.TextPoint);
             holder.view_vp2_txt = convertView.findViewById(R.id.view_vp2_txt);
+            holder.review_count_txt = convertView.findViewById(R.id.review_count_txt);
 
             convertView.setTag(holder);
         } else {
@@ -77,6 +87,9 @@ public class VP2GridAdapter extends BaseAdapter{
         //현재위치로부터의 거리
         holder.textDistance.setText(getDistance(context,position) + "m"); // TODO : ( 구현? 삭제? )
 
+        //리뷰 수
+        holder.review_count_txt.setText(reviews[position].toString());
+
         //카테고리 ( 장소구분 )
         // DB 필드값 : Global 클래스의 CATEGORY_GENERAL_ARR 배열에서 인덱스 값으로 사용할 수 있도록 설계
         if( store.getCategory() >= Global.CATEGORY_DIVISION_NUM) {
@@ -93,7 +106,16 @@ public class VP2GridAdapter extends BaseAdapter{
          해당 Store 에 달린 리뷰의 점수를 모두 더하여
          리뷰의 갯수만큼 나눈 다음에
          - 객체 배열에 넣어서 사용*/
-        holder.textPoint.setText("5.0");    // 점수
+
+        double result = ((double)store.getScore_sum())/((double)store.getScore_count());
+        double getPrimeNum = Math.ceil(result*10d) / 10d;
+
+        if (Double.isNaN(getPrimeNum)) {
+            holder.textPoint.setText("0.0");
+        } else {
+            holder.textPoint.setText(String.valueOf(getPrimeNum));
+        }
+
         holder.view_vp2_txt.setText(store.getHit().toString());
 
         /** setIMG **/
@@ -116,10 +138,24 @@ public class VP2GridAdapter extends BaseAdapter{
             @Override
             public void onClick(View v) {
                 // TODO : 북마크에 저장, 북마크 여부에 따른  이미지 교체
-                GlideApp.with(parent.getContext())
-                        .load( R.drawable.star_off )
-                        .fitCenter()
-                        .into( onClickHolder.btnBookmark );
+                LoginService loginService = LoginService.getInstance();
+                if (loginService.getLoginMember() != null) {
+                    if (turnOn) {
+                        GlideApp.with(parent.getContext())
+                                .load(R.drawable.star_on)
+                                .fitCenter()
+                                .into(onClickHolder.btnBookmark);
+                        turnOn = false;
+                    } else {
+                        GlideApp.with(parent.getContext())
+                                .load(R.drawable.star_off)
+                                .fitCenter()
+                                .into(onClickHolder.btnBookmark);
+                        turnOn = true;
+                    }
+                } else {
+                    Toast.makeText(parent.getContext(), "로그인 후 사용하세요", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -168,5 +204,6 @@ public class VP2GridAdapter extends BaseAdapter{
         TextView textPlace;
         TextView textPoint;
         TextView view_vp2_txt;
+        TextView review_count_txt;
     }
 }

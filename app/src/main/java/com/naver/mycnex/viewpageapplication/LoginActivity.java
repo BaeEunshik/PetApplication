@@ -31,9 +31,6 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.pw_edit) EditText pw_edit;
     @BindView(R.id.btnGoBack)ImageButton btnGoBack;
 
-    String id = "";
-    String pw = "";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,20 +63,18 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onClickLoginBtn() {
 
-       id = id_edit.getText().toString();
-       pw = pw_edit.getText().toString();
+        String id = id_edit.getText().toString();
+        String pw = pw_edit.getText().toString();
 
-        final Call<Boolean> loginService = RetrofitService.getInstance().getRetrofitRequest().login(id,pw);
-        loginService.enqueue(new Callback<Boolean>() {
+        final Call<Member> login = RetrofitService.getInstance().getRetrofitRequest().login(id,pw);
+        login.enqueue(new Callback<Member>() {
             @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+            public void onResponse(Call<Member> call, Response<Member> response) {
                 if (response.isSuccessful()) {
-                    boolean check = response.body();
+                    Member member = response.body();
 
-                    if (check) {
+                    if (member != null) {
                         LoginService loginService = LoginService.getInstance();
-                        Member member = new Member(id,pw);
-
                         loginService.setLoginMember(member);
 
                         Intent intent = getIntent();
@@ -101,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
+            public void onFailure(Call<Member> call, Throwable t) {
 
             }
         });

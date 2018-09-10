@@ -310,8 +310,6 @@ public class SearchMapActivity extends AppCompatActivity
     // Spinner OnItemSelect
     public void spinnerSetOnItemSelect() {
 
-        Log.d("asd", "spinnerSetOnItemSelect");
-
         // 지역 선택시
         spinnerLocate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

@@ -17,14 +17,20 @@ import com.naver.mycnex.viewpageapplication.login.LoginService;
 import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import lombok.Data;
+import lombok.ToString;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@Data
+@ToString
 public class ReviewWriteActivity extends AppCompatActivity {
 
     private Unbinder unbinder;
@@ -63,15 +69,30 @@ public class ReviewWriteActivity extends AppCompatActivity {
         Intent intent = getIntent();
         LoginService loginService = LoginService.getInstance();
 
+        Calendar cal = Calendar.getInstance();
+
+        Integer year = cal.get(Calendar.YEAR);
+        Integer month = (cal.get(Calendar.MONTH)+1);
+        Integer day = cal.get(Calendar.DAY_OF_MONTH);
+        String date = year+"-"+month+"-"+day;
+
         String content = et_input_content.getText().toString();
         String score = TextPoint.getText().toString();
-        long store_id = intent.getLongExtra("store_id",-1);
+
+        final long store_id = intent.getLongExtra("store_id",-1);
         long member_id = loginService.getLoginMember().getId();
 
-        Call<Void> sendReview = RetrofitService.getInstance().getRetrofitRequest().WriteReview(content, score, store_id,member_id);
+        if (content == null || content.equals("")) {
+            Toast.makeText(this,"댓글을 입력하세요",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Call<Void> sendReview = RetrofitService.getInstance().getRetrofitRequest().WriteReview(content, score, store_id,member_id,date);
         sendReview.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
+                Intent intent = new Intent();
+                intent.putExtra("store_id",store_id);
                 setResult(RESULT_OK);
                 finish();
             }

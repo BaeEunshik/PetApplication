@@ -39,13 +39,17 @@
     <!-- 반려견 크기 -->
 
     <!-- 메뉴 ( Drawer Layout ) -->
-    <string-array name="DrawerNav">
-        <item>북마크</item>
+    <string-array name="DrawerWhenlogin">
+        <item>즐겨찾기</item>
         <item>설정</item>
         <item>내가게</item>
         <item>가게등록</item>
     </string-array>
     <!-- 메뉴 ( Drawer Layout ) -->
+
+    <string-array name="DrawerWhenlogout">
+        <item>설정</item>
+    </string-array>
 
     <!-- 장소구분 -->
     <string-array name="purpose">

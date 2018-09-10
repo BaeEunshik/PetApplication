@@ -1,5 +1,7 @@
 package com.naver.mycnex.viewpageapplication.data;
 
+import java.util.ArrayList;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
@@ -7,11 +9,7 @@ import lombok.ToString;
 @Data
 @AllArgsConstructor
 @ToString
-public class Review {
-    private long id;
-    private long store_id;
-    private long member_id;
-    private String content;
-    private String day;
-
+public class ReviewMember {
+    private Review reviews;
+    private Member members;
 }

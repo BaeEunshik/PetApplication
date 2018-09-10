@@ -1,75 +1,54 @@
 package com.naver.mycnex.viewpageapplication.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.location.Location;
-import android.media.Image;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.naver.mycnex.viewpageapplication.R;
-import com.naver.mycnex.viewpageapplication.RegisterShopActivity;
-import com.naver.mycnex.viewpageapplication.SearchMapActivity;
-import com.naver.mycnex.viewpageapplication.ShopActivity;
 import com.naver.mycnex.viewpageapplication.custom.SquareImageView;
 import com.naver.mycnex.viewpageapplication.data.ImageFile;
 import com.naver.mycnex.viewpageapplication.data.Store;
+import com.naver.mycnex.viewpageapplication.data.StoreData;
 import com.naver.mycnex.viewpageapplication.glide.GlideApp;
 import com.naver.mycnex.viewpageapplication.global.Global;
 import com.naver.mycnex.viewpageapplication.gps.GpsInfo;
-import com.naver.mycnex.viewpageapplication.login.LoginService;
-import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 
 import java.util.ArrayList;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 @Data
 @ToString
-public class VP1GridAdapter extends BaseAdapter{
+@AllArgsConstructor
+public class SearchGridAdapter extends BaseAdapter {
 
-    // 테스트 스토어 리스트
-    // TODO :
-    // 이미지 객체와 합친 arrList 로 만들어야함
-    ArrayList<Store> stores;
-    ArrayList<ImageFile> images;
-    Integer[] reviews;
-    boolean turnOn = true;
-
-    public VP1GridAdapter(ArrayList<Store> stores, ArrayList<ImageFile> images, Integer[] reviews) {
-        this.stores = stores;
-        this.images = images;
-        this.reviews = reviews;
-    }
+    ArrayList<StoreData> storeData;
 
     @Override
     public int getCount() {
-        return stores.size();
+        return storeData.size();
     }
+
     @Override
-    public Store getItem(int position) {
-        return stores.get(position);
+    public Object getItem(int position) {
+        return storeData.get(position);
     }
+
     @Override
     public long getItemId(int position) {
-        return position;
+        return 0;
     }
-    @Override
-    public View getView(final int position, View convertView, final ViewGroup parent) {
 
+    @Override
+    public View getView(int position, View convertView, final ViewGroup parent) {
         Holder holder = new Holder();
         if( convertView == null ){
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_vp1_grid, parent, false);
@@ -88,9 +67,9 @@ public class VP1GridAdapter extends BaseAdapter{
         }
 
         // 그리드뷰 아이템 세팅
-        final Store store = getItem(position);
+        Store store = storeData.get(position).getStore();
         // Context
-        final Context context = parent.getContext();
+        Context context = parent.getContext();
 
         /** setText **/
 
@@ -100,8 +79,8 @@ public class VP1GridAdapter extends BaseAdapter{
         //현재위치로부터의 거리
         holder.textDistance.setText(getDistance(context,position) + "m"); // TODO : ( 구현? 삭제? )
 
-        // 리뷰 수
-        holder.review_count_txt.setText(reviews[position].toString());
+        //리뷰 수
+        holder.review_count_txt.setText(String.valueOf(storeData.get(position).getReviews().size()));
 
         //카테고리 ( 장소구분 )
         // DB 필드값 : Global 클래스의 CATEGORY_GENERAL_ARR 배열에서 인덱스 값으로 사용할 수 있도록 설계
@@ -135,72 +114,29 @@ public class VP1GridAdapter extends BaseAdapter{
 
         // 그리드 이미지
         GlideApp.with(context)
-                .load(Global.BASE_IMAGE_URL+images.get(position).getSavedName())
+                .load(Global.BASE_IMAGE_URL+storeData.get(position).getImages().get(0).getSavedName())
                 .centerCrop()
                 .into( holder.itemImg );
 
         // 북마크 여부 표시 ( TODO : 북마크 여부에 따라 다른 이미지 적용 )
         GlideApp.with(context)
-                .load( R.drawable.star_off )
+                .load( R.drawable.star_on )
                 .fitCenter()
                 .into( holder.btnBookmark );
 
         /** OnClick **/
-            final Holder onClickHolder = holder;
-            holder.btnBookmark.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // TODO : 북마크에 저장, 북마크 여부에 따른  이미지 교체
-                    LoginService loginService = LoginService.getInstance();
-                    if (loginService.getLoginMember() != null) {
-                        if (turnOn) {
-                            Call<Void> AddBookMark = RetrofitService.getInstance().getRetrofitRequest().AddBookMark(store.getId(),loginService.getLoginMember().getId());
-                            AddBookMark.enqueue(new Callback<Void>() {
-                                @Override
-                                public void onResponse(Call<Void> call, Response<Void> response) {
-                                    if (response.isSuccessful()) {
+        final Holder onClickHolder = holder;
+        holder.btnBookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO : 북마크에 저장, 북마크 여부에 따른  이미지 교체
+                GlideApp.with(parent.getContext())
+                        .load( R.drawable.star_off )
+                        .fitCenter()
+                        .into( onClickHolder.btnBookmark );
+            }
+        });
 
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<Void> call, Throwable t) {
-
-                                }
-                            });
-
-                            GlideApp.with(parent.getContext())
-                                    .load(R.drawable.star_on)
-                                    .fitCenter()
-                                    .into(onClickHolder.btnBookmark);
-                            turnOn = false;
-                        } else {
-                            Call<Void> DeleteBookMark = RetrofitService.getInstance().getRetrofitRequest().DeleteBookMark(store.getId(),loginService.getLoginMember().getId());
-                            DeleteBookMark.enqueue(new Callback<Void>() {
-                                @Override
-                                public void onResponse(Call<Void> call, Response<Void> response) {
-                                    if (response.isSuccessful()) {
-
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<Void> call, Throwable t) {
-
-                                }
-                            });
-
-                            GlideApp.with(parent.getContext())
-                                    .load(R.drawable.star_off)
-                                    .fitCenter()
-                                    .into(onClickHolder.btnBookmark);
-                            turnOn = true;
-                        }
-                    } else {
-                        Toast.makeText(parent.getContext(), "로그인 후 사용하세요", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
         return convertView;
     }
 
@@ -213,8 +149,8 @@ public class VP1GridAdapter extends BaseAdapter{
         location1.setLongitude(latLng.longitude);
 
         Location location2 = new Location("location2");
-        location2.setLatitude(stores.get(position).getLatitude());
-        location2.setLongitude(stores.get(position).getLongitude());
+        location2.setLatitude(storeData.get(position).getStore().getLatitude());
+        location2.setLongitude(storeData.get(position).getStore().getLongitude());
 
         int distance = (int)location1.distanceTo(location2);
 
@@ -229,8 +165,8 @@ public class VP1GridAdapter extends BaseAdapter{
 
         if (gps.isGetLocation()) {
 
-             lat = gps.getLatitude();
-             lng = gps.getLongitude();
+            lat = gps.getLatitude();
+            lng = gps.getLongitude();
 
         }
 

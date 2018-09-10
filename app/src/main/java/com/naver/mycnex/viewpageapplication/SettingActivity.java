@@ -71,9 +71,10 @@ public class SettingActivity extends AppCompatActivity {
         } else {
             loginService.logOut();
             // "로그인" 출력 위해 현재 액티비티 재시작
-            Intent intent = getIntent();
-            finish();
-            startActivity(intent);
+            Intent intent1 = new Intent(SettingActivity.this, ViewPagerActivity.class);
+            intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            startActivity(intent1);
         }
     }
 

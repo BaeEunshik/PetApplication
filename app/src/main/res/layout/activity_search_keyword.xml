@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".SearchKeywordActivity">
 
     <!-- 헤더 -->
@@ -30,17 +31,18 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent">
                 <EditText
+                    android:id="@+id/searchStore_edit"
                     android:textColor="@color/colorWhite"
                     android:textColorHint="#ccc"
                     android:cursorVisible="false"
                     android:background="@null"
-                    android:hint="검색할 가게"
+                    android:hint="가게명"
                     android:textSize="18dp"
                     android:textStyle="bold"
                     android:includeFontPadding="false"
                     android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="22dp" />
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
             </LinearLayout>
 
 
@@ -60,8 +62,20 @@
             </RelativeLayout>
         </LinearLayout>
 
-
     </RelativeLayout>
     <!-- 헤더 -->
+
+    <GridView
+        android:id="@+id/searchStore_gv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="auto_fit"
+        android:columnWidth="@dimen/gridView_item_columnWidth"
+        android:stretchMode="columnWidth"
+        android:horizontalSpacing="10dp"
+        android:verticalSpacing="10dp"
+        android:padding="10dp">
+
+    </GridView>
 
 </LinearLayout>

@@ -6,24 +6,28 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.naver.mycnex.viewpageapplication.R;
+import com.naver.mycnex.viewpageapplication.data.Member;
 import com.naver.mycnex.viewpageapplication.data.Review;
 import java.util.ArrayList;
 
-public class ReviewListAdapter extends BaseAdapter {
-    ArrayList<Review> items ;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.ToString;
 
-    public ReviewListAdapter(ArrayList<Review> items) {
-        this.items = items;
-    }
+@Data
+@AllArgsConstructor
+public class ReviewListAdapter extends BaseAdapter {
+    ArrayList<Review> reviews;
+    ArrayList<Member> members;
 
     @Override
     public int getCount() {
-        return items.size();
+        return reviews.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return items.get(position);
+        return reviews.get(position);
     }
 
     @Override
@@ -34,25 +38,32 @@ public class ReviewListAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
-       ReviewListAdapter.Holder holder = new ReviewListAdapter.Holder();
+       Holder holder = new Holder();
 
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_review_list, parent, false);
-            holder.txt_review_content = convertView.findViewById(R.id.txt_review_content);
+            holder.review_nickname_txt = convertView.findViewById(R.id.review_nickname_txt);
+            holder.review_date_txt = convertView.findViewById(R.id.review_date_txt);
+            holder.review_review_txt = convertView.findViewById(R.id.review_review_txt);
 
             convertView.setTag(holder);
         } else {
             holder = (ReviewListAdapter.Holder)convertView.getTag();
         }
-      Review item = (Review)getItem(position);
+      Review review = (Review)getItem(position);
 
-        holder.txt_review_content.setText(item.getContent());
+        holder.review_nickname_txt.setText(members.get(position).getName());
+        holder.review_date_txt.setText(review.getDay());
+        holder.review_review_txt.setText(review.getContent());
 
         return convertView;
     }
 
     public class Holder {
-        TextView txt_review_content;
+        TextView review_nickname_txt;
+        TextView review_date_txt;
+        TextView review_review_txt;
+
     }
 }
 

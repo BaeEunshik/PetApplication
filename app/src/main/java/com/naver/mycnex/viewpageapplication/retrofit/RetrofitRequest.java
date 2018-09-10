@@ -1,7 +1,10 @@
 package com.naver.mycnex.viewpageapplication.retrofit;
 
+import com.naver.mycnex.viewpageapplication.data.Member;
 import com.naver.mycnex.viewpageapplication.data.Review;
+import com.naver.mycnex.viewpageapplication.data.ReviewMember;
 import com.naver.mycnex.viewpageapplication.data.Store;
+import com.naver.mycnex.viewpageapplication.data.StoreData;
 import com.naver.mycnex.viewpageapplication.data.StoreImage;
 
 import java.lang.reflect.Array;
@@ -30,7 +33,7 @@ public interface RetrofitRequest {
 
     @FormUrlEncoded
     @POST("login.do")
-    Call<Boolean> login(@Field("login_id") String login_id, @Field("login_pw") String login_pw);
+    Call<Member> login(@Field("login_id") String login_id, @Field("login_pw") String login_pw);
 
     @Multipart
     @POST("submitStore.do")
@@ -40,24 +43,30 @@ public interface RetrofitRequest {
 
     @FormUrlEncoded
     @POST("storeDetail.do")
-    Call<StoreImage> storeDetail(@Field("id")long id);
+    Call<StoreData> storeDetail(@Field("id")long id);
 
     @FormUrlEncoded
     @POST("getStoreGeneral.do")
-    Call<ArrayList<StoreImage>> getStoreGeneral(@Field("sigungu") Integer sigungu, @Field("dog_size") Integer dog_size, @Field("category") Integer category);
+    Call<ArrayList<StoreData>> getStoreGeneral(@Field("sigungu") Integer sigungu, @Field("dog_size") Integer dog_size, @Field("category") Integer category);
 
     @FormUrlEncoded
     @POST("getStoreSpecial.do")
-    Call<ArrayList<StoreImage>> getStoreSpecial(@Field("sigungu") Integer sigungu, @Field("dog_size") Integer dog_size, @Field("category") Integer category);
+    Call<ArrayList<StoreData>> getStoreSpecial(@Field("sigungu") Integer sigungu, @Field("dog_size") Integer dog_size, @Field("category") Integer category);
 
     @GET("getStoreForMap.do")
     Call<ArrayList<StoreImage>> getStoreForMap();
 
     @FormUrlEncoded
     @POST("WriteReview.do")
-    Call<Void> WriteReview(@Field("content") String content, @Field("score") String score, @Field("store_id") long store_id, @Field("member_id") long member_id);
+    Call<Void> WriteReview(@Field("content") String content, @Field("score") String score, @Field("store_id") long store_id, @Field("member_id") long member_id, @Field("date") String date);
 
-    @GET("GetReview.do")
-    Call<ArrayList<Review>> getReview (@Query("store_id") long store_id);
+    @GET("GetStoreForSearch.do")
+    Call<ArrayList<StoreData>> GetStoreForSearch();
+
+    @GET("AddBookMark.do")
+    Call<Void> AddBookMark(@Query("store_id") long store_id, @Query("member_id") long member_id);
+
+    @GET("DeleteBookMark.do")
+    Call<Void> DeleteBookMark(@Query("store_id") long store_id, @Query("member_id") long member_id);
 
 }

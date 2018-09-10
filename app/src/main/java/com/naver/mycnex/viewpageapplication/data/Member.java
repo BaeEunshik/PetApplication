@@ -13,8 +13,4 @@ public class Member {
     private String login_pw;
     private String name;
 
-    public Member(String login_id, String login_pw) {
-        this.login_id = login_id;
-        this.login_pw = login_pw;
-    }
 }
