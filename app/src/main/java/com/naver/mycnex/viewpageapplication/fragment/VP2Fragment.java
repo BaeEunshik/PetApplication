@@ -17,12 +17,14 @@ import com.naver.mycnex.viewpageapplication.ViewPagerActivity;
 import com.naver.mycnex.viewpageapplication.adapter.VP2GridAdapter;
 import com.naver.mycnex.viewpageapplication.bus.BusProvider;
 import com.naver.mycnex.viewpageapplication.R;
+import com.naver.mycnex.viewpageapplication.data.Bookmark;
 import com.naver.mycnex.viewpageapplication.data.ImageFile;
 import com.naver.mycnex.viewpageapplication.data.Store;
 import com.naver.mycnex.viewpageapplication.data.StoreData;
 import com.naver.mycnex.viewpageapplication.data.StoreImage;
 import com.naver.mycnex.viewpageapplication.event.VPSpinnerItemSelected;
 import com.naver.mycnex.viewpageapplication.global.Global;
+import com.naver.mycnex.viewpageapplication.login.LoginService;
 import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -42,6 +44,7 @@ public class VP2Fragment extends Fragment {
 
     ArrayList<Store> stores;
     ArrayList<ImageFile> images;
+    ArrayList<Bookmark> bookmarks;
     ArrayList<StoreData> storeData;
     Integer[] reviews;
     VP2GridAdapter vp2GridAdapter;
@@ -95,30 +98,70 @@ public class VP2Fragment extends Fragment {
         });
     }
     public void getDataFromServerWithId(Integer sigungu, Integer dog_size, Integer category ) {
-        Call<ArrayList<StoreData>> getStoreData = RetrofitService.getInstance().getRetrofitRequest().getStoreSpecial( sigungu, dog_size, category );
-        getStoreData.enqueue(new Callback<ArrayList<StoreData>>() {
-            @Override
-            public void onResponse(Call<ArrayList<StoreData>> call, Response<ArrayList<StoreData>> response) {
-                if (response.isSuccessful()) {
+
+        LoginService loginService = LoginService.getInstance();
+
+        if (loginService.getLoginMember() != null) {
+
+            long member_id = loginService.getLoginMember().getId();
+            Call<ArrayList<StoreData>> getStoreDataWhenLogin = RetrofitService.getInstance().getRetrofitRequest().getStoreSpecialWhenLogIn(sigungu, dog_size, category,member_id);
+            getStoreDataWhenLogin.enqueue(new Callback<ArrayList<StoreData>>() {
+                @Override
+                public void onResponse(Call<ArrayList<StoreData>> call, Response<ArrayList<StoreData>> response) {
                     storeData = response.body();
-                    getData();
+                    getDataWhenLogin();
                     initAdapter();
                 }
-            }
 
-            @Override
-            public void onFailure(Call<ArrayList<StoreData>> call, Throwable t) {
+                @Override
+                public void onFailure(Call<ArrayList<StoreData>> call, Throwable t) {
 
-            }
-        });
+                }
+            });
+
+        } else {
+
+            Call<ArrayList<StoreData>> getStoreData = RetrofitService.getInstance().getRetrofitRequest().getStoreSpecial( sigungu, dog_size, category );
+            getStoreData.enqueue(new Callback<ArrayList<StoreData>>() {
+                @Override
+                public void onResponse(Call<ArrayList<StoreData>> call, Response<ArrayList<StoreData>> response) {
+                    if (response.isSuccessful()) {
+                        storeData = response.body();
+                        getData();
+                        initAdapter();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ArrayList<StoreData>> call, Throwable t) {
+
+                }
+            });
+
+        }
     }
     public void initAdapter() {
-        vp2GridAdapter = new VP2GridAdapter(stores,images,reviews);
+        vp2GridAdapter = new VP2GridAdapter(stores,images,reviews,bookmarks);
         gridView.setAdapter(vp2GridAdapter);
     }
 
-    public void getData() {
+    public void getDataWhenLogin() {
+        stores = new ArrayList<>();
+        images = new ArrayList<>();
+        reviews = new Integer[storeData.size()];
+        bookmarks = new ArrayList<>();
 
+        for (int i = 0; i < storeData.size(); i++) {
+            stores.add(storeData.get(i).getStore());
+            images.add(storeData.get(i).getImages().get(0));
+            reviews[i] = storeData.get(i).getReviews().size();
+            if (storeData.get(i).getBookmarks() != null) {
+                bookmarks.add(storeData.get(i).getBookmarks());
+            }
+        }
+    }
+
+    public void getData() {
         stores = new ArrayList<>();
         images = new ArrayList<>();
         reviews = new Integer[storeData.size()];

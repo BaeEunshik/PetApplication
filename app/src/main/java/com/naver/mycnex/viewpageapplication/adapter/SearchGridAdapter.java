@@ -54,11 +54,11 @@ public class SearchGridAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_vp1_grid, parent, false);
             holder.itemImg = convertView.findViewById(R.id.itemImg);
             holder.btnBookmark = convertView.findViewById(R.id.btnBookmark);
-            holder.textName = convertView.findViewById(R.id.textName);
+            holder.Store_name_txt = convertView.findViewById(R.id.Store_name_txt);
             holder.textPlace = convertView.findViewById(R.id.textPlace);
             holder.textDistance = convertView.findViewById(R.id.TextDistance);
-            holder.textPoint = convertView.findViewById(R.id.TextPoint);
-            holder.view_vp1_txt = convertView.findViewById(R.id.view_vp1_txt);
+            holder.storeScore_txt = convertView.findViewById(R.id.storeScore_txt);
+            holder.View_txt = convertView.findViewById(R.id.View_txt);
             holder.review_count_txt = convertView.findViewById(R.id.review_count_txt);
 
             convertView.setTag(holder);
@@ -74,10 +74,10 @@ public class SearchGridAdapter extends BaseAdapter {
         /** setText **/
 
         //장소이름
-        holder.textName.setText(store.getName());
+        holder.Store_name_txt.setText(store.getName());
 
         //현재위치로부터의 거리
-        holder.textDistance.setText(getDistance(context,position) + "m"); // TODO : ( 구현? 삭제? )
+        holder.textDistance.setText(getDistance(context,position) + "m");
 
         //리뷰 수
         holder.review_count_txt.setText(String.valueOf(storeData.get(position).getReviews().size()));
@@ -90,25 +90,15 @@ public class SearchGridAdapter extends BaseAdapter {
             holder.textPlace.setText(Global.CATEGORY_GENERAL_STR_ARR[ store.getCategory() ]);
         }
 
-        // TODO :
-        // 평점 계산 로직)
-        // 리뷰가 작성될 때마다
-        // 리뷰카운트 & 점수(합계) 를 저장해서
-        // 불러올 때 리뷰점수 / 리뷰카운트 로 점수를 계산
-         /*DB 로부터 데이터를 받아올 때에
-         해당 Store 에 달린 리뷰의 점수를 모두 더하여
-         리뷰의 갯수만큼 나눈 다음에
-         - 객체 배열에 넣어서 사용*/
-
         double result = ((double)store.getScore_sum())/((double)store.getScore_count());
         double getPrimeNum = Math.ceil(result*10d) / 10d;
 
         if (Double.isNaN(getPrimeNum)) {
-            holder.textPoint.setText("0.0");
+            holder.storeScore_txt.setText("0.0");
         } else {
-            holder.textPoint.setText(String.valueOf(getPrimeNum));
+            holder.storeScore_txt.setText(String.valueOf(getPrimeNum));
         }
-        holder.view_vp1_txt.setText(store.getHit().toString());
+        holder.View_txt.setText(store.getHit().toString());
 
         /** setIMG **/
 
@@ -177,11 +167,11 @@ public class SearchGridAdapter extends BaseAdapter {
     public class Holder {
         SquareImageView itemImg;
         ImageView btnBookmark;
-        TextView textName;
+        TextView Store_name_txt;
         TextView textDistance;
         TextView textPlace;
-        TextView textPoint;
-        TextView view_vp1_txt;
+        TextView storeScore_txt;
+        TextView View_txt;
         TextView review_count_txt;
     }
 

@@ -39,7 +39,7 @@ public interface RetrofitRequest {
     @POST("submitStore.do")
     Call<Long> submitStore(@Part ArrayList<MultipartBody.Part> storeImage, @Part MultipartBody.Part name, @Part MultipartBody.Part contact, @Part MultipartBody.Part dog_size, @Part MultipartBody.Part info,
                            @Part MultipartBody.Part operation_day, @Part MultipartBody.Part operation_time, @Part MultipartBody.Part parking, @Part MultipartBody.Part reservation,
-                           @Part MultipartBody.Part address, @Part MultipartBody.Part sigungu, @Part MultipartBody.Part lat, @Part MultipartBody.Part lng, @Part MultipartBody.Part category);
+                           @Part MultipartBody.Part address, @Part MultipartBody.Part sigungu, @Part MultipartBody.Part lat, @Part MultipartBody.Part lng, @Part MultipartBody.Part category, @Part MultipartBody.Part member_id);
 
     @FormUrlEncoded
     @POST("storeDetail.do")
@@ -50,8 +50,16 @@ public interface RetrofitRequest {
     Call<ArrayList<StoreData>> getStoreGeneral(@Field("sigungu") Integer sigungu, @Field("dog_size") Integer dog_size, @Field("category") Integer category);
 
     @FormUrlEncoded
+    @POST("getStoreGeneralWhenLogIn.do")
+    Call<ArrayList<StoreData>> getStoreGeneralWhenLogIn(@Field("sigungu") Integer sigungu, @Field("dog_size") Integer dog_size, @Field("category") Integer category, @Field("member_id") long member_id);
+
+    @FormUrlEncoded
     @POST("getStoreSpecial.do")
     Call<ArrayList<StoreData>> getStoreSpecial(@Field("sigungu") Integer sigungu, @Field("dog_size") Integer dog_size, @Field("category") Integer category);
+
+    @FormUrlEncoded
+    @POST("getStoreSpecialWhenLogIn.do")
+    Call<ArrayList<StoreData>> getStoreSpecialWhenLogIn(@Field("sigungu") Integer sigungu, @Field("dog_size") Integer dog_size, @Field("category") Integer category, @Field("member_id") long member_id);
 
     @GET("getStoreForMap.do")
     Call<ArrayList<StoreImage>> getStoreForMap();
@@ -68,5 +76,13 @@ public interface RetrofitRequest {
 
     @GET("DeleteBookMark.do")
     Call<Void> DeleteBookMark(@Query("store_id") long store_id, @Query("member_id") long member_id);
+
+    @FormUrlEncoded
+    @POST("getBookmarkStore.do")
+    Call<ArrayList<StoreData>> getBookmarkStore(@Field("member_id")long member_id);
+
+    @FormUrlEncoded
+    @POST("getMyStore.do")
+    Call<ArrayList<StoreData>> getMyStore(@Field("member_id") long member_id);
 
 }

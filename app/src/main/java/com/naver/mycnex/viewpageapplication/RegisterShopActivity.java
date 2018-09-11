@@ -30,6 +30,7 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.naver.mycnex.viewpageapplication.address.Address;
 import com.naver.mycnex.viewpageapplication.global.Global;
+import com.naver.mycnex.viewpageapplication.login.LoginService;
 import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 
 import gun0912.tedbottompicker.TedBottomPicker;
@@ -340,6 +341,9 @@ public class RegisterShopActivity extends AppCompatActivity {
             return;
         }
 
+        LoginService loginService = LoginService.getInstance();
+        long member_id = loginService.getLoginMember().getId();
+
         MultipartBody.Part M_name = MultipartBody.Part.createFormData("name",name);
         MultipartBody.Part M_phone = MultipartBody.Part.createFormData("contact",phone);
         MultipartBody.Part M_petsize = MultipartBody.Part.createFormData("dog_size",String.valueOf(PETSIZE_PERMISSION));
@@ -353,6 +357,7 @@ public class RegisterShopActivity extends AppCompatActivity {
         MultipartBody.Part M_lat = MultipartBody.Part.createFormData("lat",String.valueOf(lat));
         MultipartBody.Part M_lng = MultipartBody.Part.createFormData("lng",String.valueOf(lng));
         MultipartBody.Part M_selectedCategory = MultipartBody.Part.createFormData("category",String.valueOf(selectedCategory));
+        MultipartBody.Part M_member_id = MultipartBody.Part.createFormData("member_id",String.valueOf(member_id));
 
         final ArrayList<MultipartBody.Part> filePart = new ArrayList<>();
         if (imgUri != null) {
@@ -366,7 +371,7 @@ public class RegisterShopActivity extends AppCompatActivity {
         }
 
          Call<Long> submitStore = RetrofitService.getInstance().getRetrofitRequest().submitStore(filePart,M_name,M_phone,M_petsize,M_store_info,M_oper_date,M_operation_time,
-                 M_parking,M_reservation,M_address,M_sigungu,M_lat,M_lng,M_selectedCategory);
+                 M_parking,M_reservation,M_address,M_sigungu,M_lat,M_lng,M_selectedCategory,M_member_id);
          submitStore.enqueue(new Callback<Long>() {
              @Override
              public void onResponse(Call<Long> call, Response<Long> response) {

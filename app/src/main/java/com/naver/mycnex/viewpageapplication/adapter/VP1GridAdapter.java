@@ -20,6 +20,7 @@ import com.naver.mycnex.viewpageapplication.RegisterShopActivity;
 import com.naver.mycnex.viewpageapplication.SearchMapActivity;
 import com.naver.mycnex.viewpageapplication.ShopActivity;
 import com.naver.mycnex.viewpageapplication.custom.SquareImageView;
+import com.naver.mycnex.viewpageapplication.data.Bookmark;
 import com.naver.mycnex.viewpageapplication.data.ImageFile;
 import com.naver.mycnex.viewpageapplication.data.Store;
 import com.naver.mycnex.viewpageapplication.glide.GlideApp;
@@ -29,6 +30,7 @@ import com.naver.mycnex.viewpageapplication.login.LoginService;
 import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -47,12 +49,23 @@ public class VP1GridAdapter extends BaseAdapter{
     ArrayList<Store> stores;
     ArrayList<ImageFile> images;
     Integer[] reviews;
+    ArrayList<Bookmark> bookmarks;
+    HashMap<Long,Bookmark> hBookMarks;
     boolean turnOn = true;
 
-    public VP1GridAdapter(ArrayList<Store> stores, ArrayList<ImageFile> images, Integer[] reviews) {
+    public VP1GridAdapter(ArrayList<Store> stores, ArrayList<ImageFile> images, Integer[] reviews, ArrayList<Bookmark> bookmarks) {
         this.stores = stores;
         this.images = images;
         this.reviews = reviews;
+        if (bookmarks != null) {
+            this.bookmarks = bookmarks;
+            hBookMarks = new HashMap<>();
+            for (int i = 0 ; i < bookmarks.size() ; i++) { // 생성할 때 HashMap을 생성해서 key 값에 데이터를 넣어놓기
+                hBookMarks.put(bookmarks.get(i).getStore_id(),bookmarks.get(i)); // value 값은 상관없고 key에 store_id를 넣어놓는게 중요. -> null 인지만 검사하기 때문.
+            }
+        } else {
+            this.bookmarks = null;
+        }
     }
 
     @Override
@@ -75,11 +88,11 @@ public class VP1GridAdapter extends BaseAdapter{
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_vp1_grid, parent, false);
             holder.itemImg = convertView.findViewById(R.id.itemImg);
             holder.btnBookmark = convertView.findViewById(R.id.btnBookmark);
-            holder.textName = convertView.findViewById(R.id.textName);
+            holder.Store_name_txt = convertView.findViewById(R.id.Store_name_txt);
             holder.textPlace = convertView.findViewById(R.id.textPlace);
             holder.textDistance = convertView.findViewById(R.id.TextDistance);
-            holder.textPoint = convertView.findViewById(R.id.TextPoint);
-            holder.view_vp1_txt = convertView.findViewById(R.id.view_vp1_txt);
+            holder.storeScore_txt = convertView.findViewById(R.id.storeScore_txt);
+            holder.View_txt = convertView.findViewById(R.id.View_txt);
             holder.review_count_txt = convertView.findViewById(R.id.review_count_txt);
 
             convertView.setTag(holder);
@@ -95,7 +108,7 @@ public class VP1GridAdapter extends BaseAdapter{
         /** setText **/
 
         //장소이름
-        holder.textName.setText(store.getName());
+        holder.Store_name_txt.setText(store.getName());
 
         //현재위치로부터의 거리
         holder.textDistance.setText(getDistance(context,position) + "m"); // TODO : ( 구현? 삭제? )
@@ -125,11 +138,11 @@ public class VP1GridAdapter extends BaseAdapter{
         double getPrimeNum = Math.ceil(result*10d) / 10d;
 
         if (Double.isNaN(getPrimeNum)) {
-            holder.textPoint.setText("0.0");
+            holder.storeScore_txt.setText("0.0");
         } else {
-            holder.textPoint.setText(String.valueOf(getPrimeNum));
+            holder.storeScore_txt.setText(String.valueOf(getPrimeNum));
         }
-        holder.view_vp1_txt.setText(store.getHit().toString());
+        holder.View_txt.setText(store.getHit().toString());
 
         /** setIMG **/
 
@@ -140,10 +153,40 @@ public class VP1GridAdapter extends BaseAdapter{
                 .into( holder.itemImg );
 
         // 북마크 여부 표시 ( TODO : 북마크 여부에 따라 다른 이미지 적용 )
-        GlideApp.with(context)
-                .load( R.drawable.star_off )
-                .fitCenter()
-                .into( holder.btnBookmark );
+        if (bookmarks == null) {
+            GlideApp.with(context)
+                    .load( R.drawable.star_off )
+                    .fitCenter()
+                    .into( holder.btnBookmark );
+        } else {
+            if (hBookMarks.get(store.getId()) == null) {
+                GlideApp.with(context)
+                        .load( R.drawable.star_off )
+                        .fitCenter()
+                        .into( holder.btnBookmark );
+            } else {
+                GlideApp.with(context)
+                        .load( R.drawable.star_on )
+                        .fitCenter()
+                        .into( holder.btnBookmark );
+            }
+
+            /* 포지션으로 접근했던 안좋은 방법
+            if (position < bookmarks.size()) {
+                if (bookmarks.get(position).getStore_id() == store.getId()) {
+                    GlideApp.with(context)
+                            .load( R.drawable.star_on )
+                            .fitCenter()
+                            .into( holder.btnBookmark );
+                }
+            } else {
+                GlideApp.with(context)
+                        .load( R.drawable.star_off )
+                        .fitCenter()
+                        .into( holder.btnBookmark );
+            }
+            */
+        }
 
         /** OnClick **/
             final Holder onClickHolder = holder;
@@ -154,20 +197,7 @@ public class VP1GridAdapter extends BaseAdapter{
                     LoginService loginService = LoginService.getInstance();
                     if (loginService.getLoginMember() != null) {
                         if (turnOn) {
-                            Call<Void> AddBookMark = RetrofitService.getInstance().getRetrofitRequest().AddBookMark(store.getId(),loginService.getLoginMember().getId());
-                            AddBookMark.enqueue(new Callback<Void>() {
-                                @Override
-                                public void onResponse(Call<Void> call, Response<Void> response) {
-                                    if (response.isSuccessful()) {
-
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<Void> call, Throwable t) {
-
-                                }
-                            });
+                            insertBookmark(store.getId(),loginService.getLoginMember().getId()); // 즐겨찾기 추가
 
                             GlideApp.with(parent.getContext())
                                     .load(R.drawable.star_on)
@@ -175,20 +205,7 @@ public class VP1GridAdapter extends BaseAdapter{
                                     .into(onClickHolder.btnBookmark);
                             turnOn = false;
                         } else {
-                            Call<Void> DeleteBookMark = RetrofitService.getInstance().getRetrofitRequest().DeleteBookMark(store.getId(),loginService.getLoginMember().getId());
-                            DeleteBookMark.enqueue(new Callback<Void>() {
-                                @Override
-                                public void onResponse(Call<Void> call, Response<Void> response) {
-                                    if (response.isSuccessful()) {
-
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<Void> call, Throwable t) {
-
-                                }
-                            });
+                            deleteBookmark(store.getId(),loginService.getLoginMember().getId()); // 즐겨찾기 삭제
 
                             GlideApp.with(parent.getContext())
                                     .load(R.drawable.star_off)
@@ -241,12 +258,46 @@ public class VP1GridAdapter extends BaseAdapter{
     public class Holder {
         SquareImageView itemImg;
         ImageView btnBookmark;
-        TextView textName;
+        TextView Store_name_txt;
         TextView textDistance;
         TextView textPlace;
-        TextView textPoint;
-        TextView view_vp1_txt;
+        TextView storeScore_txt;
+        TextView View_txt;
         TextView review_count_txt;
+    }
+
+    public void insertBookmark(long store_id, long loginMember_id) {
+        Call<Void> AddBookMark = RetrofitService.getInstance().getRetrofitRequest().AddBookMark(store_id,loginMember_id);
+        AddBookMark.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void deleteBookmark(long store_id, long loginMember_id) {
+        Call<Void> DeleteBookMark = RetrofitService.getInstance().getRetrofitRequest().DeleteBookMark(store_id,loginMember_id);
+        DeleteBookMark.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
     }
 
 }

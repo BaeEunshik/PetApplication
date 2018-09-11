@@ -1,5 +1,7 @@
 package com.naver.mycnex.viewpageapplication.adapter;
 
+import android.content.Context;
+import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,10 +9,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.naver.mycnex.viewpageapplication.R;
 import com.naver.mycnex.viewpageapplication.custom.SquareImageView;
 import com.naver.mycnex.viewpageapplication.data.Store;
+import com.naver.mycnex.viewpageapplication.data.StoreData;
 import com.naver.mycnex.viewpageapplication.glide.GlideApp;
+import com.naver.mycnex.viewpageapplication.global.Global;
+import com.naver.mycnex.viewpageapplication.gps.GpsInfo;
 
 import java.util.ArrayList;
 
@@ -32,16 +38,16 @@ public class BookmarkActGridAdapter extends BaseAdapter{
     // 이미지 객체와 합친 arrList 로 만들어야함
 
     // 북마크 리스트
-    ArrayList<Store> bookmarks;
+    ArrayList<StoreData> storeData;
     // 생성자
 
     @Override
     public int getCount() {
-        return bookmarks.size();
+        return storeData.size();
     }
     @Override
     public Object getItem(int position) {
-        return bookmarks.get(position);
+        return storeData.get(position);
     }
     @Override
     public long getItemId(int position) {
@@ -54,57 +60,97 @@ public class BookmarkActGridAdapter extends BaseAdapter{
         Holder holder = new Holder();
         if(convertView == null){
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bookmarks_grid, parent, false);
-            // 1. 이미지
-            // 2. 가게이름
-            // 3. 평점
-            // 4. 가게구분
-            // 5. 구 ( ex. 강남구 ) , 현재 위치로부터의 거리 km
-            // ( 6. 조회수 ??? )
-            // ( 7. 리뷰수 ??? )
             holder.itemImg = convertView.findViewById(R.id.itemImg);
             holder.TextName = convertView.findViewById(R.id.textName);
             holder.textPlace = convertView.findViewById(R.id.textPlace);
             holder.TextDistance = convertView.findViewById(R.id.TextDistance);
             holder.TextPoint = convertView.findViewById(R.id.TextPoint);
+            holder.review_count_txt = convertView.findViewById(R.id.review_count_txt);
+            holder.View_txt = convertView.findViewById(R.id.View_txt);
 
             convertView.setTag(holder);
         } else {
             holder = (Holder)convertView.getTag();
         }
+
+        Store store = storeData.get(position).getStore();
+        Context context = parent.getContext();
+
         /** setText **/
-        holder.TextName.setText(bookmarks.get(position).getName());    // 이름
-        holder.TextDistance.setText("00km");                        // TODO : 거리 ( 구현? 삭제? )
-        switch ( bookmarks.get(position).getCategory() ){                // 장소구분
-            case 0: holder.textPlace.setText("일반카페");
-                break;
-            case 1: holder.textPlace.setText("일반식당");
-                break;
-            default: holder.textPlace.setText("invalid");
-                break;
+        holder.TextName.setText(store.getName());    // 이름
+        holder.TextDistance.setText(getDistance(context,position) + "m");
+
+        //리뷰 수
+        holder.review_count_txt.setText(String.valueOf(storeData.get(position).getReviews().size()));
+
+        //카테고리 ( 장소구분 )
+        // DB 필드값 : Global 클래스의 CATEGORY_GENERAL_ARR 배열에서 인덱스 값으로 사용할 수 있도록 설계
+        if( store.getCategory() >= Global.CATEGORY_DIVISION_NUM) {
+            holder.textPlace.setText(Global.CATEGORY_SPECIAL_STR_ARR[ store.getCategory()-Global.CATEGORY_SPECIAL_CAFE ]);
+        } else {
+            holder.textPlace.setText(Global.CATEGORY_GENERAL_STR_ARR[ store.getCategory() ]);
         }
 
-        // TODO :
-        // 평점 계산 로직)
-        // DB 로부터 데이터를 받아올 때에
-        // 해당 Store 에 달린 리뷰의 점수를 모두 더하여
-        // 리뷰의 갯수만큼 나눈 다음에
-        // - 객체 배열에 넣어서 사용
-        holder.TextPoint.setText("5.0");    // 점수
+        double result = ((double)store.getScore_sum())/((double)store.getScore_count());
+        double getPrimeNum = Math.ceil(result*10d) / 10d;
+
+        if (Double.isNaN(getPrimeNum)) {
+            holder.TextPoint.setText("0.0");
+        } else {
+            holder.TextPoint.setText(String.valueOf(getPrimeNum));
+        }
+        holder.View_txt.setText(store.getHit().toString());
 
         /** setIMG **/
         // 그리드 이미지
-        GlideApp.with(parent.getContext())
-                .load( R.drawable.dog1 )
+        GlideApp.with(context)
+                .load(Global.BASE_IMAGE_URL+storeData.get(position).getImages().get(0).getSavedName())
                 .centerCrop()
                 .into( holder.itemImg );
 
         return convertView;
     }
+    public int getDistance(Context context, int position) {
+
+        LatLng latLng = getCurrentLocationByGPS(context);
+
+        Location location1 = new Location("location1");
+        location1.setLatitude(latLng.latitude);
+        location1.setLongitude(latLng.longitude);
+
+        Location location2 = new Location("location2");
+        location2.setLatitude(storeData.get(position).getStore().getLatitude());
+        location2.setLongitude(storeData.get(position).getStore().getLongitude());
+
+        int distance = (int)location1.distanceTo(location2);
+
+        return distance;
+    }
+
+    public LatLng getCurrentLocationByGPS(Context context) {
+        GpsInfo gps = new GpsInfo(context);
+
+        double lat = 0;
+        double lng = 0;
+
+        if (gps.isGetLocation()) {
+
+            lat = gps.getLatitude();
+            lng = gps.getLongitude();
+
+        }
+
+        LatLng currentLocation = new LatLng(lat, lng);
+        return currentLocation;
+    }
+
     public class Holder{
         SquareImageView itemImg;
         TextView TextName;
         TextView TextDistance;
         TextView textPlace;
         TextView TextPoint;
+        TextView review_count_txt;
+        TextView View_txt;
     }
 }

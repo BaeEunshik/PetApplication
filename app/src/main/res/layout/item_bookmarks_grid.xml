@@ -115,7 +115,7 @@
                             android:layout_width="20dp"
                             android:layout_height="14dp" />
                         <TextView
-                            android:id="@+id/textViews"
+                            android:id="@+id/View_txt"
                             android:layout_marginTop="2dp"
                             android:text="00"
                             android:textSize="10dp"
@@ -133,7 +133,7 @@
                             android:layout_width="20dp"
                             android:layout_height="14dp" />
                         <TextView
-                            android:id="@+id/textReviews"
+                            android:id="@+id/review_count_txt"
                             android:layout_marginTop="2dp"
                             android:textSize="10dp"
                             android:text="00"

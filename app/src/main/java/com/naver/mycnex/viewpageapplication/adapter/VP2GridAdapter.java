@@ -13,18 +13,24 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 import com.naver.mycnex.viewpageapplication.R;
 import com.naver.mycnex.viewpageapplication.custom.SquareImageView;
+import com.naver.mycnex.viewpageapplication.data.Bookmark;
 import com.naver.mycnex.viewpageapplication.data.ImageFile;
 import com.naver.mycnex.viewpageapplication.data.Store;
 import com.naver.mycnex.viewpageapplication.glide.GlideApp;
 import com.naver.mycnex.viewpageapplication.global.Global;
 import com.naver.mycnex.viewpageapplication.gps.GpsInfo;
 import com.naver.mycnex.viewpageapplication.login.LoginService;
+import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 @Data
 @ToString
@@ -32,13 +38,24 @@ public class VP2GridAdapter extends BaseAdapter{
 
     ArrayList<Store> stores;
     ArrayList<ImageFile> images;
+    ArrayList<Bookmark> bookmarks;
+    HashMap<Long,Bookmark> hBookMarks;
     Integer[] reviews;
     boolean turnOn = true;
 
-    public VP2GridAdapter(ArrayList<Store> stores, ArrayList<ImageFile> images, Integer[] reviews) {
+    public VP2GridAdapter(ArrayList<Store> stores, ArrayList<ImageFile> images, Integer[] reviews, ArrayList<Bookmark> bookmarks) {
         this.stores = stores;
         this.images = images;
         this.reviews = reviews;
+        if (bookmarks != null) {
+            this.bookmarks = bookmarks;
+            hBookMarks = new HashMap<>();
+            for (int i = 0 ; i < bookmarks.size() ; i++) { // 생성할 때 HashMap을 생성해서 key 값에 데이터를 넣어놓기
+                hBookMarks.put(bookmarks.get(i).getStore_id(),bookmarks.get(i)); // value 값은 상관없고 key에 store_id를 넣어놓는게 중요. -> null 인지만 검사하기 때문.
+            }
+        } else {
+            this.bookmarks = null;
+        }
     }
 
     @Override
@@ -75,7 +92,7 @@ public class VP2GridAdapter extends BaseAdapter{
         }
 
         // 그리드뷰 아이템 세팅
-        Store store = (Store) getItem(position);
+        final Store store = (Store) getItem(position);
         // Context
         Context context = parent.getContext();
 
@@ -127,10 +144,24 @@ public class VP2GridAdapter extends BaseAdapter{
                 .into( holder.itemImg );
 
         // 북마크 여부 표시 ( TODO : 북마크 여부에 따라 다른 이미지 적용 )
-        GlideApp.with(context)
-                .load( R.drawable.star_on )
-                .fitCenter()
-                .into( holder.btnBookmark );
+        if (bookmarks == null) {
+            GlideApp.with(context)
+                    .load( R.drawable.star_off )
+                    .fitCenter()
+                    .into( holder.btnBookmark );
+        } else {
+            if (hBookMarks.get(store.getId()) == null) {
+                GlideApp.with(context)
+                        .load( R.drawable.star_off )
+                        .fitCenter()
+                        .into( holder.btnBookmark );
+            } else {
+                GlideApp.with(context)
+                        .load( R.drawable.star_on )
+                        .fitCenter()
+                        .into( holder.btnBookmark );
+            }
+        }
 
         /** OnClick **/
         final Holder onClickHolder = holder;
@@ -141,12 +172,42 @@ public class VP2GridAdapter extends BaseAdapter{
                 LoginService loginService = LoginService.getInstance();
                 if (loginService.getLoginMember() != null) {
                     if (turnOn) {
+                        Call<Void> AddBookMark = RetrofitService.getInstance().getRetrofitRequest().AddBookMark(store.getId(),loginService.getLoginMember().getId());
+                        AddBookMark.enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if (response.isSuccessful()) {
+
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+
+                            }
+                        });
+
                         GlideApp.with(parent.getContext())
                                 .load(R.drawable.star_on)
                                 .fitCenter()
                                 .into(onClickHolder.btnBookmark);
                         turnOn = false;
                     } else {
+                        Call<Void> DeleteBookMark = RetrofitService.getInstance().getRetrofitRequest().DeleteBookMark(store.getId(),loginService.getLoginMember().getId());
+                        DeleteBookMark.enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if (response.isSuccessful()) {
+
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+
+                            }
+                        });
+
                         GlideApp.with(parent.getContext())
                                 .load(R.drawable.star_off)
                                 .fitCenter()
