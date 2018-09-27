@@ -56,7 +56,7 @@ public class Global {
                                                   CATEGORY_SPECIAL_EDUCATION,CATEGORY_SPECIAL_ACCOMMODATION,CATEGORY_SPECIAL_LEISURE,CATEGORY_SPECIAL_FUNERAL,CATEGORY_SPECIAL_PLAYGROUND,
                                                 CATEGORY_SPECIAL_STUDIO};
 
-    public final static String BASE_URL = "http://192.168.0.61:8090/petApplication/";
+    public final static String BASE_URL = "http://54.180.82.236:8090/petApplication/";
     public final static String BASE_IMAGE_URL = BASE_URL+"resources/upload/";
 
 }
