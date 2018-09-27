@@ -31,7 +31,7 @@
                 <!-- 제목 -->
                 <TextView
                     android:id="@+id/title"
-                    android:text="북마크"
+                    android:text="즐겨찾기"
                     android:textColor="@color/colorWhite"
                     android:textSize="16dp"
                     android:textStyle="bold"

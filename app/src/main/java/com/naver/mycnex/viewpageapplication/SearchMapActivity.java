@@ -18,7 +18,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -41,8 +40,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.naver.mycnex.viewpageapplication.data.ImageFile;
+import com.naver.mycnex.viewpageapplication.data.Mark;
+import com.naver.mycnex.viewpageapplication.data.Review;
 import com.naver.mycnex.viewpageapplication.data.Store;
+import com.naver.mycnex.viewpageapplication.data.StoreData;
 import com.naver.mycnex.viewpageapplication.data.StoreImage;
+import com.naver.mycnex.viewpageapplication.glide.GlideApp;
 import com.naver.mycnex.viewpageapplication.global.Global;
 import com.naver.mycnex.viewpageapplication.gps.GpsInfo;
 import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
@@ -50,7 +53,9 @@ import com.naver.mycnex.viewpageapplication.retrofit.RetrofitService;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindDimen;
 import butterknife.BindView;
@@ -62,34 +67,22 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
-// ** 최초실행시 **
-// 1. 모든 StoreImage 가져오기 ( 바꿀 예정 )
-// 2. 내 위치로 camera 이동
-//
-// ** Spinner Select 시 **
-//  1) 지역, 카테고리( 장소들 ) index 로 데이터 가져오기
-//
-@ToString
 public class SearchMapActivity extends AppCompatActivity
         implements GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener,
         OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
-    private int DISTANCE_BOUNDARY = 1000;
-    private double distance_min = DISTANCE_BOUNDARY;
-
     //구글맵
     private GoogleMap mMap;
     double lat;  //위도
     double lng; //경도
-    boolean circle = true;
 
     //store 정보
-    ArrayList<StoreImage> storeImages;
+    ArrayList<StoreData> storeData;
     ArrayList<Store> stores;
     ArrayList<ImageFile> images;
-    private ArrayList<Marker> markers;
+    ArrayList<Integer> reviews;
+    Store store; // 초기에 띄워줄 store 정보. ( 현재 위치와 가장 밀접한 매장 )
 
     //버터나이프
     Unbinder unbinder;
@@ -104,19 +97,19 @@ public class SearchMapActivity extends AppCompatActivity
     @BindView(R.id.storeCategory_txt) TextView storeCategory_txt;
     @BindView(R.id.storeLocation_txt) TextView storeLocation_txt;
     @BindView(R.id.dog_size_txt) TextView dog_size_txt;
-
-    // 1. true * 3 되면
-    // 2. SQL 보내어 데이터 뿌려줌
-    //
-    // ....
+    @BindView(R.id.View_txt) TextView View_txt;
+    @BindView(R.id.review_count_txt) TextView review_count_txt;
 
     // OnCreate ( 최초실행 ) 시 중복 BUS 실행 차단 위한 Flag
     private boolean LOCATION_FLAG = false;
     private boolean CATEGORY_FLAG = false;
     // SQL 보낼 Spinner 의 index
-    private int LOCATION_IDX = 0;   // [ 전체 ]
-    private int PURPOSE_IDX = 0;
-    private int CATEGORY_IDX = 0;    // [ 전체 ]
+    private int LOCATION = 0;   // [ 전체 ]
+    private int PURPOSE = 0;
+    private int CATEGORY = 0;    // [ 전체 ]
+
+    private int DISTANCE_BOUNDARY = 1000;
+    private int DISTANCE_MIN = DISTANCE_BOUNDARY;
 
     // 카테고리 Spinner 생성에 사용할 배열 변수
     private static int DEFAULT_ITEM_IDX = 1; // "전체" 는 DB에 없기 때문에 index 에서 빼줘야 한다.
@@ -159,6 +152,7 @@ public class SearchMapActivity extends AppCompatActivity
         //맵 화면 컴포넌트
         mMap = googleMap;
         enableMyLocation();
+        getMarkCurrentLocation();
     }
     //onMyLocationClick
     @Override
@@ -167,6 +161,7 @@ public class SearchMapActivity extends AppCompatActivity
     //onMyLocationButtonClick
     @Override
     public boolean onMyLocationButtonClick() {
+        getCurrentLocation();
         return false;
     }
 
@@ -177,9 +172,11 @@ public class SearchMapActivity extends AppCompatActivity
     }
 
     public void getMarkerInfo(Marker marker) {
-        Integer clickCount = (Integer) marker.getTag();
+        storeContainer.setVisibility(View.VISIBLE);
 
-        if (clickCount != null) {
+        Integer markerTag = (Integer) marker.getTag();
+
+        if (markerTag != null) {
 
             storeName_txt.setText(stores.get((Integer)marker.getTag()).getName());
 
@@ -192,11 +189,19 @@ public class SearchMapActivity extends AppCompatActivity
                 storeCategory_txt.setText(Global.CATEGORY_SPECIAL_STR_ARR[stores.get((Integer)marker.getTag()).getCategory()-Global.CATEGORY_DIVISION_NUM-1]);
             }
 
+            review_count_txt.setText(reviews.get((Integer)marker.getTag()).toString());
+            View_txt.setText(stores.get((Integer)marker.getTag()).getHit().toString());
+
             for (int i = 0; i < images.size(); i++) {
 
                 if (images.get(i).getStore_id() == stores.get((Integer)marker.getTag()).getId()) {
 
-                    final int finalI = i;
+                    GlideApp.with(SearchMapActivity.this)
+                            .load(Global.BASE_IMAGE_URL+images.get(i).getSavedName())
+                            .centerCrop()
+                            .into( storeimage_img );
+
+                    /*
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -218,6 +223,7 @@ public class SearchMapActivity extends AppCompatActivity
                             }
                         }
                     }).start();
+                    */
                 }
             }
         }
@@ -236,7 +242,7 @@ public class SearchMapActivity extends AppCompatActivity
             //권한 획득시
             @Override
             public void onPermissionGranted() {
-                getMarkFromServer();
+//                getMarkCurrentLocation();
             }
             //권한 거부시
             @Override
@@ -260,31 +266,7 @@ public class SearchMapActivity extends AppCompatActivity
         dropDownMenuDefaultSet();
         spinnerSetOnItemSelect();
         Permission();
-    }
-
-    private Bitmap getBitmap(String url) {
-        URL imgUrl = null;
-        HttpURLConnection connection = null;
-        InputStream is = null;
-
-        Bitmap retBitmap = null;
-
-        try{
-            imgUrl = new URL(url);
-            connection = (HttpURLConnection) imgUrl.openConnection();
-            connection.setDoInput(true); //url 로 input 받는 flag 허용
-            connection.connect(); //연결
-            is = connection.getInputStream(); // get inputStream
-            retBitmap = BitmapFactory.decodeStream(is);
-        }catch(Exception e) {
-            e.printStackTrace();
-            return null;
-        }finally {
-            if(connection!=null) {
-                connection.disconnect();
-            }
-            return retBitmap;
-        }
+        storeContainer.setVisibility(View.INVISIBLE);
     }
 
     public void dropDownMenuDefaultSet() {
@@ -315,9 +297,8 @@ public class SearchMapActivity extends AppCompatActivity
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if( LOCATION_FLAG ){
-                    LOCATION_IDX = position;
-                    Log.d("asd", "CATEGORY_IDX : " + CATEGORY_IDX + " LOCATION_IDX : " + LOCATION_IDX);
-                    getMarkFromServer();
+                    LOCATION = position;
+                    getMarkByLocation();
                 } else {
                     LOCATION_FLAG = true;
                 }
@@ -331,7 +312,8 @@ public class SearchMapActivity extends AppCompatActivity
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switchPlaceSpinner(position);
-                PURPOSE_IDX = position;
+                PURPOSE = position;
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -341,14 +323,12 @@ public class SearchMapActivity extends AppCompatActivity
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(CATEGORY_FLAG){
-                    if(PURPOSE_IDX == Global.CATEGORY_GENERAL){
-                        CATEGORY_IDX = position;                                // default : 0
-                        Log.d("asd", "CATEGORY_IDX : " + CATEGORY_IDX + " LOCATION_IDX : " + LOCATION_IDX);
-                        getMarkFromServer();
-                    } else if (PURPOSE_IDX == Global.CATEGORY_SPECIAL){
-                        CATEGORY_IDX = position + Global.CATEGORY_DIVISION_NUM; // default : 100
-                        Log.d("asd", "CATEGORY_IDX : " + CATEGORY_IDX + " LOCATION_IDX : " + LOCATION_IDX);
-                        getMarkFromServer();
+                    if(PURPOSE == Global.CATEGORY_GENERAL){
+                        CATEGORY = position;                                // default : 0
+                        getMarkByLocation();
+                    } else if (PURPOSE == Global.CATEGORY_SPECIAL){
+                        CATEGORY = position + Global.CATEGORY_DIVISION_NUM; // default : 100
+                        getMarkByLocation();
                     }
                 }else{
                     CATEGORY_FLAG = true;
@@ -371,22 +351,12 @@ public class SearchMapActivity extends AppCompatActivity
         }
     }
 
-    public void getMarker() {
+    public void getCurrentLocation() {
 
         LatLng currentLocation = getCurrentLocationByGPS();
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,15));
         mMap.getUiSettings().setZoomControlsEnabled(true);
-
-        CircleOptions circle1KM = new CircleOptions().center(currentLocation) //원점
-                .radius(DISTANCE_BOUNDARY)      //반지름 단위 : m
-                .strokeWidth(0f)  //선너비 0f : 선없음
-                .fillColor(Color.parseColor("#95FADB9B")); //배경색
-
-        if (circle) {
-            mMap.addCircle(circle1KM);
-            circle = false;
-        }
 
         SetOnClickMyLocationButton();
     }
@@ -417,19 +387,36 @@ public class SearchMapActivity extends AppCompatActivity
         return currentLocation;
     }
 
-    public void getMarkFromServer() {
-       Call<ArrayList<StoreImage>> getstore = RetrofitService.getInstance().getRetrofitRequest().getStoreForMap();
-        getstore.enqueue(new Callback<ArrayList<StoreImage>>() {
+    public void getMarkCurrentLocation() {
+       Call<ArrayList<StoreData>> getstore = RetrofitService.getInstance().getRetrofitRequest().getStoreForMap();
+        getstore.enqueue(new Callback<ArrayList<StoreData>>() {
             @Override
-            public void onResponse(Call<ArrayList<StoreImage>> call, Response<ArrayList<StoreImage>> response) {
+            public void onResponse(Call<ArrayList<StoreData>> call, Response<ArrayList<StoreData>> response) {
                 if (response.isSuccessful()) {
-                    storeImages = response.body();
+                    storeData = response.body();
                     getStoreData();
-                    getMarker();
                 }
             }
             @Override
-            public void onFailure(Call<ArrayList<StoreImage>> call, Throwable t) {
+            public void onFailure(Call<ArrayList<StoreData>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getMarkByLocation() {
+        Call<ArrayList<StoreData>> getStore = RetrofitService.getInstance().getRetrofitRequest().getStoreByCategory(LOCATION, CATEGORY);
+        getStore.enqueue(new Callback<ArrayList<StoreData>>() {
+            @Override
+            public void onResponse(Call<ArrayList<StoreData>> call, Response<ArrayList<StoreData>> response) {
+                if (response.isSuccessful()) {
+                    storeData = response.body();
+                    getStoreData();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<StoreData>> call, Throwable t) {
 
             }
         });
@@ -437,59 +424,39 @@ public class SearchMapActivity extends AppCompatActivity
 
     public void getStoreData() {
 
-        Store store = new Store(); // 초기에 띄워줄 store 정보.
+        mMap.clear();
+
         stores = new ArrayList<>();
         images = new ArrayList<>();
+        reviews = new ArrayList<>();
 
-        Location location1 = new Location("location1");
-        location1.setLatitude(lat);
-        location1.setLongitude(lng);
+        if (storeData.size() == 0) {
+            storeContainer.setVisibility(View.INVISIBLE);
+        }
 
-        for (int i = 0; i < storeImages.size(); i++) {
+        for (int i = 0; i < storeData.size(); i++) {
 
-            Location location2 = new Location("location2");
+            stores.add(storeData.get(i).getStore());
+            images.add(storeData.get(i).getImages().get(0));
+            reviews.add(storeData.get(i).getReviews().size());
 
-            location2.setLatitude(storeImages.get(i).getStore().getLatitude());
-            location2.setLongitude(storeImages.get(i).getStore().getLongitude());
+            LatLng MarkerLocation = new LatLng(storeData.get(i).getStore().getLatitude(), storeData.get(i).getStore().getLongitude());
 
-            double distance = location1.distanceTo(location2);
-            if (distance <= DISTANCE_BOUNDARY) {
-                if (distance < distance_min) {
-                    distance_min = distance;
-                    store = storeImages.get(i).getStore();
-                }
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(MarkerLocation)
+                         .title(storeData.get(i).getStore().getName());
 
-                stores.add(storeImages.get(i).getStore());
-                images.add(storeImages.get(i).getImage().get(0));
+            Marker marker = mMap.addMarker(markerOptions);
+            marker.setTag(i);
+
+            store = storeData.get(0).getStore();
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(store.getLatitude(), store.getLongitude()), 16));
+            if (store.getId() == storeData.get(i).getStore().getId()) {
+                getMarkerInfo(marker);
             }
         }
 
-        markers = new ArrayList<>();
-
-        for (int i = 0; i < stores.size(); i++) {
-
-            LatLng CurrentLocation = new LatLng(stores.get(i).getLatitude(), stores.get(i).getLongitude());
-            Marker marker = mMap.addMarker(new MarkerOptions().position(CurrentLocation).title(stores.get(i).getName()));
-            marker.setTag(i);
-            markers.add(marker);
-
-        }
-
         mMap.setOnMarkerClickListener(this);
-
-    }
-
-    public void GetStoreDataWhenCreated(Store store) {
-
-        storeName_txt.setText(store.getName());
-        storeLocation_txt.setText(getResources().getStringArray(R.array.address1)[store.getSigungu()]);
-        dog_size_txt.setText(Global.PETSIZE_STR_ARR[store.getDog_size() - 1]);
-
-        if (store.getCategory() < Global.CATEGORY_DIVISION_NUM) { // general 일 때
-            storeCategory_txt.setText(Global.CATEGORY_GENERAL_STR_ARR[store.getCategory() - 1]);
-        } else {
-            storeCategory_txt.setText(Global.CATEGORY_SPECIAL_STR_ARR[store.getCategory() - Global.CATEGORY_DIVISION_NUM - 1]);
-        }
 
     }
 }

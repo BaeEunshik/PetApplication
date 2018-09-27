@@ -125,9 +125,10 @@
 
             <!-- 하단 -->
             <RelativeLayout
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="60dp"
+                android:paddingTop="5dp"
+                android:layout_marginBottom="17dp"
                 android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
                 android:layout_height="80dp">
@@ -238,7 +239,8 @@
                         <!-- 평점 -->
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp">
                             <TextView
                                 android:id="@+id/TextPoint"
                                 android:textColor="@color/colorPrimary"
@@ -262,7 +264,8 @@
                                 android:layout_alignParentRight="true"
                                 android:orientation="horizontal"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="10dp">
                                 <!-- 조회수 -->
                                 <LinearLayout
                                     android:layout_marginRight="2dp"
@@ -273,7 +276,7 @@
                                         android:layout_width="20dp"
                                         android:layout_height="14dp" />
                                     <TextView
-                                        android:id="@+id/textViews"
+                                        android:id="@+id/View_txt"
                                         android:layout_marginTop="2dp"
                                         android:text="00"
                                         android:textSize="10dp"
@@ -291,7 +294,7 @@
                                         android:layout_width="20dp"
                                         android:layout_height="14dp" />
                                     <TextView
-                                        android:id="@+id/textReviews"
+                                        android:id="@+id/review_count_txt"
                                         android:layout_marginTop="2dp"
                                         android:textSize="10dp"
                                         android:text="00"

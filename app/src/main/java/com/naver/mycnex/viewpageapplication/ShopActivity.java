@@ -328,7 +328,7 @@ public class ShopActivity extends AppCompatActivity
         members = new ArrayList<>();
 
         reviewSize_txt.setText(String.valueOf(storeData.getReviews().size()));
-        review_count_txt.setText("리뷰 (" + String.valueOf(storeData.getReviews().size()) + ")");
+        review_count_txt.setText("댓글 (" + String.valueOf(storeData.getReviews().size()) + ")");
 
         for (int i = 0; i < storeData.getReviews().size(); i++) {
             reviews.add(storeData.getReviews().get(i));

@@ -62,7 +62,11 @@ public interface RetrofitRequest {
     Call<ArrayList<StoreData>> getStoreSpecialWhenLogIn(@Field("sigungu") Integer sigungu, @Field("dog_size") Integer dog_size, @Field("category") Integer category, @Field("member_id") long member_id);
 
     @GET("getStoreForMap.do")
-    Call<ArrayList<StoreImage>> getStoreForMap();
+    Call<ArrayList<StoreData>> getStoreForMap();
+
+    @FormUrlEncoded
+    @POST("getStoreByCategory.do")
+    Call<ArrayList<StoreData>> getStoreByCategory(@Field("sigungu") Integer sigungu, @Field("category") Integer category);
 
     @FormUrlEncoded
     @POST("WriteReview.do")
@@ -84,5 +88,6 @@ public interface RetrofitRequest {
     @FormUrlEncoded
     @POST("getMyStore.do")
     Call<ArrayList<StoreData>> getMyStore(@Field("member_id") long member_id);
+
 
 }
