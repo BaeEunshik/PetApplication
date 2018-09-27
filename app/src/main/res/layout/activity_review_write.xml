@@ -9,7 +9,7 @@
     <!-- Wrap -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/defaultBackground"
         android:orientation="vertical">
         <!-- Header -->
@@ -65,88 +65,87 @@
                 android:rating="4"
                 android:stepSize="0.5" />
 
-
+            <!-- 평점 -->
+            <TextView
+                android:id="@+id/TextPoint"
+                style="?android:attr/ratingBarStyleIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="5.0"
+                android:layout_marginRight="10dp"
+                android:textAlignment="textEnd"
+                android:textColor="@color/colorAccent1"
+                android:textSize="35dp" />
         </LinearLayout>
 
-        <ScrollView
+       <!-- <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            
-            <!-- 상단 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@color/colorWhite"
-                android:gravity="center"
-                android:orientation="horizontal">
-                <!-- 이미지 ( 프로필 사진 ) -->
-                <RelativeLayout
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:layout_width="46dp"
-                        android:layout_height="46dp"
-                        android:layout_centerInParent="true"
-                        android:layout_weight="1"
-                        android:background="@drawable/chracter" />
-                </RelativeLayout>
-                <!-- 이미지 ( 프로필 사진 ) -->
-                <!-- 닉네임 -->
-                <TextView
-                    android:id="@+id/txt_nickname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="닉네임"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-                <!-- 평점 -->
-                <TextView
-                    android:id="@+id/TextPoint"
-                    style="?android:attr/ratingBarStyleIndicator"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                android:layout_height="match_parent">-->
+                <!-- 상단 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@color/colorWhite"
                     android:gravity="center"
-                    android:text="5.0"
-                    android:textColor="@color/colorAccent1"
-                    android:textSize="30dp" />
-                <!-- 평점 -->
-            </LinearLayout>
-            <!-- Content -->
-            <LinearLayout
-                android:layout_width="350dp"
-                android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:background="@color/colorWhite"
-                android:orientation="vertical">
+                    android:orientation="horizontal">
+                    <!-- 이미지 ( 프로필 사진 ) -->
+                    <RelativeLayout
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent">
 
-                <Button
-                    android:id="@+id/btn_add_content"
-                    android:layout_width="55dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_gravity="right"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/addbtn" />
+                        <ImageView
+                            android:layout_width="46dp"
+                            android:layout_height="46dp"
+                            android:layout_centerInParent="true"
+                            android:layout_weight="1"
+                            android:background="@drawable/chracter" />
+                    </RelativeLayout>
+                    <!-- 이미지 ( 프로필 사진 ) -->
+                    <!-- 닉네임 -->
+                    <TextView
+                        android:id="@+id/txt_nickname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="닉네임"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+                    <Button
+                        android:id="@+id/btn_add_content"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/addbtn" />
+                </LinearLayout>
 
-                <EditText
-                    android:id="@+id/et_input_content"
+
+
+
+                <!-- Content -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="내용을 입력해주세요" />
+                    android:layout_marginTop="1dp"
+                    android:layout_gravity="center"
+                    android:background="@color/colorWhite"
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                    <EditText
+                        android:id="@+id/et_input_content"
+                        android:gravity="top"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="내용을 입력해주세요" />
 
+                </LinearLayout>
+
+<!--
             </FrameLayout>
-        </ScrollView>
+        </ScrollView>-->
 
         <!-- Content -->
         <!-- <GridView
