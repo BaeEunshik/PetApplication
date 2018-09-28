@@ -54,7 +54,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="가게명"/>
+                />
             <EditText
                 android:id="@+id/shop_name"
                 android:layout_width="match_parent"
