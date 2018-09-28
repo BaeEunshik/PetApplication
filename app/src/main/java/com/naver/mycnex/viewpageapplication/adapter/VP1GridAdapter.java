@@ -121,7 +121,7 @@ public class VP1GridAdapter extends BaseAdapter{
         if( store.getCategory() >= Global.CATEGORY_DIVISION_NUM) {
             holder.textPlace.setText(Global.CATEGORY_SPECIAL_STR_ARR[ store.getCategory()-Global.CATEGORY_SPECIAL_CAFE ]);
         } else {
-            holder.textPlace.setText(Global.CATEGORY_GENERAL_STR_ARR[ store.getCategory() ]);
+            holder.textPlace.setText(Global.CATEGORY_GENERAL_STR_ARR[ store.getCategory()-1 ]);
         }
 
         // TODO :

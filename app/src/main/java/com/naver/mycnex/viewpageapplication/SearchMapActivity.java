@@ -14,10 +14,12 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.provider.Settings;
+import android.support.annotation.LongDef;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -107,9 +109,6 @@ public class SearchMapActivity extends AppCompatActivity
     private int LOCATION = 0;   // [ 전체 ]
     private int PURPOSE = 0;
     private int CATEGORY = 0;    // [ 전체 ]
-
-    private int DISTANCE_BOUNDARY = 1000;
-    private int DISTANCE_MIN = DISTANCE_BOUNDARY;
 
     // 카테고리 Spinner 생성에 사용할 배열 변수
     private static int DEFAULT_ITEM_IDX = 1; // "전체" 는 DB에 없기 때문에 index 에서 빼줘야 한다.
@@ -425,14 +424,11 @@ public class SearchMapActivity extends AppCompatActivity
     public void getStoreData() {
 
         mMap.clear();
+        storeContainer.setVisibility(View.INVISIBLE);
 
         stores = new ArrayList<>();
         images = new ArrayList<>();
         reviews = new ArrayList<>();
-
-        if (storeData.size() == 0) {
-            storeContainer.setVisibility(View.INVISIBLE);
-        }
 
         for (int i = 0; i < storeData.size(); i++) {
 
