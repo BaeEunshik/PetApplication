@@ -32,6 +32,7 @@
                 <TextView
                     android:id="@+id/title"
                     android:textColor="@color/colorWhite"
+                    android:text=""
                     android:textSize="16dp"
                     android:textStyle="bold"
                     android:layout_centerInParent="true"
