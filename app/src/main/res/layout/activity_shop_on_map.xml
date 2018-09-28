@@ -31,7 +31,6 @@
                 <!-- 제목 -->
                 <TextView
                     android:id="@+id/title"
-                    android:text="가게이름"
                     android:textColor="@color/colorWhite"
                     android:textSize="16dp"
                     android:textStyle="bold"
@@ -58,14 +57,15 @@
 
             <!-- 하단 -->
             <RelativeLayout
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
                 android:paddingBottom="10dp"
                 android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
                 android:layout_height="80dp">
                 <!-- 주소정보 박스 -->
                 <RelativeLayout
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_centerHorizontal="true"
                     android:background="@color/colorWhite"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">

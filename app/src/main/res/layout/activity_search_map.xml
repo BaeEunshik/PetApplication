@@ -125,8 +125,6 @@
 
             <!-- 하단 -->
             <RelativeLayout
-                android:paddingLeft="10dp"
-                android:paddingRight="60dp"
                 android:paddingTop="5dp"
                 android:layout_marginBottom="17dp"
                 android:layout_alignParentBottom="true"
@@ -135,6 +133,9 @@
                 <!-- 정보 박스 -->
                 <RelativeLayout
                     android:id="@+id/storeContainer"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_centerHorizontal="true"
                     android:orientation="horizontal"
                     android:background="@color/colorWhite"
                     android:layout_width="match_parent"
@@ -162,7 +163,7 @@
                             <TextView
                                 android:id="@+id/storeName_txt"
                                 android:layout_centerVertical="true"
-                                android:text="가게이름"
+                                android:text=""
                                 android:textSize="20dp"
                                 android:textColor="@color/defaultText"
                                 android:includeFontPadding="false"

@@ -31,7 +31,6 @@
                 <!-- 제목 -->
                 <TextView
                     android:id="@+id/title"
-                    android:text="가게이름"
                     android:textColor="@color/colorWhite"
                     android:textSize="16dp"
                     android:textStyle="bold"
