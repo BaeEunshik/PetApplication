@@ -10,17 +10,36 @@
 
     <RelativeLayout
         android:id="@+id/layout_images"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="250dp"
-        >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/iv_intro"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/dog1"
+
+            <TextView
+                android:id="@+id/app_name"
+                android:layout_centerInParent="true"
+                android:text="PET MATE"
+                android:height="46dp"
+                android:textSize="40dp"
+                android:textColor="#fff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@+id/app_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/ic_pet1"
+                    />
+
+            </LinearLayout>
+
+
 
     </RelativeLayout>
 
